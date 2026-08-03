@@ -49,13 +49,8 @@ app.use(
 app.use(express.json({ limit: "1mb" }));
 app.use(express.urlencoded({ extended: true, limit: "1mb" }));
 
-// Serve static uploads with browser caching
-app.use("/uploads", express.static(path.join(__dirname, "uploads"), {
-  maxAge: "30d",
-  immutable: true,
-}));
-
 // Sitemap XML route for Google search indexing
+
 const sitemapRoute = require("./Routes/sitemapRoute");
 app.use("/", sitemapRoute);
 
