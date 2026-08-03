@@ -1,0 +1,74 @@
+/* Premium Admission Procedure Page Styling */
+.admission-proc-wrapper {
+  background: #ffffff;
+  padding: 3.5rem 0;
+}
+
+.procedure-steps-card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+  height: 100%;
+}
+
+.procedure-step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding-bottom: 1.1rem;
+  margin-bottom: 1.1rem;
+  border-bottom: 1px dashed #e2e8f0;
+}
+
+.procedure-step-item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.step-number-badge {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #196642;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(25, 102, 66, 0.3);
+}
+
+.step-text-content {
+  font-size: 0.95rem;
+  color: #334155;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.procedure-form-card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+.roadmap-card-box {
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 2rem;
+  margin-top: 3rem;
+  text-align: center;
+}
+
+.roadmap-card-box img {
+  max-width: 90%;
+  height: auto;
+  border-radius: 12px;
+}

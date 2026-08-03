@@ -1,0 +1,67 @@
+.sis {
+<<<<<<< HEAD
+  /* background-image: linear-gradient(
+    rgba(238, 254, 251, 0.1),
+    rgba(110, 204, 251, 0.3)
+  ); */
+  background-image: linear-gradient(60deg, rgb(233, 233, 233), var(--green4));
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: cover;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+/* .sis{
+    background-color: rgb(226, 252, 243);
+ } */
+.poster img {
+  width: 100%;
+  height: 170px;
+=======
+
+ background: linear-gradient(to top, #acddf2, #ffffff);
+  
+}
+
+.poster img {
+  width: 100%;
+ padding:  0 60px;
+>>>>>>> rakeshcolor
+  object-fit: contain;
+}
+
+.poster span {
+  display: block;
+  margin-top: 15px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #494747;
+}
+<<<<<<< HEAD
+=======
+
+
+
+.collage-img3{
+  height:100%;
+  width: 48%;
+ 
+}
+.collage-img3 img{
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+
+.collage-img1,
+.collage-img2 {
+  height: 140px;
+  width: 100%;
+}
+
+.collage-img1 img,
+.collage-img2 img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+}
+>>>>>>> rakeshcolor

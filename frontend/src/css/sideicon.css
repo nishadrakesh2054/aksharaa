@@ -1,0 +1,260 @@
+/* Floating Spiral Widget Styles */
+.floating-widget-wrapper {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Compact invisible hover bridge */
+.hover-bridge {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  bottom: -10px;
+  right: -10px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.floating-widget-wrapper.open .hover-bridge,
+.floating-widget-wrapper:hover .hover-bridge {
+  pointer-events: auto;
+}
+
+/* Spiral Items Container */
+.spiral-container {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+/* Individual Spiral Item Base */
+.spiral-item {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(0, 0) scale(0.1) rotate(-180deg);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+              opacity 0.25s ease,
+              visibility 0.25s ease;
+  visibility: hidden;
+}
+
+/* Spiral Position Arc (Opened / Hovered) */
+.floating-widget-wrapper.open .spiral-item,
+.floating-widget-wrapper:hover .spiral-item {
+  opacity: 1;
+  pointer-events: auto;
+  visibility: visible;
+}
+
+/* Compact Non-Overlapping Radial Arc (Radius R = 85px) */
+.floating-widget-wrapper.open .item-1,
+.floating-widget-wrapper:hover .item-1 {
+  transform: translate(0px, -85px) scale(1) rotate(0deg);
+  transition-delay: 0.02s;
+}
+
+.floating-widget-wrapper.open .item-2,
+.floating-widget-wrapper:hover .item-2 {
+  transform: translate(-43px, -74px) scale(1) rotate(0deg);
+  transition-delay: 0.05s;
+}
+
+.floating-widget-wrapper.open .item-3,
+.floating-widget-wrapper:hover .item-3 {
+  transform: translate(-74px, -43px) scale(1) rotate(0deg);
+  transition-delay: 0.08s;
+}
+
+.floating-widget-wrapper.open .item-4,
+.floating-widget-wrapper:hover .item-4 {
+  transform: translate(-85px, 0px) scale(1) rotate(0deg);
+  transition-delay: 0.11s;
+}
+
+/* Button Icon Styling */
+.spiral-btn {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff !important;
+  font-size: 16px;
+  text-decoration: none !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.spiral-btn:hover {
+  transform: scale(1.12);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+/* Icon Colors */
+.call-btn {
+  background: linear-gradient(135deg, #0d9488, #14b8a6);
+}
+
+.whatsapp-btn {
+  background: linear-gradient(135deg, #16a34a, #25d366);
+}
+
+.email-btn {
+  background: linear-gradient(135deg, #c02850, #e11d48);
+}
+
+.inquiry-btn {
+  background: linear-gradient(135deg, #7c3aed, #9333ea);
+}
+
+/* Tooltip Labels */
+.spiral-label {
+  position: absolute;
+  right: 48px;
+  top: 50%;
+  transform: translateY(-50%) scale(0.9);
+  white-space: nowrap;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+}
+
+.spiral-btn:hover .spiral-label {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) scale(1);
+}
+
+/* Main Trigger Button */
+.main-widget-trigger {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #196642, #c02850);
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  color: #ffffff;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
+  box-shadow: 0 6px 20px rgba(25, 102, 66, 0.4);
+  transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+  z-index: 3;
+}
+
+.floating-widget-wrapper.open .main-widget-trigger,
+.floating-widget-wrapper:hover .main-widget-trigger {
+  transform: rotate(90deg);
+  background: linear-gradient(135deg, #c02850, #196642);
+  box-shadow: 0 8px 24px rgba(192, 40, 80, 0.5);
+}
+
+/* Pulse Rings */
+.pulse-ring {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid #22b24c;
+  opacity: 0.6;
+  pointer-events: none;
+  animation: widgetPulse 3s infinite ease-out;
+}
+
+.ring-2 {
+  animation-delay: 1.5s;
+}
+
+.floating-widget-wrapper.open .pulse-ring,
+.floating-widget-wrapper:hover .pulse-ring {
+  animation: none;
+  opacity: 0;
+}
+
+@keyframes widgetPulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .floating-widget-wrapper {
+    bottom: 16px;
+    right: 16px;
+  }
+
+  .hover-bridge {
+    width: 170px;
+    height: 170px;
+  }
+
+  .main-widget-trigger {
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+  }
+
+  .spiral-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 14px;
+  }
+
+  .floating-widget-wrapper.open .item-1,
+  .floating-widget-wrapper:hover .item-1 {
+    transform: translate(0px, -75px) scale(1) rotate(0deg);
+  }
+
+  .floating-widget-wrapper.open .item-2,
+  .floating-widget-wrapper:hover .item-2 {
+    transform: translate(-38px, -65px) scale(1) rotate(0deg);
+  }
+
+  .floating-widget-wrapper.open .item-3,
+  .floating-widget-wrapper:hover .item-3 {
+    transform: translate(-65px, -38px) scale(1) rotate(0deg);
+  }
+
+  .floating-widget-wrapper.open .item-4,
+  .floating-widget-wrapper:hover .item-4 {
+    transform: translate(-75px, 0px) scale(1) rotate(0deg);
+  }
+
+  .spiral-label {
+    font-size: 10px;
+    padding: 2px 8px;
+    right: 44px;
+  }
+}

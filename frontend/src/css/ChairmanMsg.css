@@ -1,0 +1,98 @@
+.msgperson {
+  background: linear-gradient(
+      rgba(255, 255, 255, 0.4),
+      rgba(154, 250, 220, 0.1)
+    ),
+    url("https://img.freepik.com/free-vector/modern-abstract-white-minimal-background_84443-8318.jpg?t=st=1726638928~exp=1726642528~hmac=3fe3b6d6b838eabc914f5eef2f775f799ee4e4217013695785157ca3e31d6110&w=996");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.chairman-header {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 2.6rem !important;
+  color: #0b8d3d;
+  line-height: 50px;
+  border-bottom: 3px solid transparent;
+  transition: border-bottom 0.3s ease;
+}
+
+.chairman-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 3px;
+  border-radius: 100%;
+  background-color: #fe7f00;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.chairman-header:hover::after {
+  transform: scaleX(1);
+}
+
+.fancy-border {
+  border: 2px solid transparent;
+  border-radius: 10px;
+  box-shadow: rgba(1, 49, 89, 0.24) 0px 3px 8px;
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+  padding: 8px;
+  position: relative;
+}
+
+.chairman-message-card:hover {
+  transform: translateY(-1px);
+}
+
+.chairman-name {
+  font-size: 1.4rem;
+  font-weight: bolder;
+  text-align: center;
+  color: var(--green1);
+}
+
+.chairman-title {
+  font-size: 1rem;
+  color: #424446;
+  text-align: center;
+  margin: 0;
+}
+
+.message-content p {
+  font-size: 0.9rem;
+  color: #4b4949;
+  line-height: 1.6;
+  text-align: justify;
+}
+
+.chairman-image {
+  border-radius: 8px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.chairman-image:hover {
+  transform: scale(1.05);
+  /* box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); */
+}
+
+
+@media (min-width: 768px) {
+  .chairman-header {
+    font-size: 2.8rem; /* Slightly larger */
+  }
+}
+
+@media (min-width: 567px) {
+  .chairman-header {
+    font-size: 2rem; /* Slightly larger */
+  }
+}

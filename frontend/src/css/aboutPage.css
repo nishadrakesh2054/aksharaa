@@ -1,0 +1,106 @@
+/* Premium About Us Page Styling */
+.about-page-wrapper {
+  background: #ffffff;
+  padding: 3.5rem 0;
+}
+
+.about-intro-box {
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 2rem 2.25rem;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+  margin-bottom: 2.5rem;
+}
+
+.about-intro-box p {
+  font-size: 1.02rem;
+  color: #334155;
+  line-height: 1.75;
+}
+
+/* Why Choose Aksharaa Grid Cards */
+.why-choose-grid-card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 1.75rem;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.05);
+  height: 100%;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.why-choose-grid-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.12);
+  border-color: #196642;
+}
+
+.why-choose-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: rgba(25, 102, 66, 0.1);
+  color: #196642;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  margin-bottom: 1rem;
+}
+
+.why-choose-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+}
+
+.why-choose-desc {
+  font-size: 0.92rem;
+  color: #64748b;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* LRPA Callout Banner */
+.about-lrpa-banner {
+  background: linear-gradient(135deg, #196642 0%, #035073 100%);
+  color: #ffffff;
+  border-radius: 20px;
+  padding: 2.25rem;
+  box-shadow: 0 12px 32px rgba(25, 102, 66, 0.2);
+  margin-top: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.about-lrpa-banner p {
+  font-size: 1rem;
+  color: #f1f5f9;
+  line-height: 1.65;
+  margin: 0;
+}
+
+.about-lrpa-btn {
+  background: var(--red, #c02850);
+  color: #ffffff !important;
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding: 10px 26px;
+  border-radius: 30px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(192, 40, 80, 0.35);
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.about-lrpa-btn:hover {
+  background: #a81d42;
+  transform: translateY(-2px);
+}

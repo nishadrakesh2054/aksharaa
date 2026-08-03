@@ -1,0 +1,98 @@
+/* Original Image Styling - 100% Untouched */
+.bgimg {
+  background-color: #258682;
+}
+
+.custom-img {
+  max-width: 100%; 
+  height: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .custom-img {
+    width: 100%; 
+    height: 250px;
+  }
+}
+
+@media (max-width: 576px) {
+  .custom-img {
+    width: 100%; 
+    height: 200px; 
+  }
+}
+
+@media (max-width: 360px) {
+  .custom-img {
+    width: 100%; 
+    height: 150px;
+  }
+}
+
+/* Left-Aligned Header Title (No Underline) */
+.mb-head {
+  font-size: 1.15rem; 
+  font-weight: bold;
+  text-transform: uppercase; 
+  letter-spacing: 1px; 
+  text-align: left !important;
+  margin-bottom: 12px; 
+  position: relative; 
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+}
+
+.title-icon {
+  color: #c02850;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.mb-head::after {
+  display: none !important;
+}
+
+/* Text Formatting */
+.mb-p {
+  text-align: left !important;
+  font-size: 0.94rem;
+  line-height: 1.65;
+  color: #334155 !important;
+  margin-top: 10px;
+  margin-bottom: 16px;
+}
+
+/* Simple Link Styling */
+.mb-link {
+  color: #c02850 !important;
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  transition: color 0.25s ease, transform 0.25s ease;
+  cursor: pointer;
+}
+
+.mb-link:hover {
+  color: #f43f5e !important;
+  transform: translateX(4px);
+}
+
+@media (max-width: 768px) {
+  .mb-head {
+    font-size: 1.05rem;
+  }
+
+  .mb-p {
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+
+  .mb-link {
+    font-size: 0.88rem;
+  }
+}

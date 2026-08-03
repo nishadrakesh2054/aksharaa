@@ -1,0 +1,563 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+  font-family: "Roboto", sans-serif;
+
+}
+
+a {
+  text-decoration: none;
+}
+:root {
+  --green1: #035073;
+  --green2: #005c86;
+  --red: #bc0539;
+  --green4: rgb(137, 202, 137);
+ 
+}
+.bg-side {
+  background-color: var(--red);
+ 
+}
+
+.hoverView {
+  z-index: 100;
+  border: 2px solid green;
+  background-color: #00000087;
+  font-weight: bolder;
+  color: white;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateX(-50%) translateY(-50%);
+  transition:
+    top 0.1s ease,
+    left 0.1s ease,
+    height 0.3s ease,
+    width 0.3s ease,
+    opacity 0.3s ease;
+  pointer-events: none;
+  cursor: none;
+}
+
+.hovering {
+  height: 100px;
+  width: 100px;
+}
+
+.unhover {
+  opacity: 0;
+  height: 0px;
+  width: 0px;
+}
+
+.addcolor {
+  color: var(--green2);
+}
+.head-color {
+  color: var(--red);
+}
+
+
+ /* Popup notice design start */
+#popoupContainer {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 200;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.imageContainer {
+  position: relative;
+  width: 90%;
+  max-width: 500px; 
+  height: auto;
+}
+
+.popupimg {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.popup-close-btn {
+  position: absolute;
+  top: -16px;
+  right: -16px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: #ef4444;
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.45);
+  transition: all 0.25s ease;
+  z-index: 210;
+  outline: none;
+}
+
+.popup-close-btn:hover {
+  background-color: #dc2626;
+  transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+  .imageContainer {
+    width: 85%;
+    max-width: 400px; 
+  }
+  
+  .popup-close-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 0.95rem;
+    top: -14px;
+    right: -14px;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .imageContainer {
+    width: 95%;
+    max-width: 300px; 
+  }
+  
+  .pop_btn {
+    padding: 6px 10px;
+    top: -16px;
+    right: -16px;
+  }
+}
+
+/* Popup notice design end */
+
+/* popup notice design end */
+
+
+
+
+
+/* Reusable Section Background System */
+.demo {
+  background: transparent;
+}
+
+.section-bg-white {
+  background: #ffffff !important;
+}
+
+.section-bg-alt {
+  background: linear-gradient(180deg, #f0feff 0%, #e0f7fc 60%, #c8f1ff 100%) !important;
+}
+.testimonial {
+  background: #fff;
+  padding: 20px;
+  margin: 0 15px 10px 15px;
+  position: relative;
+}
+.testimonial:before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  background: var(--red);
+  position: absolute;
+  top: 4%;
+  left: 2%;
+  opacity: 0.5;
+  z-index: -1;
+}
+.testimonial .title {
+  font-size: 20px;
+  font-weight: 500;
+  color: #333;
+  text-transform: uppercase;
+  margin-top: 0;
+}
+.testimonial .description {
+  font-size: 14px;
+  color: #555;
+  text-align: justify;
+}
+.testimonial .testimonial-content {
+  position: relative;
+}
+.testimonial .testimonial-content:after {
+  content: "\f10e";
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  position: absolute;
+  top: -5px;
+  right: 0;
+  font-size: 45px;
+  color: var(--primary);
+}
+.testimonial .pic {
+  display: inline-block;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  margin-right: 15px;
+  overflow: hidden;
+  border: 1px solid red;
+}
+.testimonial .pic img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+ 
+  
+}
+.testimonial .content {
+  display: inline-block;
+  margin: 10px 0;
+}
+.testimonial .name {
+  font-size: 20px;
+  font-weight: 400;
+  margin: 0;
+  text-transform: capitalize;
+}
+.testimonial .post {
+  font-size: 14px;
+  color: #555;
+  line-height: 24px;
+}
+.testimonial .rating {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.testimonial .rating li {
+  display: inline-block;
+  color: var(--third);
+}
+/* parent voice design section end  */
+
+/*main  photo   section start*/
+.bggallery {
+  padding: 20px 0 190px 0;
+}
+.galleryitems {
+  display: grid;
+  height: auto;
+  place-items: center;
+}
+.gallery {
+  position: relative;
+  margin-top: 130px;
+  width: 280px;
+  height: 200px;
+  transform-style: preserve-3d;
+  animation: rotate 35s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: perspective(1200px) rotateY(0deg);
+  }
+
+  to {
+    transform: perspective(1200px) rotateY(360deg);
+  }
+}
+
+.gallery span {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transform-origin: center;
+  transform-style: preserve-3d;
+  transform: rotateY(calc(var(--i) * 45deg)) translateZ(380px);
+}
+
+.gallery span img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  box-shadow:
+    rgba(0, 0, 0, 0.16) 0px 3px 6px,
+    rgba(0, 0, 0, 0.23) 0px 3px 6px;
+  object-fit: contain;
+  transition: transform 0.3s linear;
+}
+.gallery:hover {
+  animation-play-state: paused;
+}
+
+.gallery span:hover img {
+  transform: scale(1.6); /* Zoom in */
+}
+
+@media (max-width: 768px) {
+  .gallery {
+    max-width: 200px;
+    height: 150px;
+  }
+
+  .gallery span {
+    transform: rotateY(calc(var(--i) * 45deg)) translateZ(320px);
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery {
+    max-width: 150px;
+    height: 100px;
+  }
+
+  .gallery span {
+    transform: rotateY(calc(var(--i) * 45deg)) translateZ(270px);
+  }
+}
+/*main  photo   section end*/
+
+/* footer design start */
+.footer {
+  background: linear-gradient(60deg, var(--green1), var(--green2));
+}
+.footer-logo-wrapper {
+  width: 190px;
+  height: 90px;
+ 
+}
+.footer-logo-wrapper img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+.widget-title {
+  color: #ffffff;
+}
+.footer-tag {
+  color: rgb(204, 201, 201);
+}
+.footer-text {
+  text-align: justify;
+  word-spacing: 1px;
+  letter-spacing: 0px;
+}
+.animated-hover {
+  display: inline-block;
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
+}
+.animated-hover:hover {
+  transform: translateX(5px);
+  color: #bb87ae;
+  letter-spacing: 0.6px;
+  transition: all 0.3s linear;
+}
+.animated-border-header {
+  display: inline-block;
+  position: relative;
+  transition: color 0.3s ease;
+}
+.animated-border-header::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 80px;
+  height: 2px;
+  background-color: red;
+  transition: width 0.3s ease;
+}
+.animated-border-header:hover {
+  color: #d84d4d;
+}
+.animated-border-header:hover::after {
+  width: 100%;
+}
+/* footer design end */
+
+/* abouts us page */
+.mission-vision-section {
+  padding: 40px 0;
+}
+
+.mission-vision-content {
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: #fff;
+  height: 180px; /* Ensure both sections have the same height */
+}
+
+.mission-vision-content1 {
+  /* background-color: var(--sec); */
+  background: linear-gradient(to left, #03628e, #054462);
+
+  clip-path: polygon(0% 0%, 60% 0, 100% 50%, 60% 100%, 0% 100%);
+}
+
+.mission-vision-content2 {
+  /* background-color: var(--third); */
+  background: linear-gradient(to right, rgb(157, 76, 157), rgb(65, 1, 65));
+
+  clip-path: polygon(40% 0, 100% 0%, 100% 100%, 40% 100%, 0% 50%);
+}
+
+.mission-vision-content1 p,
+.mission-vision-content2 p {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  text-align: justify;
+}
+
+.mission-vision-content1 p {
+  margin-right: 100px;
+}
+
+.mission-vision-content2 p {
+  margin-left: 100px;
+}
+
+.about-p {
+  font-size: 0.9rem;
+  text-align: justify;
+}
+
+/* CSS */
+.button-21 {
+  align-items: center;
+  appearance: none;
+  background-color: var(--red);
+  background-image: linear-gradient(1deg, var(--red), var(--green3) 99%);
+  background-size: calc(100% + 20px) calc(100% + 20px);
+  border-radius: 100px;
+  border-width: 0;
+  box-shadow: none;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: CircularStd, sans-serif;
+  font-size: 1rem;
+  height: auto;
+  justify-content: center;
+  line-height: 1.5;
+  padding: 6px 20px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition:
+    background-color 0.2s,
+    background-position 0.2s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: top;
+  white-space: nowrap;
+}
+
+.button-21:active,
+.button-21:focus {
+  outline: none;
+}
+
+.button-21:hover {
+  background-position: -20px -20px;
+}
+
+.button-21:focus:not(:active) {
+  box-shadow: rgba(40, 170, 255, 0.25) 0 0 0 0.125em;
+}
+
+/* mission and vision */
+
+.b-col {
+  border-right: 2px solid rgb(4, 4, 4);
+}
+
+.sanskar {
+  color: var(--third);
+}
+
+.lrpa-p-text {
+  text-align: justify;
+}
+
+
+
+
+.pointer {
+  cursor: wait;
+}
+
+.messageHeight {
+  height: 40px;
+  font-weight: bolder;
+  display: flex;
+  align-items: center;
+}
+
+
+.aboutbg{
+  background-color: #f6fbff;
+}
+
+
+/* Default styles */
+.textjustify {
+  text-align: left;
+  word-spacing: 2px;
+}
+
+.textcenter {
+  text-align: justify;
+  word-spacing: 2px;
+}
+
+/* Styles for small screens (mobile) */
+@media (max-width: 576px) {
+  .textjustify {
+      text-align: center; 
+      word-spacing: 1px; 
+  }
+  .textcenter {
+      text-align: left; 
+      word-spacing: 1px; 
+  }
+}
+
+/* Styles for medium screens (tablets) */
+@media (min-width: 577px) and (max-width: 768px) {
+  .textjustify {
+      text-align: left; 
+      word-spacing: 2px; 
+  }
+  .textcenter {
+      text-align: justify; 
+      word-spacing: 1.5px; 
+  }
+}
+
+/* Styles for large screens (desktops) */
+@media (min-width: 769px) {
+  .textjustify {
+      text-align: left; 
+      word-spacing: 2px; 
+  }
+  .textcenter {
+      text-align: justify;
+      word-spacing: 2px; 
+  }
+}

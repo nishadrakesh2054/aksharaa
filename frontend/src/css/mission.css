@@ -1,0 +1,149 @@
+/* Mission Section Background */
+.mission-section {
+  background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Mission Card Base Styling & Design */
+.mission-card {
+  position: relative;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 20px !important;
+  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.06);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.mission-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+}
+
+/* Card 1: Emerald Theme */
+.mission-card.card-emerald {
+  border-top: 4px solid #196642;
+  background: linear-gradient(180deg, rgba(25, 102, 66, 0.04) 0%, #ffffff 45%);
+}
+
+.mission-card.card-emerald:hover {
+  border-top-color: #22b24c;
+}
+
+.mission-icon-badge.badge-emerald {
+  background: rgba(25, 102, 66, 0.1);
+  color: #196642;
+}
+
+.mission-card.card-emerald:hover .badge-emerald {
+  background: #196642;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+/* Card 2: Ocean Blue Theme */
+.mission-card.card-blue {
+  border-top: 4px solid #005A83;
+  background: linear-gradient(180deg, rgba(0, 90, 131, 0.04) 0%, #ffffff 45%);
+}
+
+.mission-card.card-blue:hover {
+  border-top-color: #0284c7;
+}
+
+.mission-icon-badge.badge-blue {
+  background: rgba(0, 90, 131, 0.1);
+  color: #005A83;
+}
+
+.mission-card.card-blue:hover .badge-blue {
+  background: #005A83;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+/* Card 3: Pinkish Red Theme */
+.mission-card.card-pink {
+  border-top: 4px solid #f43f5e;
+  background: linear-gradient(180deg, rgba(244, 63, 94, 0.04) 0%, #ffffff 45%);
+}
+
+.mission-card.card-pink:hover {
+  border-top-color: #e11d48;
+}
+
+.mission-icon-badge.badge-pink {
+  background: rgba(244, 63, 94, 0.1);
+  color: #f43f5e;
+}
+
+.mission-card.card-pink:hover .badge-pink {
+  background: #f43f5e;
+  color: #ffffff;
+  transform: scale(1.1);
+}
+
+/* Icon Wrapper & Glass Badge */
+.mission-icon-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mission-icon-badge {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Card Typography */
+.mission-head {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #0f172a;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.mission-p {
+  font-size: 0.94rem;
+  line-height: 1.65;
+  color: #475569 !important;
+  text-align: center;
+}
+
+/* Mobile & Tablet Responsiveness */
+@media (max-width: 767px) {
+  .mission-section {
+    padding-top: 2.2rem !important;
+    padding-bottom: 2.2rem !important;
+  }
+
+  .mission-card {
+    padding: 22px 18px !important;
+    border-radius: 16px !important;
+  }
+
+  .mission-icon-badge {
+    width: 56px;
+    height: 56px;
+    font-size: 1.4rem;
+  }
+
+  .mission-head {
+    font-size: 1.1rem;
+    margin-bottom: 10px !important;
+  }
+
+  .mission-p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+}

@@ -1,0 +1,52 @@
+
+.chatbot-container{
+  z-index: 1009;
+}
+/* Floating button positioned on the right */
+.rsc-float-button {
+  right: 50px !important; /* Positioning on the right */
+  left: unset !important; /* Unset left to avoid conflict */
+  width: 40px;
+  height: 40px;
+  bottom: 10px;
+}
+
+/* Chat container alignment */
+.rsc-container {
+  right: 10px !important; /* Align container with button */
+  left: unset !important;
+  
+}
+
+
+
+
+
+
+/* Media query for smaller screens (tablets and phones) */
+@media (max-width: 768px) {
+  .rsc-float-button {
+    right: 20px !important; 
+    width: 40px; /* Adjust size */
+    height: 40px; /* Adjust size */
+    bottom: 15px; /* Adjust distance from the bottom */
+  }
+
+  .rsc-container {
+    right: 15px !important; /* Align container with button */
+  }
+}
+
+/* Media query for very small screens (small phones) */
+@media (max-width: 480px) {
+  .rsc-float-button {
+    right: 15px !important; 
+    width: 30px; 
+    height: 30px; 
+    bottom: 10px; 
+  }
+
+  .rsc-container {
+    right: 10px !important; /* Align container with button */
+  }
+}

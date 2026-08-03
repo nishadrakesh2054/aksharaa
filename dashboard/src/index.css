@@ -1,0 +1,30 @@
+.box{
+  margin-left: 220px;
+}
+
+.pagebox{
+  margin-left: 280px;
+
+}
+/* GetDownload.css */
+.page-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #343a40;
+  }
+  
+  .pdf-name {
+    font-weight: 500;
+    color: #007bff;
+  }
+  
+  .list-group-item {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+  }
+  
+  .list-group-item .btn-sm {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.75rem;
+  }
+  

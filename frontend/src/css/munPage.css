@@ -1,0 +1,109 @@
+/* Aksharaa Model United Nations (AMUN) Page Styling */
+.mun-section-wrapper {
+  background: #ffffff;
+  padding: 3.5rem 0;
+}
+
+.mun-slider-card {
+  border-radius: 16px;
+  overflow: hidden;
+  height: 240px;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+  border: 1px solid #e2e8f0;
+}
+
+.mun-slider-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Feature Cards */
+.mun-feature-box {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+  height: 100%;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mun-feature-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.1);
+  border-color: rgba(25, 102, 66, 0.3);
+}
+
+.mun-feature-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #196642 0%, #22b24c 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 6px 18px rgba(25, 102, 66, 0.25);
+}
+
+.mun-feature-box h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.85rem;
+}
+
+.mun-feature-box p {
+  font-size: 0.95rem;
+  color: #475569;
+  line-height: 1.65;
+  margin-bottom: 0;
+}
+
+/* Goals List */
+.mun-goals-box {
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 2rem;
+  height: 100%;
+}
+
+.mun-goal-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  color: #334155;
+  line-height: 1.55;
+}
+
+.mun-goal-item:last-child {
+  margin-bottom: 0;
+}
+
+.mun-goal-item i {
+  color: #196642;
+  font-size: 1.1rem;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+/* Photo Grid */
+.mun-photo-grid-img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+  border: 1px solid #e2e8f0;
+  transition: transform 0.3s ease;
+}
+
+.mun-photo-grid-img:hover {
+  transform: scale(1.04);
+}

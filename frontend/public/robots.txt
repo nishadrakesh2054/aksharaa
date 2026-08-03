@@ -1,0 +1,6 @@
+# Robots.txt for Aksharaa School
+User-agent: *
+Allow: /
+
+# Sitemap Index
+Sitemap: https://www.aksharaaschool.edu.np/sitemap.xml

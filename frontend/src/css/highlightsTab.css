@@ -1,0 +1,456 @@
+/* Clean Aksharaa Highlights Tabs & Content Design System */
+.highlights-tab-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+  margin-bottom: 2.25rem;
+}
+
+/* Navigation Buttons - Solid Clean Styling (No heavy gradients) */
+.highlights-tab-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 9px 22px;
+  border-radius: 30px;
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  color: #334155;
+  font-weight: 600;
+  font-size: 0.92rem;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+  transition: all 0.25s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+.highlights-tab-pill:hover {
+  border-color: #196642;
+  color: #196642;
+  background: #f8fafc;
+}
+
+.highlights-tab-pill.active {
+  background: #196642;
+  color: #ffffff !important;
+  border-color: #196642;
+  box-shadow: 0 4px 12px rgba(25, 102, 66, 0.25);
+}
+
+.highlights-tab-pill.active i {
+  color: #ffffff !important;
+}
+
+/* ----------------------------------------------------
+   1. UPCOMING EVENTS DESIGN
+   ---------------------------------------------------- */
+.upcoming-event-card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 4px 18px rgba(25, 102, 66, 0.05);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  height: 100%;
+  transition: all 0.35s cubic-bezier(0.165, 0.84, 0.44, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.upcoming-event-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(180deg, #196642, #22b24c);
+}
+
+.upcoming-event-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(25, 102, 66, 0.12);
+  border-color: #196642;
+}
+
+/* NO BLACK COLOR - Signature Aksharaa Emerald Gradient Date Block */
+.event-date-block {
+  background: linear-gradient(135deg, #196642 0%, #15803d 100%);
+  color: #ffffff;
+  min-width: 88px;
+  height: 88px;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 6px 16px rgba(25, 102, 66, 0.25);
+  transition: transform 0.3s ease;
+}
+
+.upcoming-event-card:hover .event-date-block {
+  transform: scale(1.04);
+}
+
+.event-date-block .event-month {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #a7f3d0;
+}
+
+.event-date-block .event-day {
+  font-size: 1.45rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: #ffffff;
+}
+
+.event-date-block .event-year {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  margin-top: 1px;
+}
+
+.event-info-content {
+  flex: 1;
+}
+
+.event-info-title {
+  font-size: 1.08rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.35rem;
+  line-height: 1.35;
+}
+
+.event-meta-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #15803d;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  padding: 3px 12px;
+  border-radius: 20px;
+  margin-bottom: 0.5rem;
+}
+
+.event-info-desc {
+  font-size: 0.88rem;
+  color: #475569;
+  margin-bottom: 0;
+  line-height: 1.5;
+}
+
+
+/* ----------------------------------------------------
+   2. CALENDAR SCHEDULE DESIGN
+   ---------------------------------------------------- */
+.calendar-card-box {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+  height: 100%;
+  transition: transform 0.3s ease;
+}
+
+.calendar-card-box:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+}
+
+.calendar-header-banner {
+  background: #035073;
+  color: #ffffff;
+  padding: 0.9rem 1.15rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.calendar-header-banner h5 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.calendar-header-banner i {
+  font-size: 1.1rem;
+  opacity: 0.85;
+}
+
+.calendar-body-list {
+  padding: 1.15rem;
+}
+
+.calendar-event-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px dashed #e2e8f0;
+}
+
+.calendar-event-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.calendar-event-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(192, 40, 80, 0.1);
+  color: var(--red, #c02850);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.calendar-event-text {
+  font-size: 0.86rem;
+  color: #334155;
+  font-weight: 500;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* ----------------------------------------------------
+   3. REFINED LONGTERM PROJECTS CARD DESIGN
+   ---------------------------------------------------- */
+.project-card-container {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.3s ease;
+}
+
+.project-card-container:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.1);
+  border-color: #196642;
+}
+
+.project-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 185px;
+  overflow: hidden;
+}
+
+.project-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.project-card-container:hover .project-img-wrapper img {
+  transform: scale(1.04);
+}
+
+.project-category-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(15, 23, 42, 0.8);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 12px;
+  border-radius: 15px;
+}
+
+.project-content-body {
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.project-title {
+  font-size: 1.02rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.4rem;
+  line-height: 1.35;
+}
+
+.project-desc-snippet {
+  font-size: 0.86rem;
+  color: #64748b;
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+
+.project-footer-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.85rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.project-action-btn-simple {
+  background: transparent !important;
+  border: none !important;
+  color: #196642 !important;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  padding: 2px 0 !important;
+  margin: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  box-shadow: none !important;
+  transition: gap 0.25s ease, color 0.25s ease;
+}
+
+.project-action-btn-simple:hover {
+  color: #c02850 !important;
+  gap: 10px;
+}
+
+/* ----------------------------------------------------
+   4. MINIMALIST ACTIVITIES CARD GRID
+   ---------------------------------------------------- */
+.mini-activity-card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.mini-activity-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px rgba(25, 102, 66, 0.12);
+  border-color: #196642;
+}
+
+.mini-card-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 190px;
+  overflow: hidden;
+  background-color: #f8fafc;
+}
+
+.mini-card-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.mini-activity-card:hover .mini-card-img-wrapper img {
+  transform: scale(1.05);
+}
+
+.mini-card-date-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: linear-gradient(135deg, #196642 0%, #15803d 100%);
+  color: #ffffff;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  display: flex;
+  gap: 4px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.mini-card-body {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+}
+
+.mini-card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+  line-height: 1.35;
+}
+
+.mini-card-snippet {
+  font-size: 0.86rem;
+  color: #475569;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.mini-card-footer {
+  padding-top: 0.75rem;
+  border-top: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.mini-card-readmore {
+  color: #196642 !important;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  text-decoration: none !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: gap 0.25s ease, color 0.25s ease;
+}
+
+.mini-card-readmore:hover {
+  color: #c02850 !important;
+  gap: 10px;
+}
+
+
