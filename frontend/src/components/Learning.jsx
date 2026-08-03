@@ -40,7 +40,7 @@ const Learning = () => {
         <div className="container">
           <div className="row d-flex align-items-center justify-content-between fuche-sec">
             <div className={`col-md-4 pe-4 ${activeSection ? "d-none" : ""}`}>
-              <span className="badge bg-success bg-opacity-25 text-success fw-bold px-3 py-2 rounded-pill mb-2">
+              <span className="badge bg-danger text-white fw-bold px-3 py-2 rounded-pill mb-2">
                 GUIDING PRINCIPLE
               </span>
               <h2 className="fw-semibold sanskar text-white mb-3">संस्कारयुक्त शिक्षा</h2>

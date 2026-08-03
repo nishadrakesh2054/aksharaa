@@ -18,6 +18,7 @@ import "../css/highlightsTab.css";
 const Blog = () => {
   const { pathname } = useLocation();
   const [filter, setFilter] = useState("Featured News");
+  const [showAllActivities, setShowAllActivities] = useState(false);
   const navigate = useNavigate();
   const { data: activities = [], isLoading: activitiesLoading } = useActivities();
   const { data: events = [] } = useEvents();
@@ -36,66 +37,11 @@ const Blog = () => {
     );
   }
 
-  const [showAllActivities, setShowAllActivities] = useState(false);
   const isHomePage = pathname === "/" || pathname === "";
   const displayedActivities = showAllActivities ? activities : activities.slice(0, 3);
 
-  const blogData = [
 
-    {
-      id: 1,
-      title: "2nd Diagnostic Test & PTM",
-      date: "2081-Poush-13",
-      des: "Parent-teacher interaction to discuss student progress and diagnostic feedback.",
-    },
-    {
-      id: 2,
-      title: "Annual Sports & Cultural Meet",
-      date: "2081-Magh-05",
-      des: "Inter-house athletics, track & field events, and creative cultural showcases.",
-    },
-  ];
 
-  const scheduleData = [
-    {
-      date: "Asoj 2081 (Sep - Oct 2024)",
-      event: [
-        "1st: Bishwokarma Pooja",
-        "3rd: Sambidhan Diwas",
-        "7th-15th: Half Yearly Exam (Grade 5-10)",
-        "9th: Jitiya Parwa",
-        "17th: Dashain Vacation Begins",
-      ],
-    },
-    {
-      date: "Kartik 2081 (Oct - Nov 2024)",
-      event: [
-        "5th: School Reopens",
-        "10th: Parent Teacher Meeting",
-        "14th: Kaag Tihar",
-        "15th: Tihar Holidays Begin",
-        "22nd: Chhath Parwa",
-      ],
-    },
-    {
-      date: "Mangsir 2081 (Nov - Dec 2024)",
-      event: [
-        "15th: Bala Chaturthi",
-        "24th: ICT Conference (Grade 5-7)",
-        "30th: Yomari Punhi",
-      ],
-    },
-    {
-      date: "Poush 2081 (Dec 2024 - Jan 2025)",
-      event: [
-        "1st: Winter Break Begins",
-        "10th: Christmas Day",
-        "13th: Parent Teacher Meetings",
-        "15th: Tamu Lhosar",
-        "17th: Topi Diwas",
-      ],
-    },
-  ];
 
   const responsive = {
     0: { items: 1 },

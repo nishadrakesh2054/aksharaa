@@ -46,10 +46,19 @@ const Testimonial = () => {
               <div>
                 <h5 className="testimonial-user-name">{parentName}</h5>
                 <span className="testimonial-user-role">{parentRole}</span>
+                {/* Rating stars below profile info on mobile */}
+                <div className="testimonial-rating-stars d-flex d-md-none mt-1">
+                  {Array(testimonial.rating || 5)
+                    .fill(0)
+                    .map((_, idx) => (
+                      <i className="fas fa-star" key={idx}></i>
+                    ))}
+                </div>
               </div>
             </div>
 
-            <div className="testimonial-rating-stars">
+            {/* Rating stars on far right for desktop */}
+            <div className="testimonial-rating-stars d-none d-md-flex">
               {Array(testimonial.rating || 5)
                 .fill(0)
                 .map((_, idx) => (
@@ -61,6 +70,7 @@ const Testimonial = () => {
       </div>
     );
   });
+
 
   return (
     <section className="testimonial-carousel-wrapper section-bg-white py-5 my-3">
