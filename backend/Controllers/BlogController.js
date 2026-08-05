@@ -24,13 +24,29 @@ const createBlog = asyncHandler(async (req, res) => {
     return ApiResponse.error(res, 400, "Blog image file is required.");
   }
 
-  const { title, description, category } = req.body;
+  const {
+    title,
+    excerpt,
+    description,
+    category,
+    author,
+    readTime,
+    isFeatured,
+    seoTitle,
+    seoDescription,
+  } = req.body;
   const image = req.file.path;
 
   const newBlog = new Blog({
     title,
+    excerpt,
     description,
     image,
+    author,
+    readTime,
+    isFeatured: isFeatured === "true" || isFeatured === true,
+    seoTitle,
+    seoDescription,
     ...(category && { category }),
   });
 
@@ -46,7 +62,7 @@ const getAllBlogs = asyncHandler(async (req, res) => {
     model: Blog,
     req,
     filter,
-    searchFields: ["title", "description"],
+    searchFields: ["title", "excerpt", "description", "author"],
     useTextSearch: true,
     defaultSort: { createdAt: -1 },
     populate: { path: "category", select: "title" },
@@ -75,14 +91,31 @@ const getBlogById = asyncHandler(async (req, res) => {
 // Update Blog by ID
 const updateBlogById = asyncHandler(async (req, res) => {
   const blogId = req.params.id;
-  const { title, description, selectedCategory, category } = req.body;
+  const {
+    title,
+    excerpt,
+    description,
+    selectedCategory,
+    category,
+    author,
+    readTime,
+    isFeatured,
+    seoTitle,
+    seoDescription,
+  } = req.body;
 
   const categoryToUpdate = selectedCategory || category;
   const updateData = {};
 
   if (title) updateData.title = title;
+  if (excerpt !== undefined) updateData.excerpt = excerpt;
   if (description) updateData.description = description;
   if (categoryToUpdate) updateData.category = categoryToUpdate;
+  if (author !== undefined) updateData.author = author;
+  if (readTime !== undefined) updateData.readTime = readTime;
+  if (isFeatured !== undefined) updateData.isFeatured = isFeatured === "true" || isFeatured === true;
+  if (seoTitle !== undefined) updateData.seoTitle = seoTitle;
+  if (seoDescription !== undefined) updateData.seoDescription = seoDescription;
 
   if (req.file) {
     const existingBlog = await Blog.findById(blogId);

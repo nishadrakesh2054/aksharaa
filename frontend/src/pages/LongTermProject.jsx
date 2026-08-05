@@ -6,6 +6,30 @@ import LoadingState from "../components/states/LoadingState";
 import ErrorState from "../components/states/ErrorState";
 import SafeHTML from "../components/SafeHTML";
 import SEO from "../components/SEO";
+import "../css/longTermProjectDetails.css";
+
+const stripHtml = (value = "") => value.replace(/<[^>]*>?/gm, " ").replace(/\s+/g, " ").trim();
+
+const getYouTubeEmbedUrl = (url = "") => {
+  if (!url) return "";
+
+  try {
+    const parsedUrl = new URL(url);
+    if (parsedUrl.hostname.includes("youtube.com")) {
+      const videoId = parsedUrl.searchParams.get("v");
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
+    }
+
+    if (parsedUrl.hostname.includes("youtu.be")) {
+      const videoId = parsedUrl.pathname.replace("/", "");
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
+    }
+  } catch {
+    return url.includes("watch?v=") ? url.replace("watch?v=", "embed/") : url;
+  }
+
+  return url.includes("watch?v=") ? url.replace("watch?v=", "embed/") : url;
+};
 
 const LongTermProject = () => {
   const { id } = useParams();
@@ -23,94 +47,141 @@ const LongTermProject = () => {
     : [];
 
   const mainImage = images[0];
+  const summary = stripHtml(project.description).slice(0, 160);
+  const publishedDate = project.createdAt
+    ? new Date(project.createdAt).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : "";
+  const videoUrl = getYouTubeEmbedUrl(project.video);
 
   return (
-    <section className="py-5 bg-light min-vh-100">
+    <section className="ltp-detail-page">
       <SEO
         title={`${project.title} | Long Term Projects`}
-        description={project.title}
+        description={summary || project.title}
       />
       <div className="container mx-auto">
-        <div className="mb-4">
-          <Link to="/newsactivity" className="btn btn-outline-success btn-sm rounded-pill px-3 shadow-sm">
-            <i className="fas fa-arrow-left me-2"></i> Back to Highlights & Projects
+        <div className="ltp-back-row">
+          <Link to="/newsactivity" className="ltp-back-link">
+            <i className="fas fa-arrow-left"></i>
+            <span>Back to Highlights & Projects</span>
           </Link>
         </div>
 
-        <div className="bg-white rounded-4 shadow-sm p-4 p-md-5 border">
-          {/* Header Title */}
-          <div className="mb-4">
-            <span className="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill fw-bold text-uppercase mb-2 d-inline-block">
-              <i className="fas fa-project-diagram me-1"></i> Long Term Project
-            </span>
-            <h2 className="fw-bold text-dark mb-3">{project.title}</h2>
-            <div style={{ width: "60px", height: "4px", background: "#196642", borderRadius: "2px" }}></div>
-          </div>
+        <article className="ltp-detail-shell">
+          <div className="ltp-hero-grid">
+            <div className="ltp-hero-copy">
+              <span className="ltp-eyebrow">
+                <i className="fas fa-project-diagram"></i>
+                Long Term Project
+              </span>
+              <h1>{project.title}</h1>
+              {summary ? <p>{summary}</p> : null}
 
-          {/* Featured Hero Image */}
-          {mainImage && (
-            <div className="rounded-4 overflow-hidden mb-4 shadow-sm" style={{ maxHeight: "420px" }}>
-              <img
-                src={getFileUrl(mainImage)}
-                alt={project.title}
-                className="w-100 h-100 object-fit-cover"
-                style={{ objectFit: "cover", maxHeight: "420px" }}
-              />
+              <div className="ltp-meta-grid">
+                {publishedDate ? (
+                  <div className="ltp-meta-item">
+                    <span>Published</span>
+                    <strong>{publishedDate}</strong>
+                  </div>
+                ) : null}
+                <div className="ltp-meta-item">
+                  <span>Photos</span>
+                  <strong>{images.length || "0"}</strong>
+                </div>
+                <div className="ltp-meta-item">
+                  <span>Media</span>
+                  <strong>{project.video ? "Video available" : "Photo story"}</strong>
+                </div>
+              </div>
             </div>
-          )}
 
-          {/* Description Content with SafeHTML */}
-          <div className="project-detail-body mb-5 text-dark" style={{ fontSize: "1.02rem", lineHeight: "1.7" }}>
-            <SafeHTML htmlString={project.description} />
+            <div className="ltp-hero-media">
+              {mainImage ? (
+                <img
+                  src={getFileUrl(mainImage)}
+                  alt={project.title}
+                  className="ltp-main-image"
+                />
+              ) : (
+                <div className="ltp-image-placeholder">
+                  <i className="fas fa-image"></i>
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Video Section if available */}
-          {project.video && (
-            <div className="mb-5">
-              <h4 className="fw-bold text-dark mb-3">
-                <i className="fas fa-video text-danger me-2"></i> Project Demonstration Video
-              </h4>
-              <div className="ratio ratio-16x9 rounded-3 overflow-hidden shadow-sm">
+          <div className="ltp-content-grid">
+            <div className="ltp-rich-section">
+              <div className="ltp-section-heading">
+                <span></span>
+                <h2>Project Story</h2>
+              </div>
+              <div className="ltp-rich-content">
+                <SafeHTML htmlString={project.description} />
+              </div>
+            </div>
+
+            <aside className="ltp-side-panel">
+              <h3>At a glance</h3>
+              <div className="ltp-side-list">
+                <div>
+                  <i className="fas fa-seedling"></i>
+                  <span>Experiential learning project</span>
+                </div>
+                <div>
+                  <i className="fas fa-images"></i>
+                  <span>{images.length ? `${images.length} project photo${images.length > 1 ? "s" : ""}` : "Photo gallery coming soon"}</span>
+                </div>
+                <div>
+                  <i className="fas fa-video"></i>
+                  <span>{project.video ? "Includes project video" : "Video not added yet"}</span>
+                </div>
+              </div>
+            </aside>
+          </div>
+
+          {videoUrl && (
+            <section className="ltp-media-section">
+              <div className="ltp-section-heading">
+                <span></span>
+                <h2>Project Video</h2>
+              </div>
+              <div className="ltp-video-frame">
                 <iframe
-                  src={
-                    project.video.includes("watch?v=")
-                      ? project.video.replace("watch?v=", "embed/")
-                      : project.video
-                  }
+                  src={videoUrl}
                   title={project.title}
                   allowFullScreen
                 ></iframe>
               </div>
-            </div>
+            </section>
           )}
 
-          {/* Additional Photos Gallery */}
           {images.length > 1 && (
-            <div>
-              <h4 className="fw-bold text-dark mb-3">
-                <i className="fas fa-images text-success me-2"></i> Project Gallery ({images.length} Photos)
-              </h4>
-              <div className="row g-3">
+            <section className="ltp-media-section">
+              <div className="ltp-section-heading">
+                <span></span>
+                <h2>Project Gallery</h2>
+              </div>
+              <div className="ltp-gallery-grid">
                 {images.map((img, idx) => (
-                  <div key={idx} className="col-lg-3 col-md-4 col-6">
-                    <div className="rounded-3 overflow-hidden border shadow-sm" style={{ height: "180px" }}>
-                      <img
-                        src={getFileUrl(img)}
-                        alt={`${project.title} photo ${idx + 1}`}
-                        className="w-100 h-100"
-                        style={{ objectFit: "cover" }}
-                      />
-                    </div>
+                  <div key={idx} className="ltp-gallery-item">
+                    <img
+                      src={getFileUrl(img)}
+                      alt={`${project.title} photo ${idx + 1}`}
+                    />
                   </div>
                 ))}
               </div>
-            </div>
+            </section>
           )}
-        </div>
+        </article>
       </div>
     </section>
   );
 };
 
 export default LongTermProject;
-

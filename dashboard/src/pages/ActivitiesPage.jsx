@@ -20,6 +20,34 @@ import "ckeditor5/ckeditor5.css";
 import DOMPurify from "dompurify";
 import { listFromResponse } from "../utils/apiResponse";
 
+const editorConfig = {
+  plugins: [
+    Essentials,
+    Bold,
+    Italic,
+    Paragraph,
+    Heading,
+    List,
+    Link,
+    Table,
+    Undo,
+  ],
+  toolbar: [
+    "undo",
+    "redo",
+    "|",
+    "heading",
+    "|",
+    "bold",
+    "italic",
+    "|",
+    "link",
+    "bulletedList",
+    "numberedList",
+    "insertTable",
+  ],
+};
+
 const ActivitiesPage = () => {
   const [activities, setActivities] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -30,8 +58,12 @@ const ActivitiesPage = () => {
   const [editingItem, setEditingItem] = useState(null);
 
   const [title, setTitle] = useState("");
+  const [excerpt, setExcerpt] = useState("");
   const [description, setDescription] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [eventDate, setEventDate] = useState("");
+  const [location, setLocation] = useState("");
+  const [isFeatured, setIsFeatured] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -61,8 +93,12 @@ const ActivitiesPage = () => {
   const openAddModal = () => {
     setEditingItem(null);
     setTitle("");
+    setExcerpt("");
     setDescription("");
     setSelectedCategory("");
+    setEventDate("");
+    setLocation("");
+    setIsFeatured(false);
     setImageFile(null);
     setShowModal(true);
   };
@@ -70,8 +106,12 @@ const ActivitiesPage = () => {
   const openEditModal = (act) => {
     setEditingItem(act);
     setTitle(act.title || "");
+    setExcerpt(act.excerpt || "");
     setDescription(act.description || "");
     setSelectedCategory(act.category?._id || act.category || "");
+    setEventDate(act.eventDate ? new Date(act.eventDate).toISOString().slice(0, 10) : "");
+    setLocation(act.location || "");
+    setIsFeatured(Boolean(act.isFeatured));
     setImageFile(null);
     setShowModal(true);
   };
@@ -107,7 +147,11 @@ const ActivitiesPage = () => {
       setSubmitting(true);
       const formData = new FormData();
       formData.append("title", title);
+      formData.append("excerpt", excerpt);
       formData.append("description", description);
+      formData.append("eventDate", eventDate);
+      formData.append("location", location);
+      formData.append("isFeatured", String(isFeatured));
       if (selectedCategory) {
         formData.append("selectedCategory", selectedCategory);
         formData.append("category", selectedCategory);
@@ -146,9 +190,14 @@ const ActivitiesPage = () => {
     }
   };
 
-  const filteredActivities = activities.filter((a) =>
-    (a.title || "").toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredActivities = activities.filter((a) => {
+    const query = searchTerm.toLowerCase();
+    return (
+      (a.title || "").toLowerCase().includes(query) ||
+      (a.excerpt || "").toLowerCase().includes(query) ||
+      (a.location || "").toLowerCase().includes(query)
+    );
+  });
 
   return (
     <div id="main">
@@ -216,7 +265,12 @@ const ActivitiesPage = () => {
                           height="50"
                           className="rounded-3 object-fit-cover border"
                         />
-                        <span className="fw-semibold text-dark">{act.title}</span>
+                        <div>
+                          <span className="fw-semibold text-dark d-block">{act.title}</span>
+                          <small className="text-muted">
+                            {act.excerpt || act.location || "No short summary added"}
+                          </small>
+                        </div>
                       </div>
                     </td>
                     <td>
@@ -304,8 +358,22 @@ const ActivitiesPage = () => {
                 <span className="text-muted small">
                   Posted: {new Date(viewItem.createdAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
                 </span>
+                {viewItem.eventDate && (
+                  <span className="text-muted small">
+                    Event: {new Date(viewItem.eventDate).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
+                  </span>
+                )}
+                {viewItem.isFeatured && (
+                  <span className="badge-status badge-emerald fs-6">Featured</span>
+                )}
               </div>
               <h2 className="fw-bold mb-4 text-dark">{viewItem.title}</h2>
+              {viewItem.excerpt && <p className="lead text-muted">{viewItem.excerpt}</p>}
+              <div className="row g-3 mb-3">
+                {viewItem.location && (
+                  <div className="col-md-4 small text-muted"><strong>Location:</strong> {viewItem.location}</div>
+                )}
+              </div>
               <hr className="my-4" />
               <div
                 className="activity-preview-content"
@@ -368,6 +436,52 @@ const ActivitiesPage = () => {
                       </option>
                     ))}
                   </select>
+                </div>
+
+                <div className="col-12">
+                  <label className="form-label fw-bold">Short Summary / Excerpt</label>
+                  <textarea
+                    className="form-control"
+                    rows="3"
+                    maxLength="280"
+                    placeholder="Write a short card preview explaining what happened and why it matters..."
+                    value={excerpt}
+                    onChange={(e) => setExcerpt(e.target.value)}
+                  ></textarea>
+                  <small className="text-muted">{excerpt.length}/280 characters</small>
+                </div>
+
+                <div className="col-12 col-md-6">
+                  <label className="form-label fw-bold">Event Date</label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    value={eventDate}
+                    onChange={(e) => setEventDate(e.target.value)}
+                  />
+                </div>
+
+                <div className="col-12 col-md-6">
+                  <label className="form-label fw-bold">Location</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="e.g. School auditorium"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                  />
+                </div>
+
+                <div className="col-12">
+                  <label className="form-check d-flex align-items-center gap-2 mb-0">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      checked={isFeatured}
+                      onChange={(e) => setIsFeatured(e.target.checked)}
+                    />
+                    <span className="form-check-label fw-bold">Featured activity</span>
+                  </label>
                 </div>
               </div>
 
@@ -433,33 +547,7 @@ const ActivitiesPage = () => {
                 <label className="form-label fw-bold mb-2">Activity Details & Description <span className="text-danger">*</span></label>
                 <CKEditor
                   editor={ClassicEditor}
-                  config={{
-                    plugins: [
-                      Essentials,
-                      Bold,
-                      Italic,
-                      Paragraph,
-                      Heading,
-                      List,
-                      Link,
-                      Table,
-                      Undo,
-                    ],
-                    toolbar: [
-                      "undo",
-                      "redo",
-                      "|",
-                      "heading",
-                      "|",
-                      "bold",
-                      "italic",
-                      "|",
-                      "link",
-                      "bulletedList",
-                      "numberedList",
-                      "insertTable",
-                    ],
-                  }}
+                  config={editorConfig}
                   data={description}
                   onChange={(_event, editor) => {
                     setDescription(editor.getData());

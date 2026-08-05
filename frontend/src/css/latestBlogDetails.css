@@ -26,10 +26,40 @@
   line-height: 1.3;
 }
 
+.news-excerpt {
+  color: #64748b;
+  font-size: 1.08rem;
+  line-height: 1.75;
+  font-weight: 500;
+}
+
 .news-meta-item {
   font-size: 0.9rem;
   color: #64748b;
   font-weight: 500;
+}
+
+.news-fact-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.news-fact-row span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  color: #334155;
+  padding: 8px 13px;
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.news-fact-row i {
+  color: #be123c;
 }
 
 .news-featured-img {

@@ -24,13 +24,25 @@ const createActivity = asyncHandler(async (req, res) => {
     return ApiResponse.error(res, 400, "Activity image file is required.");
   }
 
-  const { title, description, category } = req.body;
+  const {
+    title,
+    excerpt,
+    description,
+    category,
+    eventDate,
+    location,
+    isFeatured,
+  } = req.body;
   const image = req.file.path;
 
   const newActivity = new activity({
     title,
+    excerpt,
     description,
     image,
+    eventDate: eventDate || null,
+    location,
+    isFeatured: isFeatured === "true" || isFeatured === true,
     ...(category && { category }),
   });
 
@@ -59,7 +71,7 @@ const getAllActivities = asyncHandler(async (req, res) => {
       model: activity,
       req,
       filter: { category: categoryId },
-      searchFields: ["title", "description"],
+      searchFields: ["title", "excerpt", "description", "location"],
       useTextSearch: true,
       defaultSort: { createdAt: -1 },
       populate: { path: "category", select: "title" },
@@ -76,7 +88,7 @@ const getAllActivities = asyncHandler(async (req, res) => {
     const result = await paginatedFind({
       model: activity,
       req,
-      searchFields: ["title", "description"],
+      searchFields: ["title", "excerpt", "description", "location"],
       useTextSearch: true,
       defaultSort: { createdAt: -1 },
       populate: { path: "category", select: "title" },
@@ -117,13 +129,26 @@ const getActivityById = asyncHandler(async (req, res) => {
 // Update Activity by ID
 const updateActivityById = asyncHandler(async (req, res) => {
   const activityId = req.params.id;
-  const { title, description, selectedCategory, category } = req.body;
+  const {
+    title,
+    excerpt,
+    description,
+    selectedCategory,
+    category,
+    eventDate,
+    location,
+    isFeatured,
+  } = req.body;
 
   const catToUpdate = selectedCategory || category;
   const updateData = {};
   if (title) updateData.title = title;
+  if (excerpt !== undefined) updateData.excerpt = excerpt;
   if (description) updateData.description = description;
   if (catToUpdate) updateData.category = catToUpdate;
+  if (eventDate !== undefined) updateData.eventDate = eventDate || null;
+  if (location !== undefined) updateData.location = location;
+  if (isFeatured !== undefined) updateData.isFeatured = isFeatured === "true" || isFeatured === true;
 
   if (req.file) {
     const actFound = await activity.findById(activityId);

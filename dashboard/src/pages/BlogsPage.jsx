@@ -20,6 +20,34 @@ import "ckeditor5/ckeditor5.css";
 import DOMPurify from "dompurify";
 import { listFromResponse } from "../utils/apiResponse";
 
+const editorConfig = {
+  plugins: [
+    Essentials,
+    Bold,
+    Italic,
+    Paragraph,
+    Heading,
+    List,
+    Link,
+    Table,
+    Undo,
+  ],
+  toolbar: [
+    "undo",
+    "redo",
+    "|",
+    "heading",
+    "|",
+    "bold",
+    "italic",
+    "|",
+    "link",
+    "bulletedList",
+    "numberedList",
+    "insertTable",
+  ],
+};
+
 const BlogsPage = () => {
   const [blogs, setBlogs] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -30,8 +58,14 @@ const BlogsPage = () => {
   const [editingItem, setEditingItem] = useState(null);
 
   const [title, setTitle] = useState("");
+  const [excerpt, setExcerpt] = useState("");
   const [description, setDescription] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [author, setAuthor] = useState("Aksharaa School");
+  const [readTime, setReadTime] = useState("");
+  const [isFeatured, setIsFeatured] = useState(false);
+  const [seoTitle, setSeoTitle] = useState("");
+  const [seoDescription, setSeoDescription] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -61,8 +95,14 @@ const BlogsPage = () => {
   const openAddModal = () => {
     setEditingItem(null);
     setTitle("");
+    setExcerpt("");
     setDescription("");
     setSelectedCategory("");
+    setAuthor("Aksharaa School");
+    setReadTime("");
+    setIsFeatured(false);
+    setSeoTitle("");
+    setSeoDescription("");
     setImageFile(null);
     setShowModal(true);
   };
@@ -70,8 +110,14 @@ const BlogsPage = () => {
   const openEditModal = (blog) => {
     setEditingItem(blog);
     setTitle(blog.title || "");
+    setExcerpt(blog.excerpt || "");
     setDescription(blog.description || "");
     setSelectedCategory(blog.category?._id || blog.category || "");
+    setAuthor(blog.author || "Aksharaa School");
+    setReadTime(blog.readTime || "");
+    setIsFeatured(Boolean(blog.isFeatured));
+    setSeoTitle(blog.seoTitle || "");
+    setSeoDescription(blog.seoDescription || "");
     setImageFile(null);
     setShowModal(true);
   };
@@ -107,7 +153,13 @@ const BlogsPage = () => {
       setSubmitting(true);
       const formData = new FormData();
       formData.append("title", title);
+      formData.append("excerpt", excerpt);
       formData.append("description", description);
+      formData.append("author", author);
+      formData.append("readTime", readTime);
+      formData.append("isFeatured", String(isFeatured));
+      formData.append("seoTitle", seoTitle);
+      formData.append("seoDescription", seoDescription);
       if (selectedCategory) {
         formData.append("selectedCategory", selectedCategory);
         formData.append("category", selectedCategory);
@@ -146,9 +198,14 @@ const BlogsPage = () => {
     }
   };
 
-  const filteredBlogs = blogs.filter((b) =>
-    (b.title || "").toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredBlogs = blogs.filter((b) => {
+    const query = searchTerm.toLowerCase();
+    return (
+      (b.title || "").toLowerCase().includes(query) ||
+      (b.excerpt || "").toLowerCase().includes(query) ||
+      (b.author || "").toLowerCase().includes(query)
+    );
+  });
 
   return (
     <div id="main">
@@ -216,7 +273,12 @@ const BlogsPage = () => {
                           height="50"
                           className="rounded-3 object-fit-cover border"
                         />
-                        <span className="fw-semibold text-dark">{blog.title}</span>
+                        <div>
+                          <span className="fw-semibold text-dark d-block">{blog.title}</span>
+                          <small className="text-muted">
+                            {blog.excerpt || "No short summary added"}
+                          </small>
+                        </div>
                       </div>
                     </td>
                     <td>
@@ -304,8 +366,19 @@ const BlogsPage = () => {
                 <span className="text-muted small">
                   Published: {new Date(viewItem.createdAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}
                 </span>
+                {viewItem.readTime && (
+                  <span className="text-muted small">
+                    Read time: {viewItem.readTime}
+                  </span>
+                )}
+                {viewItem.isFeatured && (
+                  <span className="badge-status badge-emerald fs-6">Featured</span>
+                )}
               </div>
               <h2 className="fw-bold mb-4 text-dark">{viewItem.title}</h2>
+              {viewItem.excerpt && (
+                <p className="lead text-muted">{viewItem.excerpt}</p>
+              )}
               <hr className="my-4" />
               <div
                 className="blog-preview-content"
@@ -368,6 +441,53 @@ const BlogsPage = () => {
                       </option>
                     ))}
                   </select>
+                </div>
+
+                <div className="col-12">
+                  <label className="form-label fw-bold">Short Summary / Excerpt</label>
+                  <textarea
+                    className="form-control"
+                    rows="3"
+                    maxLength="280"
+                    placeholder="Write a polished 1-2 sentence preview for cards, SEO, and introductions..."
+                    value={excerpt}
+                    onChange={(e) => setExcerpt(e.target.value)}
+                  ></textarea>
+                  <small className="text-muted">{excerpt.length}/280 characters</small>
+                </div>
+
+                <div className="col-12 col-md-4">
+                  <label className="form-label fw-bold">Author</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Aksharaa School"
+                    value={author}
+                    onChange={(e) => setAuthor(e.target.value)}
+                  />
+                </div>
+
+                <div className="col-12 col-md-4">
+                  <label className="form-label fw-bold">Read Time</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="e.g. 4 min read"
+                    value={readTime}
+                    onChange={(e) => setReadTime(e.target.value)}
+                  />
+                </div>
+
+                <div className="col-12 col-md-4 d-flex align-items-end">
+                  <label className="form-check d-flex align-items-center gap-2 mb-2">
+                    <input
+                      className="form-check-input"
+                      type="checkbox"
+                      checked={isFeatured}
+                      onChange={(e) => setIsFeatured(e.target.checked)}
+                    />
+                    <span className="form-check-label fw-bold">Featured article</span>
+                  </label>
                 </div>
               </div>
 
@@ -433,38 +553,37 @@ const BlogsPage = () => {
                 <label className="form-label fw-bold mb-2">Article Content & Details <span className="text-danger">*</span></label>
                 <CKEditor
                   editor={ClassicEditor}
-                  config={{
-                    plugins: [
-                      Essentials,
-                      Bold,
-                      Italic,
-                      Paragraph,
-                      Heading,
-                      List,
-                      Link,
-                      Table,
-                      Undo,
-                    ],
-                    toolbar: [
-                      "undo",
-                      "redo",
-                      "|",
-                      "heading",
-                      "|",
-                      "bold",
-                      "italic",
-                      "|",
-                      "link",
-                      "bulletedList",
-                      "numberedList",
-                      "insertTable",
-                    ],
-                  }}
+                  config={editorConfig}
                   data={description}
                   onChange={(_event, editor) => {
                     setDescription(editor.getData());
                   }}
                 />
+              </div>
+
+              <div className="row g-3 mb-4">
+                <div className="col-12 col-md-6">
+                  <label className="form-label fw-bold">SEO Title</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    maxLength="180"
+                    placeholder="Optional search title..."
+                    value={seoTitle}
+                    onChange={(e) => setSeoTitle(e.target.value)}
+                  />
+                </div>
+                <div className="col-12 col-md-6">
+                  <label className="form-label fw-bold">SEO Description</label>
+                  <textarea
+                    className="form-control"
+                    rows="2"
+                    maxLength="300"
+                    placeholder="Optional search description..."
+                    value={seoDescription}
+                    onChange={(e) => setSeoDescription(e.target.value)}
+                  ></textarea>
+                </div>
               </div>
 
               <div className="d-flex justify-content-end gap-3 pt-3 border-top">

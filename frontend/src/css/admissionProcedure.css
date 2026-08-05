@@ -72,3 +72,59 @@
   height: auto;
   border-radius: 12px;
 }
+
+@media (max-width: 768px) {
+  .admission-proc-wrapper {
+    padding: 2rem 0;
+  }
+
+  .admission-proc-wrapper .container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .admission-proc-wrapper .row.g-4 {
+    --bs-gutter-x: 0.85rem;
+    --bs-gutter-y: 0.85rem;
+  }
+
+  .procedure-steps-card,
+  .procedure-form-card,
+  .roadmap-card-box {
+    padding: 1rem;
+    border-radius: 14px;
+  }
+
+  .roadmap-card-box {
+    margin-top: 1.5rem;
+  }
+
+  .roadmap-card-box img {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .admission-proc-wrapper .container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .procedure-steps-card,
+  .procedure-form-card,
+  .roadmap-card-box {
+    padding: 0.85rem;
+  }
+
+  .procedure-step-item {
+    gap: 10px;
+    padding-bottom: 0.9rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .step-number-badge {
+    width: 30px;
+    height: 30px;
+    font-size: 0.85rem;
+  }
+}

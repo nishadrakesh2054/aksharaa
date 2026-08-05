@@ -4,6 +4,48 @@ import toast from "react-hot-toast";
 import { Plus, Search, Trash2, Edit, Video, FolderGit2 } from "lucide-react";
 import getImageUrl from "../utils/imageUrl";
 import { listFromResponse } from "../utils/apiResponse";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import {
+  ClassicEditor,
+  Bold,
+  Essentials,
+  Heading,
+  Italic,
+  Link,
+  List,
+  Paragraph,
+  Table,
+  Undo,
+} from "ckeditor5";
+import "ckeditor5/ckeditor5.css";
+
+const editorConfig = {
+  plugins: [
+    Essentials,
+    Bold,
+    Italic,
+    Paragraph,
+    Heading,
+    List,
+    Link,
+    Table,
+    Undo,
+  ],
+  toolbar: [
+    "undo",
+    "redo",
+    "|",
+    "heading",
+    "|",
+    "bold",
+    "italic",
+    "|",
+    "link",
+    "bulletedList",
+    "numberedList",
+    "insertTable",
+  ],
+};
 
 const LongTermProjectsPage = () => {
   const [projects, setProjects] = useState([]);
@@ -296,15 +338,18 @@ const LongTermProjectsPage = () => {
               </div>
 
               <div className="mb-4">
-                <label className="form-label fw-bold">Detailed Project Description <span className="text-danger">*</span></label>
-                <textarea
-                  className="form-control"
-                  rows="6"
-                  placeholder="Describe the long-term learning goals, activities, and student experience..."
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  required
-                ></textarea>
+                <label className="form-label fw-bold mb-2">Detailed Project Description <span className="text-danger">*</span></label>
+                <CKEditor
+                  editor={ClassicEditor}
+                  config={editorConfig}
+                  data={description}
+                  onChange={(_event, editor) => {
+                    setDescription(editor.getData());
+                  }}
+                />
+                <small className="text-muted d-block mt-2">
+                  Use headings, bullet points, links, and tables to explain the project clearly.
+                </small>
               </div>
 
               <div className="mb-4">

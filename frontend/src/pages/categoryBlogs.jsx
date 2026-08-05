@@ -5,6 +5,7 @@ import { useActivities, useBlogs } from "../api/hooks/usePublicContent";
 import { getFileUrl } from "../api/media";
 import SafeHTML from "../components/SafeHTML";
 
+const stripHtml = (value = "") => value.replace(/<[^>]*>?/gm, " ").replace(/\s+/g, " ").trim();
 
 const CategoryBlogs = ({news}) => {
   const { categoryId } = useParams();
@@ -38,7 +39,7 @@ const CategoryBlogs = ({news}) => {
                 <div className="card-body">
                   <h5 className="card-title text-primary">{blog.title}</h5>
                   <p className="card-text">
-                    <SafeHTML htmlString={`${(blog.description || "").slice(0, 150)}...`} />
+                    <SafeHTML htmlString={blog.excerpt || `${stripHtml(blog.description).slice(0, 150)}...`} />
                   </p>
                   
                   <div className=" text-muted">

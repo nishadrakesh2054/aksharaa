@@ -87,7 +87,7 @@ const LRPA = () => {
           highlight="A Comprehensive Approach to Education"
         />
 
-        <div className="bg-light p-4 rounded-4 shadow-sm border my-4">
+        <div className="lrpa-intro-card bg-light p-4 rounded-4 shadow-sm border my-4">
           <p className="textcenter mb-0 text-secondary leading-relaxed">
             The LRPA (Learning, Reinforcement, Practice, and Application) model
             implemented at Aksharaa represents a distinctive approach to

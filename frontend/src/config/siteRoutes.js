@@ -97,6 +97,13 @@ export const routeSeo = [
       "Explore Aksharaa Highlights, school activities, upcoming events, academic calendar, and long-term projects.",
   },
   {
+    path: "/blog",
+    label: "Blogs",
+    title: "School Blogs",
+    description:
+      "Read Aksharaa School blog articles, education updates, school stories, and learning insights.",
+  },
+  {
     path: "/akshara-mun",
     label: "Aksharaa MUN",
     title: "Aksharaa MUN | Model United Nations",

@@ -15,6 +15,8 @@ import {
 import SectionHeader from "../components/SectionHeader";
 import "../css/highlightsTab.css";
 
+const stripHtml = (value = "") => value.replace(/<[^>]*>?/gm, " ").replace(/\s+/g, " ").trim();
+
 const Blog = ({ showSEO = true }) => {
   const { pathname } = useLocation();
   const [filter, setFilter] = useState("Featured News");
@@ -94,7 +96,7 @@ const Blog = ({ showSEO = true }) => {
         <div className="blog-card__info">
           <h6>{item.title}</h6>
           <p className="card-text">
-            <SafeHTML htmlString={(item.description || "").slice(0, 110)} />
+            <SafeHTML htmlString={item.excerpt || `${stripHtml(item.description).slice(0, 110)}...`} />
           </p>
           <Link to={`/newsactivity/${item._id}`} className="btn btn--with-icon">
             <i className="btn-icon fa fa-long-arrow-right" />
@@ -224,7 +226,7 @@ const Blog = ({ showSEO = true }) => {
                               <div>
                                 <h5 className="mini-card-title">{item.title}</h5>
                                 <div className="mini-card-snippet">
-                                  <SafeHTML htmlString={(item.description || "").slice(0, 110)} />
+                                  <SafeHTML htmlString={item.excerpt || `${stripHtml(item.description).slice(0, 110)}...`} />
                                 </div>
                               </div>
 

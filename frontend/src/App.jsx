@@ -31,6 +31,7 @@ const Team = lazy(() => import("./pages/Team"));
 const EnquiryModel = lazy(() => import("./components/EnquiryModel"));
 const LRPA = lazy(() => import("./pages/LRPA"));
 const Blog = lazy(() => import("./pages/Blog"));
+const BlogsList = lazy(() => import("./pages/BlogsList"));
 const LongTermProject = lazy(() => import("./pages/LongTermProject"));
 const LatestBlogDetails = lazy(() => import("./pages/LatestBlogDetails"));
 const CategoryBlogs = lazy(() => import("./pages/categoryBlogs"));
@@ -143,6 +144,7 @@ const App = () => {
             <Route path="/contact" element={<Contact />} />
             <Route path="/gallery" element={<Photos />} />
             <Route path="/gallery/:id" element={<Gallery />} />
+            <Route path="/blog" element={<BlogsList />} />
             <Route path="/blog/:id" element={<LatestBlogDetails />} />
             <Route path="/category/:categoryId" element={<CategoryBlogs />} />
             <Route path="/downloads" element={<Download />} />

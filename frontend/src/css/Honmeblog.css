@@ -122,3 +122,28 @@
 .homeblog-link:hover i {
   transform: translateX(4px);
 }
+
+.homeblog-all-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 28px;
+}
+
+.homeblog-all-btn {
+  border: 1px solid #196642;
+  background: #ffffff;
+  color: #196642;
+  border-radius: 999px;
+  padding: 10px 24px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.homeblog-all-btn:hover {
+  background: #196642;
+  color: #ffffff;
+  box-shadow: 0 10px 22px rgba(25, 102, 66, 0.18);
+}

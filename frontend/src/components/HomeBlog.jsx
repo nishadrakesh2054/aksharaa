@@ -9,11 +9,14 @@ import EmptyState from "./states/EmptyState";
 import ErrorState from "./states/ErrorState";
 import SectionHeader from "../components/SectionHeader";
 
+const stripHtml = (value = "") => value.replace(/<[^>]*>?/gm, " ").replace(/\s+/g, " ").trim();
+
 const HomeBlog = () => {
   const navigate = useNavigate();
   const { data: blogs = [], isLoading, error } = useBlogs();
-  // Display 3 latest blogs in a single 3-column row
-  const latestBlogs = blogs.slice(-3).reverse();
+  const latestBlogs = [...blogs]
+    .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
+    .slice(0, 3);
 
   return (
     <section className="homeblog section-bg-alt py-5 my-2">
@@ -55,7 +58,7 @@ const HomeBlog = () => {
                       <div>
                         <h4 className="homeblog-title">{item.title || "Untitled Blog"}</h4>
                         <div className="homeblog-desc">
-                          <SafeHTML htmlString={(item.description || "").slice(0, 130)} />
+                          <SafeHTML htmlString={item.excerpt || `${stripHtml(item.description).slice(0, 130)}...`} />
                         </div>
                       </div>
 
@@ -77,6 +80,18 @@ const HomeBlog = () => {
             <EmptyState message="No blogs available at the moment." />
           )}
         </div>
+
+        {!isLoading && !error && blogs.length > 3 && (
+          <div className="homeblog-all-row">
+            <button
+              type="button"
+              className="homeblog-all-btn"
+              onClick={() => navigate("/blog")}
+            >
+              Show All Blogs
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

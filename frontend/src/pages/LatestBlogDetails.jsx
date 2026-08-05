@@ -87,22 +87,23 @@ const LatestBlogDetails = ({ news }) => {
 
   const categoryName = blog?.category?.title || (news ? "News & Activity" : "Blog Article");
 
-  const cleanDescription = blog?.description
+  const cleanDescription = blog?.seoDescription || blog?.excerpt || (blog?.description
     ? blog.description.replace(/<[^>]+>/g, " ").trim().slice(0, 160)
-    : "Read the latest news, events, activities, and educational updates from Aksharaa School Kathmandu.";
+    : "Read the latest news, events, activities, and educational updates from Aksharaa School Kathmandu."
+  );
 
   const articleSchema = blog
     ? {
         "@context": "https://schema.org",
         "@type": "NewsArticle",
-        headline: blog.title,
+        headline: blog.seoTitle || blog.title,
         description: cleanDescription,
         image: blog.image ? [getFileUrl(blog.image)] : [],
         datePublished: blog.createdAt,
         dateModified: blog.updatedAt || blog.createdAt,
         author: {
           "@type": "Organization",
-          name: "Aksharaa School",
+          name: blog.author || "Aksharaa School",
         },
         publisher: {
           "@type": "Organization",
@@ -118,7 +119,7 @@ const LatestBlogDetails = ({ news }) => {
   return (
     <div className="news-details-wrapper py-4 py-md-5">
       <SEO
-        title={blog?.title}
+        title={blog?.seoTitle || blog?.title}
         description={cleanDescription}
         image={blog?.image ? getFileUrl(blog.image) : undefined}
         type="article"
@@ -141,6 +142,9 @@ const LatestBlogDetails = ({ news }) => {
             <div className="news-article-card p-4 p-md-5">
               {/* Header Title */}
               <h1 className="news-title mb-3">{blog?.title}</h1>
+              {blog?.excerpt && (
+                <p className="news-excerpt mb-3">{blog.excerpt}</p>
+              )}
 
               {/* Meta Info Bar */}
               <div className="d-flex flex-wrap align-items-center gap-3 pb-3 mb-4 border-bottom">
@@ -150,9 +154,31 @@ const LatestBlogDetails = ({ news }) => {
                 </span>
                 <span className="news-meta-item">
                   <i className="fas fa-graduation-cap text-danger me-1"></i>
-                  Aksharaa School
+                  {blog?.author || "Aksharaa School"}
                 </span>
+                {!news && blog?.readTime && (
+                  <span className="news-meta-item">
+                    <i className="far fa-clock text-danger me-1"></i>
+                    {blog.readTime}
+                  </span>
+                )}
+                {news && blog?.eventDate && (
+                  <span className="news-meta-item">
+                    <i className="far fa-calendar-check text-danger me-1"></i>
+                    Event: {new Date(blog.eventDate).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </span>
+                )}
               </div>
+
+              {news && blog?.location && (
+                <div className="news-fact-row mb-4">
+                  <span><i className="fas fa-map-marker-alt"></i>{blog.location}</span>
+                </div>
+              )}
 
               {/* Featured Cover Image */}
               {blog?.image && (

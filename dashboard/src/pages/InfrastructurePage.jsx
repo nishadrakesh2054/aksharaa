@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { Building2, Edit, Image, Plus, Search, Trash2, Upload, X } from "lucide-react";
+import { Building2, Edit, Plus, Search, Trash2, Upload, X } from "lucide-react";
 import getImageUrl from "../utils/imageUrl";
 import { listFromResponse } from "../utils/apiResponse";
 
@@ -33,6 +33,16 @@ const InfrastructurePage = () => {
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [submitting, setSubmitting] = useState(false);
 
+  const selectedFilePreviews = useMemo(
+    () =>
+      selectedFiles.map((file) => ({
+        key: getFileKey(file),
+        name: file.name,
+        url: URL.createObjectURL(file),
+      })),
+    [selectedFiles]
+  );
+
   const fetchInfrastructure = async () => {
     try {
       setLoading(true);
@@ -48,6 +58,12 @@ const InfrastructurePage = () => {
   useEffect(() => {
     fetchInfrastructure();
   }, []);
+
+  useEffect(() => {
+    return () => {
+      selectedFilePreviews.forEach((preview) => URL.revokeObjectURL(preview.url));
+    };
+  }, [selectedFilePreviews]);
 
   const openAddModal = () => {
     setEditingItem(null);
@@ -386,36 +402,40 @@ const InfrastructurePage = () => {
                 ></textarea>
               </div>
 
-              {selectedFiles && selectedFiles.length > 0 && (
+              {selectedFilePreviews.length > 0 && (
                 <div className="mb-4">
-                  <label className="form-label fw-bold">Selected Photos</label>
-                  <div className="d-flex flex-wrap gap-3">
-                    {selectedFiles.map((file, index) => (
+                  <div className="d-flex align-items-center justify-content-between mb-2">
+                    <label className="form-label fw-bold mb-0">Selected Photo Preview</label>
+                    <small className="text-muted">{selectedFilePreviews.length} selected</small>
+                  </div>
+                  <div className="d-grid gap-3" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))" }}>
+                    {selectedFilePreviews.map((preview, index) => (
                       <div
-                        key={`${file.name}-${index}`}
-                        className="position-relative"
-                        style={{ width: "64px", height: "64px" }}
+                        key={preview.key}
+                        className="position-relative rounded-3 overflow-hidden border bg-light shadow-sm"
+                        style={{ aspectRatio: "4 / 3" }}
                       >
                         <img
-                          src={URL.createObjectURL(file)}
+                          src={preview.url}
                           alt={`Selected infrastructure ${index + 1}`}
-                          className="rounded-circle w-100 h-100 object-fit-cover border border-2 border-white shadow-sm"
+                          className="w-100 h-100 object-fit-cover"
                         />
                         <button
                           type="button"
-                          className="btn p-0 rounded-circle position-absolute top-0 end-0 d-flex align-items-center justify-content-center shadow-sm"
+                          className="btn p-0 rounded-circle position-absolute top-0 end-0 d-flex align-items-center justify-content-center"
                           style={{
-                            width: "20px",
-                            height: "20px",
+                            width: "24px",
+                            height: "24px",
                             backgroundColor: "#DC2626",
                             color: "#FFFFFF",
                             border: "2px solid #FFFFFF",
-                            transform: "translate(25%, -25%)",
+                            transform: "translate(-6px, 6px)",
                           }}
                           title="Remove selected photo"
+                          aria-label={`Remove ${preview.name}`}
                           onClick={() => removeSelectedFile(index)}
                         >
-                          <X size={12} color="#FFFFFF" strokeWidth={3} />
+                          <X size={14} color="#FFFFFF" strokeWidth={3} />
                         </button>
                       </div>
                     ))}
