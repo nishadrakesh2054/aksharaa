@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { listFromResponse } from "../utils/apiResponse";
 
 const BlogCategory = () => {
   const [categories, setCategories] = useState([]);
@@ -15,8 +16,7 @@ const BlogCategory = () => {
         `${import.meta.env.VITE_SERVERAPI}/api/v1/category`
       );
 
-      const list = response.data.categories || response.data.data || [];
-      setCategories(Array.isArray(list) ? list : []);
+      setCategories(listFromResponse(response.data, ["categories"]));
     } catch (error) {
       toast.error(error.response?.data?.message || error.message);
     }
@@ -38,9 +38,7 @@ const BlogCategory = () => {
 
       if (response.data.success) {
         toast.success(response.data.message);
-        const list = response.data.categories || response.data.data || [];
-        if (Array.isArray(list)) setCategories(list);
-        else fetchCategories();
+        setCategories(listFromResponse(response.data, ["categories"]));
       } else {
         toast.error(response.data.message);
       }
@@ -73,9 +71,7 @@ const BlogCategory = () => {
       if (response.data.success) {
         toast.success(response.data.message);
         setEditingId(null);
-        const list = response.data.categories || response.data.data || [];
-        if (Array.isArray(list)) setCategories(list);
-        else fetchCategories();
+        setCategories(listFromResponse(response.data, ["categories"]));
       } else {
         toast.error(response.data.message);
       }

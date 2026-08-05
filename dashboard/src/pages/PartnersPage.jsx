@@ -3,6 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Edit, Handshake, Link as LinkIcon, Plus, Search, Trash2, Upload, X } from "lucide-react";
 import getImageUrl from "../utils/imageUrl";
+import { listFromResponse } from "../utils/apiResponse";
 
 const PartnersPage = () => {
   const [partners, setPartners] = useState([]);
@@ -21,8 +22,7 @@ const PartnersPage = () => {
     try {
       setLoading(true);
       const res = await axios.get(`${import.meta.env.VITE_SERVERAPI}/api/v1/partners`);
-      const list = res.data.partners || res.data.data || [];
-      setPartners(Array.isArray(list) ? list : []);
+      setPartners(listFromResponse(res.data, ["partners"]));
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to fetch educational partners");
     } finally {

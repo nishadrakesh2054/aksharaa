@@ -3,6 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { Mail, Search, Trash2, Eye, MailOpen, Phone, User, CheckCircle2, Clock } from "lucide-react";
+import { listFromResponse } from "../utils/apiResponse";
 
 const ContactMessagesPage = () => {
   const { user } = useSelector((state) => state.login.loggedInUser);
@@ -47,8 +48,7 @@ const ContactMessagesPage = () => {
       const response = await axios.get(
         `${import.meta.env.VITE_SERVERAPI}/api/v1/getallcontacts`
       );
-      const list = response.data.contacts || response.data.data || [];
-      setContacts(Array.isArray(list) ? list : []);
+      setContacts(listFromResponse(response.data, ["contacts"]));
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to fetch contact messages");
     } finally {

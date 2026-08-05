@@ -3,6 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Search, Trash2, Edit, Bell, ImageUp, X } from "lucide-react";
 import getImageUrl from "../utils/imageUrl";
+import { listFromResponse } from "../utils/apiResponse";
 
 const MAX_IMAGE_SIZE = 2 * 1024 * 1024;
 const allowedImageTypes = ["image/png", "image/jpg", "image/jpeg", "image/webp"];
@@ -29,8 +30,7 @@ const NoticesPage = () => {
       const response = await axios.get(
         `${import.meta.env.VITE_SERVERAPI}/api/v1/notice/getallnotice`
       );
-      const list = response.data.notices || response.data.data || [];
-      setNotices(Array.isArray(list) ? list : []);
+      setNotices(listFromResponse(response.data, ["notices"]));
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to fetch notices");
     } finally {

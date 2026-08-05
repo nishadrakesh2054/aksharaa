@@ -3,6 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { Mail, Search, Trash2, MailOpen, CheckCircle2, Clock, Send } from "lucide-react";
+import { listFromResponse } from "../utils/apiResponse";
 
 const SubscribersPage = () => {
   const { user } = useSelector((state) => state.login.loggedInUser);
@@ -36,8 +37,7 @@ const SubscribersPage = () => {
       const response = await axios.get(
         `${import.meta.env.VITE_SERVERAPI}/api/v1/getallsubscribers`
       );
-      const list = response.data.subscribers || response.data.data || [];
-      setSubscribers(Array.isArray(list) ? list : []);
+      setSubscribers(listFromResponse(response.data, ["subscribers"]));
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to fetch subscribers");
     } finally {

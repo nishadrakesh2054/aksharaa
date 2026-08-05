@@ -23,13 +23,32 @@ const normalizeAcademicItems = (items = []) =>
 const parseListField = (value, fallback = []) => {
   if (value === undefined || value === null) return normalizeAcademicItems(fallback);
 
-  const parsed = Array.isArray(value)
-    ? value
-    : typeof value === "string"
-    ? JSON.parse(value)
-    : fallback;
+  let parsed = fallback;
+
+  if (Array.isArray(value)) {
+    parsed = value;
+  } else if (typeof value === "string") {
+    try {
+      parsed = JSON.parse(value);
+    } catch {
+      parsed = fallback;
+    }
+  }
 
   return normalizeAcademicItems(parsed);
+};
+
+const parseArrayField = (value, fallback = []) => {
+  if (value === undefined || value === null) return fallback;
+  if (Array.isArray(value)) return value;
+  if (typeof value !== "string") return fallback;
+
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed : fallback;
+  } catch {
+    return fallback;
+  }
 };
 
 // Initial Seed Data for the 4 Academics Categories
@@ -240,17 +259,8 @@ const updateAcademicByCategory = asyncHandler(async (req, res) => {
   }
 
   // Handle uploaded slider & grid files
-  let sliderList = existingSliderImages
-    ? Array.isArray(existingSliderImages)
-      ? existingSliderImages
-      : JSON.parse(existingSliderImages)
-    : academic.sliderImages || [];
-
-  let gridList = existingGridImages
-    ? Array.isArray(existingGridImages)
-      ? existingGridImages
-      : JSON.parse(existingGridImages)
-    : academic.gridImages || [];
+  let sliderList = parseArrayField(existingSliderImages, academic.sliderImages || []);
+  let gridList = parseArrayField(existingGridImages, academic.gridImages || []);
 
   if (req.files) {
     if (req.files.sliderImages && req.files.sliderImages.length > 0) {

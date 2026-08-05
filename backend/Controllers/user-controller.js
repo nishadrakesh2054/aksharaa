@@ -11,6 +11,10 @@ const ALLOWED_ROLES = ["admin", "editor", "frontdesk"];
 const envAdminEmail = () => String(process.env.Admin_Email || process.env.ADMIN_EMAIL || "").toLowerCase().trim();
 const envAdminPassword = () => String(process.env.Admin_password || process.env.ADMIN_PASSWORD || "");
 const envAdminName = () => String(process.env.Admin_Name || process.env.ADMIN_NAME || "System Admin").trim();
+const getDashboardUrl = (req) => {
+  const configuredUrl = process.env.DASHBOARD_URL || process.env.FRONTEND_URL || req.get("origin");
+  return String(configuredUrl || "http://localhost:5174").replace(/\/$/, "");
+};
 
 const sanitizeUser = (user) => ({
   _id: user._id,
@@ -176,7 +180,7 @@ const forgetpassword = asyncHandler(async (req, res) => {
     },
   });
 
-  const resetUrl = `http://localhost:5173/resetpassword/${existingUser._id}/${resetToken}`;
+  const resetUrl = `${getDashboardUrl(req)}/resetpassword/${existingUser._id}/${resetToken}`;
 
   const mailOptions = {
     from: process.env.EMAIL_USER || "sahanirakesh877@gmail.com",

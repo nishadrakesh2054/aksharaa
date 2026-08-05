@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { Plus, Trash2, Edit, Check, X, Search, FolderKanban } from "lucide-react";
+import { listFromResponse } from "../utils/apiResponse";
 
 const CategoriesPage = () => {
   const [activeTab, setActiveTab] = useState("blog"); // 'blog' or 'activity'
@@ -25,11 +26,8 @@ const CategoriesPage = () => {
         axios.get(`${import.meta.env.VITE_SERVERAPI}/api/v1/activityCategory`),
       ]);
 
-      const bList = blogCatRes.data.categories || blogCatRes.data.data || [];
-      const aList = actCatRes.data.categories || actCatRes.data.data || [];
-
-      setBlogCategories(Array.isArray(bList) ? bList : []);
-      setActivityCategories(Array.isArray(aList) ? aList : []);
+      setBlogCategories(listFromResponse(blogCatRes.data, ["categories"]));
+      setActivityCategories(listFromResponse(actCatRes.data, ["categories"]));
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to fetch categories");
     } finally {

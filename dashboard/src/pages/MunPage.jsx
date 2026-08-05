@@ -11,6 +11,7 @@ import {
   ImagePlus,
   X,
 } from "lucide-react";
+import { itemFromResponse } from "../utils/apiResponse";
 
 const MunPage = () => {
   const [loading, setLoading] = useState(true);
@@ -41,7 +42,7 @@ const MunPage = () => {
     try {
       setLoading(true);
       const res = await axios.get(`${import.meta.env.VITE_SERVERAPI}/api/v1/mun`);
-      const data = res.data.data || res.data.mun || {};
+      const data = itemFromResponse(res.data, ["mun"]);
       setFormData({
         title: data.title || "AKSHARAA MODEL UNITED NATIONS",
         subtitle: data.subtitle || "AMUN",

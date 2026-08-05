@@ -3,6 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { Plus, Calendar, Trash2, Edit, Clock, Search } from "lucide-react";
+import { listFromResponse } from "../utils/apiResponse";
 
 const EventsCalendarPage = () => {
   const { user } = useSelector((state) => state.login.loggedInUser);
@@ -35,13 +36,11 @@ const EventsCalendarPage = () => {
       ]);
 
       if (eventsRes.status === "fulfilled" && eventsRes.value.data) {
-        const list = eventsRes.value.data.events || eventsRes.value.data.data || [];
-        setEvents(Array.isArray(list) ? list : []);
+        setEvents(listFromResponse(eventsRes.value.data, ["events"]));
       }
 
       if (calRes.status === "fulfilled" && calRes.value.data) {
-        const list = calRes.value.data.calendar || calRes.value.data.data || [];
-        setCalendars(Array.isArray(list) ? list : []);
+        setCalendars(listFromResponse(calRes.value.data, ["calendar"]));
       }
     } catch (error) {
       toast.error("Failed to fetch events and calendar data");

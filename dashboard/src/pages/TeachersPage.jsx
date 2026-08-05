@@ -11,6 +11,7 @@ import {
   X,
 
 } from "lucide-react";
+import { listFromResponse } from "../utils/apiResponse";
 
 const TeachersPage = () => {
   const [activeTab, setActiveTab] = useState("banners"); // "banners" or "members"
@@ -51,8 +52,7 @@ const TeachersPage = () => {
     try {
       setLoadingBanners(true);
       const res = await axios.get(`${import.meta.env.VITE_SERVERAPI}/api/v1/teambanners`);
-      const list = res.data.banners || res.data.data || [];
-      setBanners(Array.isArray(list) ? list : []);
+      setBanners(listFromResponse(res.data, ["banners"]));
     } catch (err) {
       toast.error("Failed to load team section banners");
     } finally {
@@ -67,8 +67,7 @@ const TeachersPage = () => {
       const response = await axios.get(
         `${import.meta.env.VITE_SERVERAPI}/api/v1/getallprofile`
       );
-      const list = response.data.profiles || response.data.data || [];
-      setTeachers(Array.isArray(list) ? list : []);
+      setTeachers(listFromResponse(response.data, ["profiles"]));
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to fetch staff profiles");
     } finally {

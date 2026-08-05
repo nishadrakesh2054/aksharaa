@@ -3,6 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Plus, Trash2, Edit, RotateCw, Eye, Calendar } from "lucide-react";
 import getImageUrl from "../utils/imageUrl";
+import { listFromResponse } from "../utils/apiResponse";
 
 const ThreeDGalleryPage = () => {
   const [photos, setPhotos] = useState([]);
@@ -21,8 +22,7 @@ const ThreeDGalleryPage = () => {
       const response = await axios.get(
         `${import.meta.env.VITE_SERVERAPI}/api/v1/three/getallthreedimg`
       );
-      const list = response.data.gallery || response.data.data || [];
-      setPhotos(Array.isArray(list) ? list : []);
+      setPhotos(listFromResponse(response.data, ["gallery", "threeDImages", "threeD"]));
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to fetch 3D images");
     } finally {

@@ -18,6 +18,7 @@ import {
 } from "ckeditor5";
 import "ckeditor5/ckeditor5.css";
 import DOMPurify from "dompurify";
+import { listFromResponse } from "../utils/apiResponse";
 
 const BlogsPage = () => {
   const [blogs, setBlogs] = useState([]);
@@ -44,11 +45,8 @@ const BlogsPage = () => {
         axios.get(`${import.meta.env.VITE_SERVERAPI}/api/v1/category`),
       ]);
 
-      const blogList = blogsRes.data.blogs || blogsRes.data.data || [];
-      const catList = catsRes.data.categories || catsRes.data.data || [];
-
-      setBlogs(Array.isArray(blogList) ? blogList : []);
-      setCategories(Array.isArray(catList) ? catList : []);
+      setBlogs(listFromResponse(blogsRes.data, ["blogs"]));
+      setCategories(listFromResponse(catsRes.data, ["categories"]));
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to fetch blogs");
     } finally {

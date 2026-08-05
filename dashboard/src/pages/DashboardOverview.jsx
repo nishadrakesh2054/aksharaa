@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import getImageUrl from "../utils/imageUrl";
+import { listFromResponse } from "../utils/apiResponse";
 import {
   Activity,
   ArrowRight,
@@ -24,13 +25,6 @@ import {
   TrendingUp,
   Users,
 } from "lucide-react";
-
-const firstArray = (data, keys) => {
-  for (const key of keys) {
-    if (Array.isArray(data?.[key])) return data[key];
-  }
-  return Array.isArray(data?.data) ? data.data : [];
-};
 
 const stripHtml = (value = "") => value.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 
@@ -104,7 +98,7 @@ const DashboardOverview = () => {
         endpoints.forEach(([key, , keys], index) => {
           const result = results[index];
           nextData[key] =
-            result.status === "fulfilled" ? firstArray(result.value.data, keys) : [];
+            result.status === "fulfilled" ? listFromResponse(result.value.data, keys) : [];
         });
 
         setData((prev) => ({ ...prev, ...nextData }));

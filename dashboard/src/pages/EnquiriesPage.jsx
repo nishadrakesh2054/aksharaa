@@ -19,6 +19,7 @@ import {
   Briefcase,
   Share2,
 } from "lucide-react";
+import { listFromResponse } from "../utils/apiResponse";
 
 const EnquiriesPage = () => {
   const { user } = useSelector((state) => state.login.loggedInUser);
@@ -63,16 +64,14 @@ const EnquiriesPage = () => {
       const response = await axios.get(
         `${import.meta.env.VITE_SERVERAPI}/api/v1/enquiry`
       );
-      const list = response.data.enquiries || response.data.data || [];
+      const list = listFromResponse(response.data, ["enquiries"]);
 
       // Filter specifically for General Inquiries (/getinquiry)
-      const generalInquiries = Array.isArray(list)
-        ? list.filter(
+      const generalInquiries = list.filter(
             (e) =>
               (e.source || "").toLowerCase().includes("inquiry") ||
               (!e.studentPhoto && (!e.documents || e.documents.length === 0))
-          )
-        : [];
+          );
       setEnquiries(generalInquiries);
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to fetch inquiries");

@@ -3,6 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Plus, Search, Trash2, Edit, Video, FolderGit2 } from "lucide-react";
 import getImageUrl from "../utils/imageUrl";
+import { listFromResponse } from "../utils/apiResponse";
 
 const LongTermProjectsPage = () => {
   const [projects, setProjects] = useState([]);
@@ -21,8 +22,7 @@ const LongTermProjectsPage = () => {
     try {
       setLoading(true);
       const res = await axios.get(`${import.meta.env.VITE_SERVERAPI}/api/v1/projects`);
-      const list = res.data.projects || res.data.data || [];
-      setProjects(Array.isArray(list) ? list : []);
+      setProjects(listFromResponse(res.data, ["projects"]));
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to fetch long term projects");
     } finally {

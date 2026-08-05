@@ -3,6 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Plus, Trash2, Edit, Image as ImageIcon, Eye, Calendar, Sparkles } from "lucide-react";
 import getImageUrl from "../utils/imageUrl";
+import { listFromResponse } from "../utils/apiResponse";
 
 const HeroSlidersPage = () => {
   const [banners, setBanners] = useState([]);
@@ -21,8 +22,7 @@ const HeroSlidersPage = () => {
       const response = await axios.get(
         `${import.meta.env.VITE_SERVERAPI}/api/v1/hero/getallheroimg`
       );
-      const list = response.data.Heros || response.data.data || [];
-      setBanners(Array.isArray(list) ? list : []);
+      setBanners(listFromResponse(response.data, ["Heros", "heros"]));
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to fetch hero sliders");
     } finally {

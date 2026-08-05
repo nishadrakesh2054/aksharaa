@@ -3,6 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Plus, Search, Trash2, Edit, Image as ImageIcon, Eye, Calendar, Layers } from "lucide-react";
 import getImageUrl from "../utils/imageUrl";
+import { listFromResponse } from "../utils/apiResponse";
 
 const GalleriesPage = () => {
   const [galleries, setGalleries] = useState([]);
@@ -24,8 +25,7 @@ const GalleriesPage = () => {
       const response = await axios.get(
         `${import.meta.env.VITE_SERVERAPI}/api/v1/getallgallery`
       );
-      const list = response.data.gallery || response.data.data || [];
-      setGalleries(Array.isArray(list) ? list : []);
+      setGalleries(listFromResponse(response.data, ["gallery", "galleries", "Galleries"]));
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to fetch gallery events");
     } finally {

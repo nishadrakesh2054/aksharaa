@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import getImageUrl from "../utils/imageUrl";
+import { listFromResponse } from "../utils/apiResponse";
 
 const GetTestimonial = () => {
   const [data, setData] = useState([]);
@@ -20,8 +21,7 @@ const GetTestimonial = () => {
         `${import.meta.env.VITE_SERVERAPI}/api/v1/testimonial`
       );
       if (response.data.success) {
-        const list = response.data.testimonial || response.data.testimonials || response.data.data || [];
-        setData(Array.isArray(list) ? list : []);
+        setData(listFromResponse(response.data, ["testimonial", "testimonials"]));
       } else {
         toast.error(response.data.message);
       }

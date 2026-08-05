@@ -17,6 +17,7 @@ import {
 } from "ckeditor5";
 import "ckeditor5/ckeditor5.css";
 import DOMPurify from "dompurify";
+import { listFromResponse } from "../utils/apiResponse";
 
 const getFileKey = (file) => `${file.name}-${file.size}-${file.lastModified}`;
 
@@ -42,8 +43,7 @@ const CreativeWeek = () => {
       const response = await axios.get(
         `${import.meta.env.VITE_SERVERAPI}/api/v1/creative/getallcreativeweek`
       );
-      const list = response.data.creative || response.data.notices || response.data.data || [];
-      setCreatives(Array.isArray(list) ? list : []);
+      setCreatives(listFromResponse(response.data, ["creative", "notices"]));
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to fetch creatives of this week");
     } finally {

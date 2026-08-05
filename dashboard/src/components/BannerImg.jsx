@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import getImageUrl from "../utils/imageUrl";
+import { listFromResponse } from "../utils/apiResponse";
 
 const BannerImg = () => {
   const [data, setData] = useState([]);
@@ -17,8 +18,7 @@ const BannerImg = () => {
       );
 
       if (response.data.success) {
-        const list = response.data.Heros || response.data.data || [];
-        setData(Array.isArray(list) ? list : []);
+        setData(listFromResponse(response.data, ["Heros", "heros"]));
       } else {
         toast.error(response.data.message);
       }

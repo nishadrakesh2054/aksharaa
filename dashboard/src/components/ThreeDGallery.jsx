@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import getImageUrl from "../utils/imageUrl";
+import { listFromResponse } from "../utils/apiResponse";
 
 const ThreeDGallery = () => {
   const [data, setData] = useState([]);
@@ -16,8 +17,7 @@ const ThreeDGallery = () => {
         `${import.meta.env.VITE_SERVERAPI}/api/v1/three/getallthreedimg`
       );
       if (response.data.success) {
-        const list = response.data.gallery || response.data.data || [];
-        setData(Array.isArray(list) ? list : []);
+        setData(listFromResponse(response.data, ["gallery", "threeDImages", "threeD"]));
       } else {
         toast.error(response.data.message);
       }

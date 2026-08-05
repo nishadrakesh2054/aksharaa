@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import getImageUrl from "../utils/imageUrl";
+import { listFromResponse } from "../utils/apiResponse";
 
 const GetGalleriesEvent = () => {
   const [galleries, setGalleries] = useState([]);
@@ -21,8 +22,7 @@ const GetGalleriesEvent = () => {
         `${import.meta.env.VITE_SERVERAPI}/api/v1/getallgallery`
       );
 
-      const list = response.data.gallery || response.data.data || [];
-      setGalleries(Array.isArray(list) ? list : []);
+      setGalleries(listFromResponse(response.data, ["gallery", "galleries", "Galleries"]));
       setError(null);
     } catch (err) {
       const msg = err.response?.data?.message || err.message;

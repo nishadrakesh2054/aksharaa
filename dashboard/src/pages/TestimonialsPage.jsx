@@ -3,6 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Plus, Search, Trash2, Edit, MessageSquareQuote } from "lucide-react";
 import getImageUrl from "../utils/imageUrl";
+import { listFromResponse } from "../utils/apiResponse";
 
 const TestimonialsPage = () => {
   const [testimonials, setTestimonials] = useState([]);
@@ -25,8 +26,7 @@ const TestimonialsPage = () => {
       const response = await axios.get(
         `${import.meta.env.VITE_SERVERAPI}/api/v1/testimonial`
       );
-      const list = response.data.testimonial || response.data.testimonials || response.data.data || [];
-      setTestimonials(Array.isArray(list) ? list : []);
+      setTestimonials(listFromResponse(response.data, ["testimonial", "testimonials"]));
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to fetch testimonials");
     } finally {

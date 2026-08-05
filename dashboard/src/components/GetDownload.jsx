@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import getImageUrl from "../utils/imageUrl";
+import { listFromResponse } from "../utils/apiResponse";
 
 const GetDownload = () => {
   const [pdfs, setPdfs] = useState([]);
@@ -17,8 +18,7 @@ const GetDownload = () => {
       const response = await axios.get(
         `${import.meta.env.VITE_SERVERAPI}/api/v1/getallpdf`
       );
-      const list = response.data.pdfs || response.data.data || [];
-      setPdfs(Array.isArray(list) ? list : []);
+      setPdfs(listFromResponse(response.data, ["pdfs", "pdf"]));
     } catch (error) {
       toast.error(error.response?.data?.message || error.message);
     }

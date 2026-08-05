@@ -18,6 +18,7 @@ import {
 } from "ckeditor5";
 import "ckeditor5/ckeditor5.css";
 import DOMPurify from "dompurify";
+import { listFromResponse } from "../utils/apiResponse";
 
 const ActivitiesPage = () => {
   const [activities, setActivities] = useState([]);
@@ -44,11 +45,8 @@ const ActivitiesPage = () => {
         axios.get(`${import.meta.env.VITE_SERVERAPI}/api/v1/activityCategory`),
       ]);
 
-      const actList = actRes.data.activities || actRes.data.data || [];
-      const catList = catsRes.data.categories || catsRes.data.data || [];
-
-      setActivities(Array.isArray(actList) ? actList : []);
-      setCategories(Array.isArray(catList) ? catList : []);
+      setActivities(listFromResponse(actRes.data, ["activities"]));
+      setCategories(listFromResponse(catsRes.data, ["categories"]));
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to fetch activities");
     } finally {

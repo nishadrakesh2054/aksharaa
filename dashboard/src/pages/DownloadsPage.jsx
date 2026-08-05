@@ -3,6 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import {  Search, Trash2, Edit, Download, FileText, FileUp, X } from "lucide-react";
 import getImageUrl from "../utils/imageUrl";
+import { listFromResponse } from "../utils/apiResponse";
 
 const MAX_PDF_SIZE = 10 * 1024 * 1024;
 
@@ -25,8 +26,7 @@ const DownloadsPage = () => {
       const response = await axios.get(
         `${import.meta.env.VITE_SERVERAPI}/api/v1/getallpdf`
       );
-      const list = response.data.pdfs || response.data.data || [];
-      setPdfs(Array.isArray(list) ? list : []);
+      setPdfs(listFromResponse(response.data, ["pdfs", "pdf"]));
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to fetch PDF downloads");
     } finally {

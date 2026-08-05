@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import getImageUrl from "../utils/imageUrl";
+import { listFromResponse } from "../utils/apiResponse";
 
 const AllTeacherProfile = () => {
   const [teachers, setTeachers] = useState([]);
@@ -19,8 +20,7 @@ const AllTeacherProfile = () => {
         `${import.meta.env.VITE_SERVERAPI}/api/v1/getallprofile`
       );
 
-      const list = response.data.profiles || response.data.data || [];
-      setTeachers(Array.isArray(list) ? list : []);
+      setTeachers(listFromResponse(response.data, ["profiles"]));
     } catch (error) {
       toast.error(error.response?.data?.message || error.message);
     }

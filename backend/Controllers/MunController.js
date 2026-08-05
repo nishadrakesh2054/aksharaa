@@ -2,6 +2,19 @@ const asyncHandler = require("express-async-handler");
 const Mun = require("../Models/MunSchema");
 const ApiResponse = require("../utils/apiResponse");
 
+const parseArrayField = (value, fallback = []) => {
+  if (value === undefined || value === null) return fallback;
+  if (Array.isArray(value)) return value;
+  if (typeof value !== "string") return fallback;
+
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed) ? parsed : fallback;
+  } catch {
+    return fallback;
+  }
+};
+
 // GET /api/v1/mun - Fetch MUN page data
 const getMun = asyncHandler(async (req, res) => {
   let mun = await Mun.findOne();
@@ -40,24 +53,11 @@ const updateMun = asyncHandler(async (req, res) => {
   if (goalsTitle) mun.goalsTitle = goalsTitle;
 
   if (goalsList) {
-    mun.goalsList = Array.isArray(goalsList)
-      ? goalsList
-      : typeof goalsList === "string"
-      ? JSON.parse(goalsList)
-      : mun.goalsList;
+    mun.goalsList = parseArrayField(goalsList, mun.goalsList);
   }
 
-  let sliderList = existingSliderImages
-    ? Array.isArray(existingSliderImages)
-      ? existingSliderImages
-      : JSON.parse(existingSliderImages)
-    : mun.sliderImages || [];
-
-  let gridList = existingGridImages
-    ? Array.isArray(existingGridImages)
-      ? existingGridImages
-      : JSON.parse(existingGridImages)
-    : mun.gridImages || [];
+  let sliderList = parseArrayField(existingSliderImages, mun.sliderImages || []);
+  let gridList = parseArrayField(existingGridImages, mun.gridImages || []);
 
   if (req.files) {
     if (req.files.sliderImages && req.files.sliderImages.length > 0) {

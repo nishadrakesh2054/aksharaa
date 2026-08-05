@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import getImageUrl from "../utils/imageUrl";
+import { listFromResponse } from "../utils/apiResponse";
 
 const GetActivities = () => {
   const [data, setData] = useState([]);
@@ -17,8 +18,7 @@ const GetActivities = () => {
         );
         console.log("activities", response.data);
         if (response.data.success) {
-          const list = response.data.activities || response.data.data || [];
-          setData(Array.isArray(list) ? list : []);
+          setData(listFromResponse(response.data, ["activities"]));
         } else {
           console.error("Failed to fetch data:", response.data.message);
         }

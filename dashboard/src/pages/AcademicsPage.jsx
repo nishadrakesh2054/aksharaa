@@ -25,7 +25,7 @@ import {
   Undo,
 } from "ckeditor5";
 import "ckeditor5/ckeditor5.css";
-
+import { itemFromResponse } from "../utils/apiResponse";
 
 const normalizeAcademicItems = (items = []) =>
   items
@@ -82,7 +82,7 @@ const AcademicsPage = () => {
       const res = await axios.get(
         `${import.meta.env.VITE_SERVERAPI}/api/v1/academic/${catId}`
       );
-      const data = res.data.data || res.data.academic || {};
+      const data = itemFromResponse(res.data, ["academic"]);
       setFormData({
         title: data.title || "",
         gradeRange: data.gradeRange || "",

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import getImageUrl from "../utils/imageUrl";
+import { listFromResponse } from "../utils/apiResponse";
 
 const GetNotices = () => {
   const [data, setData] = useState([]);
@@ -17,8 +18,7 @@ const GetNotices = () => {
       );
 
       if (response.data.success) {
-        const noticesList = response.data.notices || response.data.data || [];
-        setData(Array.isArray(noticesList) ? noticesList : []);
+        setData(listFromResponse(response.data, ["notices"]));
       } else {
         toast.error(response.data.message);
       }

@@ -3,6 +3,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { Building2, Edit, Image, Plus, Search, Trash2, Upload, X } from "lucide-react";
 import getImageUrl from "../utils/imageUrl";
+import { listFromResponse } from "../utils/apiResponse";
 
 const iconOptions = [
   { label: "Computer Laboratory", value: "fas fa-desktop text-primary" },
@@ -36,8 +37,7 @@ const InfrastructurePage = () => {
     try {
       setLoading(true);
       const res = await axios.get(`${import.meta.env.VITE_SERVERAPI}/api/v1/infrastructure`);
-      const list = res.data.infrastructure || res.data.data || [];
-      setItems(Array.isArray(list) ? list : []);
+      setItems(listFromResponse(res.data, ["infrastructure"]));
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to fetch infrastructure");
     } finally {
