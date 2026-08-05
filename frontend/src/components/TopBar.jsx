@@ -1,21 +1,23 @@
 import React from "react";
-import Mainlogo from '../assets/Aksharaa School Logo.png';
-
 const TopBar = () => {
   return (
     <>
       {/* Desktop TopBar */}
-      <div className="topbar-wrapper py-2 border-bottom d-none d-lg-block">
+      <div className="topbar-wrapper  border-bottom d-none d-lg-block py-1">
         <div className="container mx-auto">
           <div className="row align-items-center">
             {/* Main Logo Column */}
             <div className="col-lg-3">
               <a href="/" className="d-inline-block text-decoration-none">
                 <img
-                  src={Mainlogo}
+                  src="/logo1.png"
                   alt="Aksharaa School"
-                  loading="lazy"
-                  style={{ maxWidth: "185px", maxHeight: "75px", objectFit: "contain" }}
+                  className="topbar-logo"
+                  width="250"
+                  height="80"
+                  loading="eager"
+                  decoding="async"
+                  fetchPriority="high"
                 />
               </a>
             </div>
@@ -31,21 +33,28 @@ const TopBar = () => {
                     </span>
                     <div>
                       <h6 className="top-head mb-0">Our School</h6>
-                      <small className="top-p">Kageshwori Manohara 9, Kathmandu</small>
+                      <small className="top-p">
+                        Kageshwori Manohara 9, Kathmandu
+                      </small>
                     </div>
                   </div>
                 </div>
 
                 {/* Email */}
                 <div className="col-lg-3">
-                  <a href="mailto:info@aksharaaschool.edu.np" className="text-decoration-none">
+                  <a
+                    href="mailto:info@aksharaaschool.edu.np"
+                    className="text-decoration-none"
+                  >
                     <div className="topbar-info-item d-flex align-items-center gap-2">
                       <span className="topbar-icon-box">
                         <i className="fas fa-envelope top-icon"></i>
                       </span>
                       <div>
                         <h6 className="top-head mb-0">Email Us</h6>
-                        <small className="top-p">info@aksharaaschool.edu.np</small>
+                        <small className="top-p">
+                          info@aksharaaschool.edu.np
+                        </small>
                       </div>
                     </div>
                   </a>
@@ -124,14 +133,20 @@ const TopBar = () => {
             <span className="marquee-divider">•</span>
             <span className="marquee-item">
               <i className="fas fa-envelope me-1 text-pinkish"></i>
-              <a href="mailto:info@aksharaaschool.edu.np" className="text-white text-decoration-none">
+              <a
+                href="mailto:info@aksharaaschool.edu.np"
+                className="text-white text-decoration-none"
+              >
                 info@aksharaaschool.edu.np
               </a>
             </span>
             <span className="marquee-divider">•</span>
             <span className="marquee-item">
               <i className="fas fa-phone-alt me-1 text-pinkish"></i>
-              <a href="tel:+977014993031" className="text-white text-decoration-none">
+              <a
+                href="tel:+977014993031"
+                className="text-white text-decoration-none"
+              >
                 +977-01-4993031/32/33
               </a>
             </span>
@@ -139,7 +154,10 @@ const TopBar = () => {
           </div>
 
           {/* Duplicate track for seamless infinite marquee loop */}
-          <div className="mobile-marquee-content d-flex align-items-center" aria-hidden="true">
+          <div
+            className="mobile-marquee-content d-flex align-items-center"
+            aria-hidden="true"
+          >
             <span className="marquee-item">
               <i className="fas fa-map-marker-alt me-1 text-pinkish"></i>
               Kageshwori Manohara 9, Kathmandu, Nepal
@@ -147,14 +165,20 @@ const TopBar = () => {
             <span className="marquee-divider">•</span>
             <span className="marquee-item">
               <i className="fas fa-envelope me-1 text-pinkish"></i>
-              <a href="mailto:info@aksharaaschool.edu.np" className="text-white text-decoration-none">
+              <a
+                href="mailto:info@aksharaaschool.edu.np"
+                className="text-white text-decoration-none"
+              >
                 info@aksharaaschool.edu.np
               </a>
             </span>
             <span className="marquee-divider">•</span>
             <span className="marquee-item">
               <i className="fas fa-phone-alt me-1 text-pinkish"></i>
-              <a href="tel:+977014993031" className="text-white text-decoration-none">
+              <a
+                href="tel:+977014993031"
+                className="text-white text-decoration-none"
+              >
                 +977-01-4993031/32/33
               </a>
             </span>

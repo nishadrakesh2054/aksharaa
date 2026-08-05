@@ -40,7 +40,7 @@ const Brand = () => {
   ));
 
   return (
-    <section className="brand-section section-bg-alt py-5 mb-0">
+    <section className="brand-section section-bg-white py-5 mb-0">
 
       <div className="container mx-auto">
         <SectionHeader

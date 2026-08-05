@@ -21,7 +21,7 @@
   margin: 0;
   padding: 0;
   width: 100%;
-  height: calc(100vh - 110px);
+  height: clamp(480px, calc(100vh - 124px), calc(100vw * 950 / 1920));
   min-height: 480px;
   overflow: hidden;
   position: relative;

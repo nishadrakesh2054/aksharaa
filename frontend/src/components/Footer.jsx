@@ -131,17 +131,17 @@ const Footer = () => {
                 </Link>
               </li>
               <li className="mb-2">
-                <Link to="/about/lrpa" className="footer-tag text-decoration-none">
+                <Link to="/about-lrpa" className="footer-tag text-decoration-none">
                   <i className="fa fa-angle-right me-2 text-success"></i>Philosophy
                 </Link>
               </li>
               <li className="mb-2">
-                <Link to="/academics" className="footer-tag text-decoration-none">
+                <Link to="/academics-kindergarten" className="footer-tag text-decoration-none">
                   <i className="fa fa-angle-right me-2 text-success"></i>Academics
                 </Link>
               </li>
               <li className="mb-2">
-                <Link to="/admission/procedure" className="footer-tag text-decoration-none">
+                <Link to="/admission-procedure" className="footer-tag text-decoration-none">
                   <i className="fa fa-angle-right me-2 text-success"></i>Admission
                 </Link>
               </li>

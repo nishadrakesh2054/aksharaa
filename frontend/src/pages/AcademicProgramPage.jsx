@@ -7,12 +7,35 @@ import LoadingState from "../components/states/LoadingState";
 import ErrorState from "../components/states/ErrorState";
 import EmptyState from "../components/states/EmptyState";
 import SectionHeader from "../components/SectionHeader";
+import SafeHTML from "../components/SafeHTML";
 import "../css/academicPage.css";
 
 const responsive = {
   0: { items: 1 },
   768: { items: 2 },
   1024: { items: 2 },
+};
+
+const normalizeFeatureItem = (item) => {
+  if (typeof item === "string") return { title: item, details: "" };
+  return {
+    title: item?.title || item?.name || "",
+    details: item?.details || item?.description || "",
+  };
+};
+
+const FeatureItem = ({ item, iconClass }) => {
+  const feature = normalizeFeatureItem(item);
+
+  return (
+    <li className="academic-nested-item">
+      <i className={iconClass}></i>
+      <div>
+        <strong>{feature.title}</strong>
+        {feature.details ? <p>{feature.details}</p> : null}
+      </div>
+    </li>
+  );
 };
 
 const AcademicProgramPage = ({ category }) => {
@@ -72,10 +95,16 @@ const AcademicProgramPage = ({ category }) => {
               <h4 className="fw-bold text-dark mb-3">
                 <i className="fas fa-graduation-cap text-success me-2"></i> Program Overview
               </h4>
-              <p>{academic.description || "No description found."}</p>
+              {academic.description ? (
+                <div className="academic-rich-description">
+                  <SafeHTML htmlString={academic.description} />
+                </div>
+              ) : (
+                <p>No description found.</p>
+              )}
             </div>
 
-            {academic.sideImage && (
+            {/* {academic.sideImage && (
               <div className="mt-auto">
                 <img
                   src={getFileUrl(academic.sideImage)}
@@ -84,7 +113,7 @@ const AcademicProgramPage = ({ category }) => {
                   loading="lazy"
                 />
               </div>
-            )}
+            )} */}
           </div>
 
           {/* Right Column: Learning Centers, Co-Curricular & Approach */}
@@ -97,14 +126,15 @@ const AcademicProgramPage = ({ category }) => {
               </h4>
 
               {academic.learningCenters?.length ? (
-                <div className="academic-compact-grid">
+                <ul className="academic-nested-list">
                   {academic.learningCenters.map((item, index) => (
-                    <span className="academic-pill-tag" key={`${item}-${index}`}>
-                      <i className="fas fa-check-circle text-success"></i>
-                      <span>{item}</span>
-                    </span>
+                    <FeatureItem
+                      item={item}
+                      iconClass="fas fa-check-circle text-success"
+                      key={`learning-${index}`}
+                    />
                   ))}
-                </div>
+                </ul>
               ) : (
                 <EmptyState message="No learning center data found." />
               )}
@@ -118,14 +148,15 @@ const AcademicProgramPage = ({ category }) => {
               </h4>
 
               {academic.extraActivities?.length ? (
-                <div className="academic-compact-grid">
+                <ul className="academic-nested-list">
                   {academic.extraActivities.map((item, index) => (
-                    <span className="academic-pill-tag" key={`${item}-${index}`}>
-                      <i className="fas fa-star text-danger"></i>
-                      <span>{item}</span>
-                    </span>
+                    <FeatureItem
+                      item={item}
+                      iconClass="fas fa-star text-danger"
+                      key={`activity-${index}`}
+                    />
                   ))}
-                </div>
+                </ul>
               ) : (
                 <EmptyState message="No activities data found." />
               )}
@@ -139,14 +170,15 @@ const AcademicProgramPage = ({ category }) => {
               </h4>
 
               {academic.approachItems?.length ? (
-                <div className="academic-compact-grid">
+                <ul className="academic-nested-list">
                   {academic.approachItems.map((item, index) => (
-                    <span className="academic-pill-tag" key={`${item}-${index}`}>
-                      <i className="fas fa-check-circle text-primary"></i>
-                      <span>{item}</span>
-                    </span>
+                    <FeatureItem
+                      item={item}
+                      iconClass="fas fa-check-circle text-primary"
+                      key={`approach-${index}`}
+                    />
                   ))}
-                </div>
+                </ul>
               ) : (
                 <EmptyState message="No approach data found." />
               )}

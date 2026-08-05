@@ -15,7 +15,7 @@ import {
 import SectionHeader from "../components/SectionHeader";
 import "../css/highlightsTab.css";
 
-const Blog = () => {
+const Blog = ({ showSEO = true }) => {
   const { pathname } = useLocation();
   const [filter, setFilter] = useState("Featured News");
   const [showAllActivities, setShowAllActivities] = useState(false);
@@ -107,13 +107,15 @@ const Blog = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Aksharaa Highlights | Aksharaa School</title>
-        <meta
-          name="description"
-          content="Explore Aksharaa Highlights, school activities, events schedule, academic calendar, and long-term student projects."
-        />
-      </Helmet>
+      {showSEO ? (
+        <Helmet>
+          <title>Aksharaa Highlights | Aksharaa School</title>
+          <meta
+            name="description"
+            content="Explore Aksharaa Highlights, school activities, events schedule, academic calendar, and long-term student projects."
+          />
+        </Helmet>
+      ) : null}
 
       <div className="demo section-bg-white py-5">
         <div className="container mx-auto">

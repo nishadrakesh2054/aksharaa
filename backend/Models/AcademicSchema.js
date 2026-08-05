@@ -1,5 +1,21 @@
 const mongoose = require("mongoose");
 
+const academicItemSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    details: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+  },
+  { _id: false }
+);
+
 const academicSchema = new mongoose.Schema(
   {
     category: {
@@ -30,7 +46,7 @@ const academicSchema = new mongoose.Schema(
       default: "Learning Centers",
     },
     learningCenters: {
-      type: [String],
+      type: [academicItemSchema],
       default: [],
     },
     extraActivitiesTitle: {
@@ -38,7 +54,7 @@ const academicSchema = new mongoose.Schema(
       default: "Extra / Co-Curricular Activities",
     },
     extraActivities: {
-      type: [String],
+      type: [academicItemSchema],
       default: [],
     },
     approachTitle: {
@@ -46,7 +62,7 @@ const academicSchema = new mongoose.Schema(
       default: "Aksharaa Approach to Quality Education",
     },
     approachItems: {
-      type: [String],
+      type: [academicItemSchema],
       default: [],
     },
     // Top Scroll Banner Images

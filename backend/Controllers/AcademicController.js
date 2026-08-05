@@ -2,6 +2,36 @@ const asyncHandler = require("express-async-handler");
 const Academic = require("../Models/AcademicSchema");
 const ApiResponse = require("../utils/apiResponse");
 
+const normalizeAcademicItem = (item) => {
+  if (typeof item === "string") {
+    return { title: item.trim(), details: "" };
+  }
+
+  if (item && typeof item === "object") {
+    return {
+      title: String(item.title || item.name || "").trim(),
+      details: String(item.details || item.description || "").trim(),
+    };
+  }
+
+  return { title: "", details: "" };
+};
+
+const normalizeAcademicItems = (items = []) =>
+  items.map(normalizeAcademicItem).filter((item) => item.title);
+
+const parseListField = (value, fallback = []) => {
+  if (value === undefined || value === null) return normalizeAcademicItems(fallback);
+
+  const parsed = Array.isArray(value)
+    ? value
+    : typeof value === "string"
+    ? JSON.parse(value)
+    : fallback;
+
+  return normalizeAcademicItems(parsed);
+};
+
 // Initial Seed Data for the 4 Academics Categories
 const seedDefaultAcademics = async () => {
   const categories = [
@@ -138,7 +168,12 @@ const seedDefaultAcademics = async () => {
   for (const cat of categories) {
     const exists = await Academic.findOne({ category: cat.category });
     if (!exists) {
-      await Academic.create(cat);
+      await Academic.create({
+        ...cat,
+        learningCenters: normalizeAcademicItems(cat.learningCenters),
+        extraActivities: normalizeAcademicItems(cat.extraActivities),
+        approachItems: normalizeAcademicItems(cat.approachItems),
+      });
     }
   }
 };
@@ -193,27 +228,15 @@ const updateAcademicByCategory = asyncHandler(async (req, res) => {
   if (extraActivitiesTitle) academic.extraActivitiesTitle = extraActivitiesTitle;
   if (approachTitle) academic.approachTitle = approachTitle;
 
-  // Process array fields (parse JSON or strings)
-  if (learningCenters) {
-    academic.learningCenters = Array.isArray(learningCenters)
-      ? learningCenters
-      : typeof learningCenters === "string"
-      ? JSON.parse(learningCenters)
-      : academic.learningCenters;
+  // Process array fields. Supports old string items and new title/detail objects.
+  if (learningCenters !== undefined) {
+    academic.learningCenters = parseListField(learningCenters, academic.learningCenters);
   }
-  if (extraActivities) {
-    academic.extraActivities = Array.isArray(extraActivities)
-      ? extraActivities
-      : typeof extraActivities === "string"
-      ? JSON.parse(extraActivities)
-      : academic.extraActivities;
+  if (extraActivities !== undefined) {
+    academic.extraActivities = parseListField(extraActivities, academic.extraActivities);
   }
-  if (approachItems) {
-    academic.approachItems = Array.isArray(approachItems)
-      ? approachItems
-      : typeof approachItems === "string"
-      ? JSON.parse(approachItems)
-      : academic.approachItems;
+  if (approachItems !== undefined) {
+    academic.approachItems = parseListField(approachItems, academic.approachItems);
   }
 
   // Handle uploaded slider & grid files

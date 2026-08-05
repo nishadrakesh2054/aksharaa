@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../css/Download.css";
-import { useDownloads } from "../api/hooks/usePublicContent";
-import { getFileUrl } from "../api/media";
+import { useDownloads, useNotices } from "../api/hooks/usePublicContent";
+import { firstImage, getFileUrl } from "../api/media";
 import LoadingState from "../components/states/LoadingState";
 import EmptyState from "../components/states/EmptyState";
 import ErrorState from "../components/states/ErrorState";
@@ -10,6 +10,11 @@ import SectionHeader from "../components/SectionHeader";
 const Download = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const { data: pdfs = [], isLoading, error } = useDownloads();
+  const {
+    data: notices = [],
+    isLoading: noticesLoading,
+    error: noticesError,
+  } = useNotices();
 
   const handleDownload = (filePath) => {
     if (filePath) {
@@ -29,6 +34,25 @@ const Download = () => {
           title="Resources &"
           highlight="Downloads"
         />
+
+
+        <div className="download-notice-records mb-5">
+          <h5 className="download-subtitle">Notice Records</h5>
+          <div className="download-notice-box">
+            {noticesLoading && <LoadingState label="Loading notice records..." />}
+            {noticesError && <ErrorState message={noticesError.message} />}
+            {!noticesLoading && !noticesError && notices.length > 0 && (
+              <img
+                src={firstImage(notices[0].images)}
+                alt="Notice record"
+                loading="lazy"
+              />
+            )}
+            {!noticesLoading && !noticesError && notices.length === 0 && (
+              <EmptyState message="No notice records found." />
+            )}
+          </div>
+        </div>
 
         {/* Search Filter Box */}
         <div className="row justify-content-center mt-3 mb-4">

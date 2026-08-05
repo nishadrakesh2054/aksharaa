@@ -65,7 +65,7 @@ const Mobilecheck = () => {
           image={seniorImg}
           imageAlt="Senior School"
           buttonText="Enroll now"
-          buttonLink="/academics/high"
+          buttonLink="/academics-high"
         />
 
         <Section
@@ -79,7 +79,7 @@ const Mobilecheck = () => {
           image={middleImg}
           imageAlt="Girl"
           buttonText="Enroll now"
-          buttonLink="/academics/middle"
+          buttonLink="/academics-middle"
           reverse
         />
 
@@ -94,7 +94,7 @@ const Mobilecheck = () => {
           image={kindergartenImg}
           imageAlt="Girl 2"
           buttonText="Enroll now"
-          buttonLink="/academics/elementary"
+          buttonLink="/academics-elementary"
         />
 
         <Section
@@ -108,7 +108,7 @@ const Mobilecheck = () => {
           image={elementaryImg}
           imageAlt="Kindergarten"
           buttonText="Enroll now"
-          buttonLink="/academics/kindergarten"
+          buttonLink="/academics-kindergarten"
           reverse
         />
       </div>

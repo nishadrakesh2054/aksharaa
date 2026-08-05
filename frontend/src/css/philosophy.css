@@ -88,11 +88,13 @@
 }
 
 .philosophy-image-wrapper img,
-.philosophy-image-wrapper video {
+.philosophy-image-wrapper video,
+.philosophy-image-wrapper iframe {
   width: 100%;
   height: 380px;
   object-fit: cover;
   display: block;
+  border: 0;
 }
 
 .philosophy-floating-badge {

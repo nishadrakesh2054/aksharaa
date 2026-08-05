@@ -1,6 +1,6 @@
 import React, { Suspense, lazy, useState, useEffect } from "react";
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
+import { Navigate, Routes, Route } from "react-router-dom";
 import TopBar from "./components/TopBar";
 import Head from "./components/Head";
 import Footer from "./components/Footer";
@@ -9,6 +9,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import ScrollToTop from "./components/ScrollToTop";
 import LoadingState from "./components/states/LoadingState";
 import InitialLoader from "./components/InitialLoader";
+import RouteSEO from "./components/RouteSEO";
 import { useNotices } from "./api/hooks/usePublicContent";
 import { getFileUrl } from "./api/media";
 
@@ -105,6 +106,7 @@ const App = () => {
 
       <TopBar />
       <Head />
+      <RouteSEO />
 
       <ErrorBoundary>
         <Suspense fallback={<PageFallback />}>
@@ -114,17 +116,17 @@ const App = () => {
             <Route path="/akshara-mun" element={<AksharaMUN />} />
             <Route path="/infrastructure" element={<Infrastructure />} />
             <Route path="/infrastructure/:id" element={<InfraDetails />} />
-            <Route path="/academics/kindergarten" element={<Kindegarten />} />
-            <Route path="/academics/elementary" element={<Elementryschool />} />
-            <Route path="/academics/middle" element={<Middleschool />} />
-            <Route path="/academics/high" element={<Highschool />} />
-            <Route path="/admission/policy" element={<Admissionpolicy />} />
-            <Route path="/admission/procedure" element={<AdmissionProcedure />} />
+            <Route path="/academics-kindergarten" element={<Kindegarten />} />
+            <Route path="/academics-elementary" element={<Elementryschool />} />
+            <Route path="/academics-middle" element={<Middleschool />} />
+            <Route path="/academics-high" element={<Highschool />} />
+            <Route path="/admission-policy" element={<Admissionpolicy />} />
+            <Route path="/admission-procedure" element={<AdmissionProcedure />} />
             <Route path="/apply-online" element={<ApplyOnline />} />
-            <Route path="/about/chairman" element={<ChairmanMsg />} />
-            <Route path="/about/team" element={<Team />} />
+            <Route path="/about-chairman" element={<ChairmanMsg />} />
+            <Route path="/about-team" element={<Team />} />
             <Route path="/getinquiry" element={<EnquiryModel />} />
-            <Route path="/about/lrpa" element={<LRPA />} />
+            <Route path="/about-lrpa" element={<LRPA />} />
             <Route path="/newsactivity" element={<Blog />} />
             <Route
               path="/newsactivity/longterm-project/:id"
@@ -144,6 +146,17 @@ const App = () => {
             <Route path="/blog/:id" element={<LatestBlogDetails />} />
             <Route path="/category/:categoryId" element={<CategoryBlogs />} />
             <Route path="/downloads" element={<Download />} />
+            <Route path="/about/chairman" element={<Navigate to="/about-chairman" replace />} />
+            <Route path="/about/team" element={<Navigate to="/about-team" replace />} />
+            <Route path="/about/lrpa" element={<Navigate to="/about-lrpa" replace />} />
+            <Route path="/academics/kindergarten" element={<Navigate to="/academics-kindergarten" replace />} />
+            <Route path="/academics/elementary" element={<Navigate to="/academics-elementary" replace />} />
+            <Route path="/academics/middle" element={<Navigate to="/academics-middle" replace />} />
+            <Route path="/academics/high" element={<Navigate to="/academics-high" replace />} />
+            <Route path="/academics" element={<Navigate to="/academics-kindergarten" replace />} />
+            <Route path="/admission/policy" element={<Navigate to="/admission-policy" replace />} />
+            <Route path="/admission/procedure" element={<Navigate to="/admission-procedure" replace />} />
+            <Route path="/download" element={<Navigate to="/downloads" replace />} />
             <Route path="*" element={<Error />} />
           </Routes>
         </Suspense>

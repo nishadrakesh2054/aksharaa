@@ -9,7 +9,7 @@ import Banner from "../components/Banner";
 import Contact from "./Contact";
 import Counter from "../components/Counter";
 import About from "./About";
-import CreativeWeek from "../components/CreativeWeek";
+// import CreativeWeek from "../components/CreativeWeek";
 import HomeBlog from "../components/HomeBlog";
 import Mission from "./../components/Mission";
 import Infochek from "../components/Infochek";
@@ -42,14 +42,14 @@ const Home = () => {
       <Mission />
       {isMobile ? <Mobilecheck /> : <Learning />}
       <Infochek />
-      <About />
-      <Blog />
+      <About showSEO={false} />
+      <Blog showSEO={false} />
       <Counter />
       <Testimonial />
       <HomeBlog />
-      <CreativeWeek />
+      {/* <CreativeWeek /> */}
       <Pic />
-      <Contact />
+      <Contact showSEO={false} />
       <Brand />
     </>
   );

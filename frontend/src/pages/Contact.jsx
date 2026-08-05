@@ -4,7 +4,7 @@ import SectionHeader from "../components/SectionHeader";
 import SEO from "../components/SEO";
 import "../css/contactSection.css";
 
-const Contact = () => {
+const Contact = ({ showSEO = true }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -37,12 +37,14 @@ const Contact = () => {
   }
 
   return (
-    <section className="contact-section-wrapper section-bg-white py-5 my-2">
-      <SEO
-        title="Contact Us | Location, Phone & Inquiry"
-        description="Get in touch with Aksharaa School in Kandaghari, Kageshwori 9, Kathmandu. Call +977-01-4993031 or email info@aksharaaschool.edu.np."
-        keywords="Contact Aksharaa School, Aksharaa Location, Aksharaa Phone Number, Aksharaa Address Kathmandu"
-      />
+    <section className="contact-section-wrapper section-bg-alt py-5 my-2">
+      {showSEO ? (
+        <SEO
+          title="Contact Us | Location, Phone & Inquiry"
+          description="Get in touch with Aksharaa School in Kandaghari, Kageshwori 9, Kathmandu. Call +977-01-4993031 or email info@aksharaaschool.edu.np."
+          keywords="Contact Aksharaa School, Aksharaa Location, Aksharaa Phone Number, Aksharaa Address Kathmandu"
+        />
+      ) : null}
       <div className="container mx-auto">
         <SectionHeader
           badge="GET IN TOUCH"

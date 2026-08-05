@@ -161,8 +161,17 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
+
+.topbar-logo {
+  display: block;
+  width: 220px;
+  height: 70px;
+  object-fit: contain;
+  image-rendering: auto;
+}
+
 .topbar-info-item {
-  padding: 4px 8px;
+  padding: 2px 6px;
   border-radius: 10px;
   transition: background 0.2s ease, transform 0.2s ease;
 }
@@ -172,8 +181,8 @@
 }
 
 .topbar-icon-box {
-  width: 34px;
-  height: 34px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   background: rgba(244, 63, 94, 0.1);
   display: flex;

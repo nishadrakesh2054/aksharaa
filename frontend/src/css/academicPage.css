@@ -43,6 +43,37 @@
   margin-bottom: 0;
 }
 
+.academic-rich-description {
+  font-size: 1rem;
+  color: #334155;
+  line-height: 1.7;
+}
+
+.academic-rich-description p {
+  margin-bottom: 1rem;
+}
+
+.academic-rich-description p:last-child {
+  margin-bottom: 0;
+}
+
+.academic-rich-description ul,
+.academic-rich-description ol {
+  margin: 0 0 1rem 1.25rem;
+  padding-left: 1rem;
+}
+
+.academic-rich-description li {
+  margin-bottom: 0.45rem;
+}
+
+.academic-rich-description a {
+  color: #196642;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .academic-side-img {
   width: 100%;
   height: 280px;
@@ -99,6 +130,45 @@
 .academic-list-item i {
   margin-top: 3px;
   flex-shrink: 0;
+}
+
+
+.academic-nested-list {
+  display: grid;
+  gap: 12px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.academic-nested-item {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 10px;
+  align-items: start;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.academic-nested-item i {
+  margin-top: 3px;
+  font-size: 0.95rem;
+}
+
+.academic-nested-item strong {
+  display: block;
+  color: #0f172a;
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
+.academic-nested-item p {
+  color: #64748b;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  margin: 4px 0 0;
 }
 
 /* Compact Pill Badge Grid System */

@@ -53,7 +53,7 @@ const Learning = () => {
               <button
                 className="button-21"
                 role="button"
-                onClick={() => navigate("/about/lrpa")}
+                onClick={() => navigate("/about-lrpa")}
               >
                 Read More<i className="fa-solid fa-arrow-right ms-2"></i>
               </button>
@@ -73,7 +73,7 @@ const Learning = () => {
                 <button
                   className="button-21"
                   role="button"
-                  onClick={() => navigate("/academics/high")}
+                  onClick={() => navigate("/academics-high")}
                 >
                   Enroll now
                 </button>
@@ -94,7 +94,7 @@ const Learning = () => {
                 <button
                   className="button-21"
                   role="button"
-                  onClick={() => navigate("/academics/middle")}
+                  onClick={() => navigate("/academics-middle")}
                 >
                   Enroll now
                 </button>
@@ -115,7 +115,7 @@ const Learning = () => {
                 <button
                   className="button-21"
                   role="button"
-                  onClick={() => navigate("/academics/elementary")}
+                  onClick={() => navigate("/academics-elementary")}
                 >
                   Enroll now
                 </button>
@@ -137,7 +137,7 @@ const Learning = () => {
                 <button
                   className="button-21"
                   role="button"
-                  onClick={() => navigate("/academics/kindergarten")}
+                  onClick={() => navigate("/academics-kindergarten")}
                 >
                   Enroll now
                 </button>

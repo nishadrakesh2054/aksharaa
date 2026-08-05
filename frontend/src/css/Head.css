@@ -55,7 +55,7 @@ header {
   color: #ffffff !important;
   font-size: 0.95rem;
   font-weight: 500;
-  padding: 8px 12px !important;
+  padding: 6px 10px !important;
   position: relative;
   transition: color 0.25s ease, transform 0.2s ease;
   white-space: nowrap;

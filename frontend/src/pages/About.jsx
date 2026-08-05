@@ -8,8 +8,14 @@ import "../css/aboutPage.css";
 
 const aboutData = {
   introText: [
-    `Established in 2011, Aksharaa School, the Best School in Kathmandu is a co-education institute offering day school from Kindergarten through grade 10. The school operates in three earthquake-resistant academic and administrative blocks spread over 23 ropanis of land. Our advanced infrastructure includes modern classrooms and facilities designed to provide a safe, technologically advanced learning environment that meets international standards.`,
-    `Ranked among internationally accredited schools, Aksharaa is renowned for employing innovative teaching methodologies in technology-enhanced classrooms. Our child-friendly facilities create sophisticated learning environments, encouraging students to engage deeply during their study hours. We are committed to fostering a physically, mentally, and intellectually stimulating environment that promotes the holistic development of young children.`,
+    `Aksharaa School provides an enriching educational experience with its blend of modern facilities and innovative teaching methods. Our expansive premises feature spacious buildings and full-sized playgrounds, offering a holistic learning environment that extends beyond traditional classroom settings`,
+    `At Aksharaa School, we are committed to integrating cutting-edge technology into our curriculum. Our classrooms are equipped with computers, laptops, projectors, and other advanced tools, facilitating interactive and project-based learning. This technology supports students in conducting research, creating multimedia presentations, and collaborating effectively on group projects.`,
+
+    `We pride ourselves on fostering critical thinking and problem-solving skills through hands-on experiences. Our students engage in a variety of enriching activities, including educational field trips, guest lectures, and international tours. These experiences are designed to broaden their perspectives and apply classroom knowledge to real-world situations.`,
+
+    `Our approach to education combines intellectual mentoring with practical application. Students are encouraged to explore, discuss, and apply their knowledge through diverse methods such as role plays, group work, and virtual learning. This integration of theory and practice not only strengthens their understanding but also prepares them for future challenges with confidence and adaptability.`,
+
+    `At Aksharaa School, we believe in nurturing well-rounded individuals who are ready to make meaningful contributions to society. Our focus on holistic development ensures that students leave us not only with academic excellence but also with the skills and experiences needed to succeed in an ever-evolving world.`,
   ],
   whyChooseUs: [
     {
@@ -69,7 +75,7 @@ const PhilosophySection = memo(({ navigate }) => (
 
           <button
             className="philosophy-btn mt-2"
-            onClick={() => navigate("/about/lrpa")}
+            onClick={() => navigate("/about-lrpa")}
           >
             <span>Explore LRPA Approach</span>
             <i className="fas fa-arrow-right"></i>
@@ -79,22 +85,14 @@ const PhilosophySection = memo(({ navigate }) => (
         {/* Right Side Video Banner */}
         <div className="col-lg-6 col-md-12 mb-4">
           <div className="philosophy-image-wrapper">
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              poster={School2}
+            <iframe
               className="philosophy-video"
-            >
-              <source src="/videos/philosophy.mp4" type="video/mp4" />
-              <source src="/videos/philosophy.webm" type="video/webm" />
-              <img
-                src={School2}
-                alt="Aksharaa Campus & Philosophy"
-                loading="lazy"
-              />
-            </video>
+              src="https://www.youtube.com/embed/nvz3GgY4Nts?autoplay=1&mute=1&start=43&loop=1&playlist=nvz3GgY4Nts&controls=0&rel=0&modestbranding=1&playsinline=1"
+              title="Aksharaa School Philosophy Video"
+              allow="autoplay; encrypted-media; picture-in-picture"
+              allowFullScreen
+              loading="lazy"
+            ></iframe>
             <div className="philosophy-floating-badge">
               <i className="fas fa-award"></i>
               <div>
@@ -125,6 +123,17 @@ const AboutContent = memo(() => (
             {text}
           </p>
         ))}
+      </div>
+
+
+      <div className="about-intro-box my-4">
+        <h4 className="fw-bold text-dark mb-3">Introduction of Aksharaa School</h4>
+        <p className="mb-3">
+          Established in 2011, Aksharaa School, the Best School in Kathmandu is a co-education institute offering day school from Kindergarten through grade 10. The school operates in three earthquake-resistant academic and administrative blocks spread over 23 ropanis of land. Our advanced infrastructure includes modern classrooms and facilities designed to provide a safe, technologically advanced learning environment that meets international standards.
+        </p>
+        <p className="mb-0">
+          Ranked among internationally accredited schools, Aksharaa is renowned for employing innovative teaching methodologies in technology-enhanced classrooms. Our child-friendly facilities create sophisticated learning environments, encouraging students to engage deeply during their study hours. We are committed to fostering a physically, mentally, and intellectually stimulating environment that promotes the holistic development of young children.
+        </p>
       </div>
 
       {/* Why Choose Us Grid */}
@@ -159,7 +168,7 @@ const AboutContent = memo(() => (
           </p>
         </div>
 
-        <Link to="/about/lrpa" className="about-lrpa-btn">
+        <Link to="/about-lrpa" className="about-lrpa-btn">
           <span>Explore LRPA Philosophy</span>
           <i className="fas fa-arrow-right"></i>
         </Link>
@@ -168,7 +177,7 @@ const AboutContent = memo(() => (
   </section>
 ));
 
-const About = () => {
+const About = ({ showSEO = true }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const [show, setShow] = useState(false);
@@ -179,19 +188,23 @@ const About = () => {
 
   return show ? (
     <>
-      <SEO
-        title="Our Philosophy & Approach | LRPA Pedagogy"
-        description="Aksharaa School adopts a student-centered, constructivist philosophy fostering autonomous learning, character development, and academic authenticity."
-      />
+      {showSEO ? (
+        <SEO
+          title="Our Philosophy & Approach | LRPA Pedagogy"
+          description="Aksharaa School adopts a student-centered, constructivist philosophy fostering autonomous learning, character development, and academic authenticity."
+        />
+      ) : null}
       <PhilosophySection navigate={navigate} />
     </>
   ) : (
     <>
-      <SEO
-        title="About Aksharaa School | Highlights & History"
-        description="Established in 2011, Aksharaa School in Kathmandu operates in earthquake-resistant blocks across 23 ropanis, nurturing young minds through value-based progressive education."
-        keywords="About Aksharaa School, Aksharaa History, Best Co-Ed School Kathmandu, Progressive Education Nepal"
-      />
+      {showSEO ? (
+        <SEO
+          title="About Aksharaa School | Highlights & History"
+          description="Established in 2011, Aksharaa School in Kathmandu operates in earthquake-resistant blocks across 23 ropanis, nurturing young minds through value-based progressive education."
+          keywords="About Aksharaa School, Aksharaa History, Best Co-Ed School Kathmandu, Progressive Education Nepal"
+        />
+      ) : null}
       {/* Full Image Display */}
       <div className="w-100 mb-3">
         <img

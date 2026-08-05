@@ -5,13 +5,40 @@ import {
   GraduationCap,
   Plus,
   Trash2,
-  Save, 
+  Save,
   BookOpen,
   Image as ImageIcon,
   ImagePlus,
-  CheckCircle,
   X,
 } from "lucide-react";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import {
+  ClassicEditor,
+  Bold,
+  Essentials,
+  Heading,
+  Italic,
+  Link,
+  List,
+  Paragraph,
+  Table,
+  Undo,
+} from "ckeditor5";
+import "ckeditor5/ckeditor5.css";
+
+
+const normalizeAcademicItems = (items = []) =>
+  items
+    .map((item) => {
+      if (typeof item === "string") return { title: item, details: "" };
+      return {
+        title: item?.title || item?.name || "",
+        details: item?.details || item?.description || "",
+      };
+    })
+    .filter((item) => item.title || item.details);
+
+const emptyListItem = { title: "", details: "" };
 
 const ACADEMIC_CATEGORIES = [
   { id: "kindergarten", name: "Kindergarten", grade: "(PG-UKG)" },
@@ -45,9 +72,9 @@ const AcademicsPage = () => {
   const [newGridFiles, setNewGridFiles] = useState([]);
 
   // Bullet Inputs
-  const [newLearningCenter, setNewLearningCenter] = useState("");
-  const [newExtraActivity, setNewExtraActivity] = useState("");
-  const [newApproachItem, setNewApproachItem] = useState("");
+  const [newLearningCenter, setNewLearningCenter] = useState(emptyListItem);
+  const [newExtraActivity, setNewExtraActivity] = useState(emptyListItem);
+  const [newApproachItem, setNewApproachItem] = useState(emptyListItem);
 
   const fetchAcademicData = async (catId) => {
     try {
@@ -61,11 +88,11 @@ const AcademicsPage = () => {
         gradeRange: data.gradeRange || "",
         description: data.description || "",
         learningCentersTitle: data.learningCentersTitle || "Learning Centers",
-        learningCenters: data.learningCenters || [],
+        learningCenters: normalizeAcademicItems(data.learningCenters || []),
         extraActivitiesTitle: data.extraActivitiesTitle || "Extra / Co-Curricular Activities",
-        extraActivities: data.extraActivities || [],
+        extraActivities: normalizeAcademicItems(data.extraActivities || []),
         approachTitle: data.approachTitle || "Aksharaa Approach to Quality Education",
-        approachItems: data.approachItems || [],
+        approachItems: normalizeAcademicItems(data.approachItems || []),
         sliderImages: data.sliderImages || [],
         gridImages: data.gridImages || [],
       });
@@ -87,14 +114,29 @@ const AcademicsPage = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Add & Delete List Items
-  const addListItem = (fieldName, itemText, setInputState) => {
-    if (!itemText.trim()) return;
+  // Add, edit & delete nested list items
+  const addListItem = (fieldName, itemData, setInputState) => {
+    const title = itemData.title.trim();
+    const details = itemData.details.trim();
+    if (!title) return;
     setFormData((prev) => ({
       ...prev,
-      [fieldName]: [...prev[fieldName], itemText.trim()],
+      [fieldName]: [...prev[fieldName], { title, details }],
     }));
-    setInputState("");
+    setInputState(emptyListItem);
+  };
+
+  const updateListItem = (fieldName, index, key, value) => {
+    setFormData((prev) => ({
+      ...prev,
+      [fieldName]: prev[fieldName].map((item, i) =>
+        i === index ? { ...item, [key]: value } : item
+      ),
+    }));
+  };
+
+  const showListItemDescription = (fieldName, index) => {
+    updateListItem(fieldName, index, "showDetails", true);
   };
 
   const removeListItem = (fieldName, index) => {
@@ -212,7 +254,7 @@ const AcademicsPage = () => {
         <form onSubmit={handleSave} className="row g-4">
           {/* Left Column: General Details & Text */}
           <div className="col-lg-7">
-            <div className="card border-0 shadow-sm p-4 mb-4">
+            <div className="card border p-3 mb-4">
               <h6 className="fw-semibold text-dark border-bottom pb-2 mb-3 d-flex align-items-center gap-2" style={{ fontSize: "0.95rem" }}>
                 <BookOpen size={16} className="text-success" /> Program Overview & Content
               </h6>
@@ -242,20 +284,46 @@ const AcademicsPage = () => {
                 </div>
                 <div className="col-12">
                   <label className="form-label fw-semibold small">Program Description Paragraphs</label>
-                  <textarea
-                    name="description"
-                    rows={6}
-                    className="form-control"
-                    placeholder="Enter detailed description of the academic program..."
-                    value={formData.description}
-                    onChange={handleInputChange}
+                  <CKEditor
+                    editor={ClassicEditor}
+                    config={{
+                      plugins: [
+                        Essentials,
+                        Bold,
+                        Italic,
+                        Paragraph,
+                        Heading,
+                        List,
+                        Link,
+                        Table,
+                        Undo,
+                      ],
+                      toolbar: [
+                        "undo",
+                        "redo",
+                        "|",
+                        "heading",
+                        "|",
+                        "bold",
+                        "italic",
+                        "|",
+                        "link",
+                        "bulletedList",
+                        "numberedList",
+                        "insertTable",
+                      ],
+                    }}
+                    data={formData.description}
+                    onChange={(_event, editor) => {
+                      setFormData((prev) => ({ ...prev, description: editor.getData() }));
+                    }}
                   />
                 </div>
               </div>
             </div>
 
             {/* Learning Centers & Activities */}
-            <div className="card border-0 shadow-sm p-4 mb-4">
+            <div className="card border p-3 mb-4">
               <h6 className="fw-semibold text-dark border-bottom pb-2 mb-3" style={{ fontSize: "0.95rem" }}>
                 Learning Centers & Key Pillars
               </h6>
@@ -271,17 +339,35 @@ const AcademicsPage = () => {
                 />
               </div>
 
-              <div className="input-group mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Add learning center / pillar item..."
-                  value={newLearningCenter}
-                  onChange={(e) => setNewLearningCenter(e.target.value)}
-                />
+              <div className="border rounded-2 p-2 bg-white mb-3">
+                <div className="row g-2 align-items-stretch">
+                  <div className="col-md-6">
+                    <input
+                      type="text"
+                      className="form-control h-100"
+                      style={{ minHeight: "58px" }}
+                      placeholder="Item title..."
+                      value={newLearningCenter.title}
+                      onChange={(e) =>
+                        setNewLearningCenter((prev) => ({ ...prev, title: e.target.value }))
+                      }
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <textarea
+                      className="form-control"
+                      rows={2}
+                      placeholder="Description"
+                      value={newLearningCenter.details}
+                      onChange={(e) =>
+                        setNewLearningCenter((prev) => ({ ...prev, details: e.target.value }))
+                      }
+                    />
+                  </div>
+                </div>
                 <button
                   type="button"
-                  className="btn btn-outline-success"
+                  className="btn btn-success btn-sm mt-2 px-3 d-inline-flex align-items-center gap-1"
                   onClick={() =>
                     addListItem("learningCenters", newLearningCenter, setNewLearningCenter)
                   }
@@ -290,24 +376,54 @@ const AcademicsPage = () => {
                 </button>
               </div>
 
-              <ul className="list-group mb-2">
+              <div className="d-flex flex-column gap-2">
                 {formData.learningCenters.map((item, idx) => (
-                  <li key={idx} className="list-group-item d-flex align-items-center justify-content-between py-2">
-                    <span className="small fw-semibold text-dark">{idx + 1}. {item}</span>
-                    <button
-                      type="button"
-                      className="btn btn-sm btn-outline-danger border-0 p-1"
-                      onClick={() => removeListItem("learningCenters", idx)}
-                    >
-                      <Trash2 size={15} />
-                    </button>
-                  </li>
+                  <div key={idx} className="border rounded-2 p-2 bg-white">
+                    <div className="d-flex gap-2 align-items-start">
+                      <div className="flex-grow-1">
+                        <input
+                          type="text"
+                          className="form-control form-control-sm fw-semibold mb-2"
+                          value={item.title}
+                          onChange={(e) =>
+                            updateListItem("learningCenters", idx, "title", e.target.value)
+                          }
+                        />
+                        {item.details || item.showDetails ? (
+                          <textarea
+                            className="form-control form-control-sm"
+                            rows={2}
+                            placeholder="Description"
+                            value={item.details}
+                            onChange={(e) =>
+                              updateListItem("learningCenters", idx, "details", e.target.value)
+                            }
+                          />
+                        ) : (
+                          <button
+                            type="button"
+                            className="btn btn-link btn-sm text-success p-0 text-decoration-none"
+                            onClick={() => showListItemDescription("learningCenters", idx)}
+                          >
+                            <Plus size={13} /> Add description
+                          </button>
+                        )}
+                      </div>
+                      <button
+                        type="button"
+                        className="btn btn-sm btn-outline-danger border-0 p-1"
+                        onClick={() => removeListItem("learningCenters", idx)}
+                      >
+                        <Trash2 size={15} />
+                      </button>
+                    </div>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
 
             {/* Co-curricular Activities & Approach */}
-            <div className="card border-0 shadow-sm p-4">
+            <div className="card border p-3">
               <h6 className="fw-semibold text-dark border-bottom pb-2 mb-3" style={{ fontSize: "0.95rem" }}>
                 Extra / Co-Curricular & Approach
               </h6>
@@ -322,17 +438,35 @@ const AcademicsPage = () => {
                   value={formData.extraActivitiesTitle}
                   onChange={handleInputChange}
                 />
-                <div className="input-group mb-2">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Add extra activity (e.g. Yoga & Mindfulness)..."
-                    value={newExtraActivity}
-                    onChange={(e) => setNewExtraActivity(e.target.value)}
-                  />
+                <div className="border rounded-2 p-2 bg-white mb-3">
+                  <div className="row g-2 align-items-stretch">
+                    <div className="col-md-6">
+                      <input
+                        type="text"
+                        className="form-control h-100"
+                        style={{ minHeight: "58px" }}
+                        placeholder="Activity title..."
+                        value={newExtraActivity.title}
+                        onChange={(e) =>
+                          setNewExtraActivity((prev) => ({ ...prev, title: e.target.value }))
+                        }
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <textarea
+                        className="form-control"
+                        rows={2}
+                        placeholder="Description"
+                        value={newExtraActivity.details}
+                        onChange={(e) =>
+                          setNewExtraActivity((prev) => ({ ...prev, details: e.target.value }))
+                        }
+                      />
+                    </div>
+                  </div>
                   <button
                     type="button"
-                    className="btn btn-outline-success"
+                    className="btn btn-success btn-sm mt-2 px-3 d-inline-flex align-items-center gap-1"
                     onClick={() =>
                       addListItem("extraActivities", newExtraActivity, setNewExtraActivity)
                     }
@@ -340,16 +474,48 @@ const AcademicsPage = () => {
                     <Plus size={16} /> Add
                   </button>
                 </div>
-                <div className="d-flex flex-wrap gap-2">
+                <div className="d-flex flex-column gap-2">
                   {formData.extraActivities.map((act, idx) => (
-                    <span key={idx} className="badge bg-light text-dark border p-2 d-flex align-items-center gap-1">
-                      {act}
-                      <Trash2
-                        size={13}
-                        className="text-danger cursor-pointer ms-1"
-                        onClick={() => removeListItem("extraActivities", idx)}
-                      />
-                    </span>
+                    <div key={idx} className="border rounded-2 p-2 bg-white">
+                      <div className="d-flex gap-2 align-items-start">
+                        <div className="flex-grow-1">
+                          <input
+                            type="text"
+                            className="form-control form-control-sm fw-semibold mb-2"
+                            value={act.title}
+                            onChange={(e) =>
+                              updateListItem("extraActivities", idx, "title", e.target.value)
+                            }
+                          />
+                          {act.details || act.showDetails ? (
+                            <textarea
+                              className="form-control form-control-sm"
+                              rows={2}
+                              placeholder="Description"
+                              value={act.details}
+                              onChange={(e) =>
+                                updateListItem("extraActivities", idx, "details", e.target.value)
+                              }
+                            />
+                          ) : (
+                            <button
+                              type="button"
+                              className="btn btn-link btn-sm text-success p-0 text-decoration-none"
+                              onClick={() => showListItemDescription("extraActivities", idx)}
+                            >
+                              <Plus size={13} /> Add description
+                            </button>
+                          )}
+                        </div>
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-outline-danger border-0 p-1"
+                          onClick={() => removeListItem("extraActivities", idx)}
+                        >
+                          <Trash2 size={15} />
+                        </button>
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -364,17 +530,35 @@ const AcademicsPage = () => {
                   value={formData.approachTitle}
                   onChange={handleInputChange}
                 />
-                <div className="input-group mb-2">
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Add approach pillar (e.g. Activity-based learning)..."
-                    value={newApproachItem}
-                    onChange={(e) => setNewApproachItem(e.target.value)}
-                  />
+                <div className="border rounded-2 p-2 bg-white mb-3">
+                  <div className="row g-2 align-items-stretch">
+                    <div className="col-md-6">
+                      <input
+                        type="text"
+                        className="form-control h-100"
+                        style={{ minHeight: "58px" }}
+                        placeholder="Approach title..."
+                        value={newApproachItem.title}
+                        onChange={(e) =>
+                          setNewApproachItem((prev) => ({ ...prev, title: e.target.value }))
+                        }
+                      />
+                    </div>
+                    <div className="col-md-6">
+                      <textarea
+                        className="form-control"
+                        rows={2}
+                        placeholder="Description"
+                        value={newApproachItem.details}
+                        onChange={(e) =>
+                          setNewApproachItem((prev) => ({ ...prev, details: e.target.value }))
+                        }
+                      />
+                    </div>
+                  </div>
                   <button
                     type="button"
-                    className="btn btn-outline-success"
+                    className="btn btn-success btn-sm mt-2 px-3 d-inline-flex align-items-center gap-1"
                     onClick={() =>
                       addListItem("approachItems", newApproachItem, setNewApproachItem)
                     }
@@ -382,16 +566,48 @@ const AcademicsPage = () => {
                     <Plus size={16} /> Add
                   </button>
                 </div>
-                <div className="d-flex flex-wrap gap-2">
+                <div className="d-flex flex-column gap-2">
                   {formData.approachItems.map((item, idx) => (
-                    <span key={idx} className="badge bg-success-subtle text-success border border-success p-2 d-flex align-items-center gap-1">
-                      <CheckCircle size={12} /> {item}
-                      <Trash2
-                        size={13}
-                        className="text-danger cursor-pointer ms-1"
-                        onClick={() => removeListItem("approachItems", idx)}
-                      />
-                    </span>
+                    <div key={idx} className="border rounded-2 p-2 bg-white">
+                      <div className="d-flex gap-2 align-items-start">
+                        <div className="flex-grow-1">
+                          <input
+                            type="text"
+                            className="form-control form-control-sm fw-semibold mb-2"
+                            value={item.title}
+                            onChange={(e) =>
+                              updateListItem("approachItems", idx, "title", e.target.value)
+                            }
+                          />
+                          {item.details || item.showDetails ? (
+                            <textarea
+                              className="form-control form-control-sm"
+                              rows={2}
+                              placeholder="Description"
+                              value={item.details}
+                              onChange={(e) =>
+                                updateListItem("approachItems", idx, "details", e.target.value)
+                              }
+                            />
+                          ) : (
+                            <button
+                              type="button"
+                              className="btn btn-link btn-sm text-success p-0 text-decoration-none"
+                              onClick={() => showListItemDescription("approachItems", idx)}
+                            >
+                              <Plus size={13} /> Add description
+                            </button>
+                          )}
+                        </div>
+                        <button
+                          type="button"
+                          className="btn btn-sm btn-outline-danger border-0 p-1"
+                          onClick={() => removeListItem("approachItems", idx)}
+                        >
+                          <Trash2 size={15} />
+                        </button>
+                      </div>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -401,7 +617,7 @@ const AcademicsPage = () => {
           {/* Right Column: Top Scroll Banner Photos & Bottom Image Grid Photos */}
           <div className="col-lg-5">
             {/* Top Banner Scroll Photos */}
-            <div className="card border-0 shadow-sm p-4 mb-4">
+            <div className="card border p-3 mb-4">
               <div className="d-flex align-items-center justify-content-between border-bottom pb-2 mb-3">
                 <h6 className="fw-semibold text-dark mb-0 d-flex align-items-center gap-2" style={{ fontSize: "0.95rem" }}>
                   <ImageIcon size={16} className="text-success" /> Top Banner Scroll Photos
@@ -513,7 +729,7 @@ const AcademicsPage = () => {
             </div>
 
             {/* Bottom Image Grid Photos */}
-            <div className="card border-0 shadow-sm p-4 mb-4">
+            <div className="card border p-3 mb-4">
               <div className="d-flex align-items-center justify-content-between border-bottom pb-2 mb-3">
                 <h6 className="fw-semibold text-dark mb-0 d-flex align-items-center gap-2" style={{ fontSize: "0.95rem" }}>
                   <ImageIcon size={16} className="text-success" /> Bottom Photo Grid Gallery

@@ -100,3 +100,27 @@
   color: #196642 !important;
   transform: translateY(-1px) scale(1.18);
 }
+.download-subtitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.85rem;
+}
+
+.download-notice-box {
+  min-height: 260px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.download-notice-box img {
+  width: 100%;
+  max-height: 420px;
+  object-fit: contain;
+  display: block;
+}

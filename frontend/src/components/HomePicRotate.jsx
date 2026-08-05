@@ -126,7 +126,7 @@ const HomePicRotate = () => {
   };
 
   return (
-    <section className="pic-rotate-section section-bg-alt py-5 my-3 position-relative">
+    <section className="pic-rotate-section  py-5 my-3 position-relative">
       <div className="container mx-auto">
         <SectionHeader
           badge="CAMPUS LIFE & MOMENTS"

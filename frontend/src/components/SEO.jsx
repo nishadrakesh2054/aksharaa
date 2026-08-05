@@ -21,7 +21,11 @@ const SEO = ({
 }) => {
   const location = useLocation();
   const canonicalUrl = `${SITE_URL}${location.pathname}`;
-  const fullTitle = title ? `${title} | ${SITE_NAME}` : DEFAULT_TITLE;
+  const buildFullTitle = (value) => {
+    if (!value) return DEFAULT_TITLE;
+    return value.includes(SITE_NAME) ? value : `${value} | ${SITE_NAME}`;
+  };
+  const fullTitle = buildFullTitle(title);
 
   // Default Organization JSON-LD Schema for Google Search
   const defaultSchema = {
@@ -55,6 +59,7 @@ const SEO = ({
     <Helmet>
       {/* Standard Meta Tags */}
       <title>{fullTitle}</title>
+      <meta name="title" content={fullTitle} />
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords} />
       <meta name="robots" content="index, follow" />

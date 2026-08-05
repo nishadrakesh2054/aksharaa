@@ -1,6 +1,5 @@
 import React from "react";
 import "../css/ChairmanMsg.css";
-import PrincipalMSG from "../assets/principal (1).jpg";
 
 const ChairmanMsg = () => {
   return (
@@ -67,8 +66,8 @@ const ChairmanMsg = () => {
             <div className="col-lg-4">
               <div className="fancy-border">
                 <img
-                  src="https://www.aksharaaschool.edu.np/public/assets/images/ChairmanSir.jpg"
-                  alt="Chairman Image"
+                  src="/chairman/chairmain.jpg"
+                  alt="Aksharaa School leadership"
                   className="img-fluid rounded  chairman-image"
                 />
 
@@ -84,8 +83,8 @@ const ChairmanMsg = () => {
             <div className="col-lg-4">
               <div className="fancy-border">
                 <img
-                  src="	https://www.aksharaaschool.edu.np/public/assets/images/principal.jpg"
-                  alt="Chairman Image"
+                  src="/chairman/executive.jpg"
+                  alt="Aksharaa School leadership"
                   className="img-fluid rounded  chairman-image"
                 />
 
@@ -238,10 +237,9 @@ const ChairmanMsg = () => {
             <div className="col-lg-4">
               <div className="fancy-border">
                 <img
-                  src={PrincipalMSG}
-                  lazyLoad={true}
+                  src="/chairman/principal.jpg"
                   loading="lazy"
-                  alt="Chairman Image"
+                  alt="Aksharaa School leadership"
                   className="img-fluid rounded  chairman-image"
                 />
 
