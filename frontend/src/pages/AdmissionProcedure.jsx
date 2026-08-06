@@ -4,6 +4,7 @@ import Enquiryform from "../components/Enquiryform";
 import BreadImg from "../../src/assets/middle/GP4A8126.jpg";
 import roadmap from "/roadmap.png";
 import SectionHeader from "../components/SectionHeader";
+import SEO from "../components/SEO";
 import "../css/admissionPolicy.css";
 import "../css/admissionProcedure.css";
 
@@ -20,13 +21,33 @@ const AdmissionProcedure = () => {
 
   return (
     <>
-      {/* Full Image Display */}
-      <div className="w-100 mb-3">
+      <SEO
+        title="Admission Procedure | Aksharaa School Kathmandu"
+        description="Step-by-step admission procedure for Aksharaa School. Learn about campus tours, digital applications, student evaluations, and enrollment."
+      />
+
+      {/* Full Width Hero Banner with Background Image & Overlay */}
+      <div className="page-hero-banner">
         <img
           src={BreadImg}
           alt="Admission Procedure Banner"
-          className="img-fluid w-100 h-auto"
+          loading="eager"
         />
+        <div className="page-hero-overlay">
+          <span className="badge bg-success bg-opacity-75 text-white px-3 py-2 rounded-pill mb-2 font-monospace small">
+            ADMISSION PROCESS
+          </span>
+          <h1 className="page-hero-title">Admission Procedure</h1>
+
+          {/* Glassmorphic Breadcrumbs Overlay */}
+          <div className="page-hero-breadcrumbs">
+            <Link to="/">Home</Link>
+            <span className="sep"><i className="fas fa-chevron-right"></i></span>
+            <span>Admission</span>
+            <span className="sep"><i className="fas fa-chevron-right"></i></span>
+            <span className="active-crumb">Admission Procedure</span>
+          </div>
+        </div>
       </div>
 
       <section className="admission-proc-wrapper py-5">

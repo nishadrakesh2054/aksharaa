@@ -7,20 +7,42 @@ import { navItems } from "../config/siteRoutes";
 const Head = () => {
   const location = useLocation();
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location.pathname]);
-
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [openMobileSubmenu, setOpenMobileSubmenu] = useState(null);
+  const [closedMenuKey, setClosedMenuKey] = useState(null);
+
+  const closeNav = () => {
+    setIsNavOpen(false);
+    setOpenMobileSubmenu(null);
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
+  };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    closeNav();
+  }, [location.pathname]);
 
   const handleNavToggle = () => {
     setIsNavOpen(!isNavOpen);
   };
 
-  const closeNav = () => {
-    setIsNavOpen(false);
-    setOpenMobileSubmenu(null);
+  const handleDropdownItemClick = (menuKey) => {
+    setClosedMenuKey(menuKey);
+    closeNav();
+  };
+
+  const handleMouseEnter = (menuKey) => {
+    if (closedMenuKey === menuKey) {
+      setClosedMenuKey(null);
+    }
+  };
+
+  const handleMouseLeave = (menuKey) => {
+    if (closedMenuKey === menuKey) {
+      setClosedMenuKey(null);
+    }
   };
 
   const toggleMobileSubmenu = (menuName, e) => {
@@ -94,6 +116,8 @@ const Head = () => {
                           openMobileSubmenu === item.key ? "mobile-submenu-open" : ""
                         } ${isDropdownActive ? "active" : ""}`}
                         key={item.key}
+                        onMouseEnter={() => handleMouseEnter(item.key)}
+                        onMouseLeave={() => handleMouseLeave(item.key)}
                       >
                         <a
                           className="nav-link dropdown-toggle d-flex align-items-center justify-content-between"
@@ -112,7 +136,7 @@ const Head = () => {
                         <ul
                           className={`dropdown-menu ${
                             openMobileSubmenu === item.key ? "show-mobile" : ""
-                          }`}
+                          } ${closedMenuKey === item.key ? "force-closed" : ""}`}
                           aria-labelledby={`${item.key}Dropdown`}
                         >
                           {item.items.map((child) => (
@@ -120,7 +144,7 @@ const Head = () => {
                               <Link
                                 className="dropdown-item"
                                 to={child.path}
-                                onClick={closeNav}
+                                onClick={() => handleDropdownItemClick(item.key)}
                               >
                                 <i className={`${child.icon} me-2 dropdown-item-icon`}></i>
                                 {child.label}

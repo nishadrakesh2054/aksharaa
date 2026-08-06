@@ -46,8 +46,9 @@
 .step-text-content {
   font-size: 0.95rem;
   color: #334155;
-  line-height: 1.55;
+  line-height: 1.6;
   margin: 0;
+  text-align: justify;
 }
 
 .procedure-form-card {
@@ -75,23 +76,23 @@
 
 @media (max-width: 768px) {
   .admission-proc-wrapper {
-    padding: 2rem 0;
+    padding: 1.5rem 0;
   }
 
   .admission-proc-wrapper .container {
-    padding-left: 12px;
-    padding-right: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
   .admission-proc-wrapper .row.g-4 {
-    --bs-gutter-x: 0.85rem;
-    --bs-gutter-y: 0.85rem;
+    --bs-gutter-x: 0.75rem;
+    --bs-gutter-y: 0.75rem;
   }
 
   .procedure-steps-card,
   .procedure-form-card,
   .roadmap-card-box {
-    padding: 1rem;
+    padding: 1.15rem 0.85rem !important;
     border-radius: 14px;
   }
 

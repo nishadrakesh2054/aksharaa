@@ -132,6 +132,14 @@ header {
     z-index: 1050 !important;
   }
 
+  /* Force close dropdown immediately when a page link is clicked */
+  ul.dropdown-menu.force-closed {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
   /* Invisible Hover Bridge spanning parent link & dropdown list */
   ul.dropdown-menu::before {
     content: "";

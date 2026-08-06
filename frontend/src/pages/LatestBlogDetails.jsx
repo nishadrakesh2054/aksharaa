@@ -40,23 +40,23 @@ const LatestBlogDetails = ({ news }) => {
   const categories = categoryQuery.data || [];
   const relatedPosts = (relatedQuery.data || [])
     .filter((relatedBlog) => relatedBlog._id !== blog?._id)
-    .slice(0, 4);
+    .slice(0, 5);
 
   if (detailQuery.isLoading || categoryQuery.isLoading) {
     return (
-      <div className="news-details-wrapper py-5 text-center d-flex align-items-center justify-content-center">
-        <LoadingState label="Loading news details..." />
+      <div className="minimal-news-wrapper py-5 text-center d-flex align-items-center justify-content-center">
+        <LoadingState label="Loading article..." />
       </div>
     );
   }
 
   if (detailQuery.error || categoryQuery.error) {
     return (
-      <div className="news-details-wrapper py-5 text-center">
+      <div className="minimal-news-wrapper py-5 text-center">
         <div className="container py-4">
           <ErrorState message={detailQuery.error?.message || categoryQuery.error?.message} />
-          <button className="news-back-btn mt-3" onClick={() => navigate(-1)}>
-            <i className="fas fa-arrow-left"></i> Go Back
+          <button className="minimal-back-btn mt-3" onClick={() => navigate(-1)}>
+            <i className="fas fa-arrow-left me-2"></i> Go Back
           </button>
         </div>
       </div>
@@ -65,12 +65,12 @@ const LatestBlogDetails = ({ news }) => {
 
   if (!blog) {
     return (
-      <div className="news-details-wrapper py-5 text-center">
+      <div className="minimal-news-wrapper py-5 text-center">
         <div className="container py-4">
-          <h3>Content Not Found</h3>
+          <h3 className="fw-bold text-dark">Article Not Found</h3>
           <p className="text-secondary">The requested article could not be found.</p>
-          <button className="news-back-btn mt-2" onClick={() => navigate(-1)}>
-            <i className="fas fa-arrow-left"></i> Back to News & Activities
+          <button className="minimal-back-btn mt-2" onClick={() => navigate(-1)}>
+            <i className="fas fa-arrow-left me-2"></i> Back to List
           </button>
         </div>
       </div>
@@ -117,7 +117,7 @@ const LatestBlogDetails = ({ news }) => {
     : null;
 
   return (
-    <div className="news-details-wrapper py-4 py-md-5">
+    <div className="minimal-news-wrapper py-4 py-md-5">
       <SEO
         title={blog?.seoTitle || blog?.title}
         description={cleanDescription}
@@ -125,143 +125,145 @@ const LatestBlogDetails = ({ news }) => {
         type="article"
         schema={articleSchema}
       />
-      <div className="container mx-auto">
-        {/* Navigation Breadcrumb / Back Button */}
-        <div className="d-flex align-items-center justify-content-between mb-4">
-          <button className="news-back-btn" onClick={() => navigate(-1)}>
-            <i className="fas fa-arrow-left"></i> Back to List
-          </button>
-          <span className="badge rounded-pill news-badge px-3 py-2 text-uppercase">
-            {categoryName}
-          </span>
-        </div>
 
+      <div className="container mx-auto">
         <div className="row g-4">
-          {/* Main Article Content */}
-          <div className="col-lg-8 col-md-12">
-            <div className="news-article-card p-4 p-md-5">
+          {/* Main Content: 9 Columns */}
+          <div className="col-lg-9 col-md-12">
+            {/* Top Navigation & Category Pill */}
+            <div className="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+              <button className="minimal-back-btn" onClick={() => navigate(-1)}>
+                <i className="fas fa-arrow-left me-2"></i>
+                <span>Back to {news ? "News & Activities" : "Blogs"}</span>
+              </button>
+              <span className="minimal-category-badge">{categoryName}</span>
+            </div>
+
+            {/* Minimalist Article Card */}
+            <article className="minimal-article-card p-4 p-md-5">
               {/* Header Title */}
-              <h1 className="news-title mb-3">{blog?.title}</h1>
+              <h1 className="minimal-news-title mb-3">{blog?.title}</h1>
+
+              {/* Subtitle / Excerpt */}
               {blog?.excerpt && (
-                <p className="news-excerpt mb-3">{blog.excerpt}</p>
+                <p className="minimal-news-excerpt mb-3">{blog.excerpt}</p>
               )}
 
-              {/* Meta Info Bar */}
-              <div className="d-flex flex-wrap align-items-center gap-3 pb-3 mb-4 border-bottom">
-                <span className="news-meta-item">
-                  <i className="far fa-calendar-alt text-danger me-1"></i>
-                  Published: {publishDate}
+              {/* Meta Details Bar */}
+              <div className="minimal-meta-bar mb-4">
+                <span className="meta-item">
+                  <i className="far fa-calendar-alt me-1 text-danger"></i> {publishDate}
                 </span>
-                <span className="news-meta-item">
-                  <i className="fas fa-graduation-cap text-danger me-1"></i>
-                  {blog?.author || "Aksharaa School"}
+                <span className="meta-dot">•</span>
+                <span className="meta-item">
+                  <i className="fas fa-graduation-cap me-1 text-danger"></i> {blog?.author || "Aksharaa School"}
                 </span>
-                {!news && blog?.readTime && (
-                  <span className="news-meta-item">
-                    <i className="far fa-clock text-danger me-1"></i>
-                    {blog.readTime}
-                  </span>
+                {news && blog?.location && (
+                  <>
+                    <span className="meta-dot">•</span>
+                    <span className="meta-item">
+                      <i className="fas fa-map-marker-alt me-1 text-danger"></i> {blog.location}
+                    </span>
+                  </>
                 )}
                 {news && blog?.eventDate && (
-                  <span className="news-meta-item">
-                    <i className="far fa-calendar-check text-danger me-1"></i>
-                    Event: {new Date(blog.eventDate).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </span>
+                  <>
+                    <span className="meta-dot">•</span>
+                    <span className="meta-item">
+                      <i className="far fa-calendar-check me-1 text-danger"></i> Event: {new Date(blog.eventDate).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" })}
+                    </span>
+                  </>
                 )}
               </div>
 
-              {news && blog?.location && (
-                <div className="news-fact-row mb-4">
-                  <span><i className="fas fa-map-marker-alt"></i>{blog.location}</span>
-                </div>
-              )}
-
               {/* Featured Cover Image */}
               {blog?.image && (
-                <div className="mb-4">
+                <div className="minimal-image-wrapper mb-4">
                   <img
                     src={getFileUrl(blog.image)}
                     alt={blog?.title}
-                    className="news-featured-img img-fluid"
+                    className="minimal-featured-img img-fluid"
                     loading="lazy"
                   />
                 </div>
               )}
 
-              {/* Main Content Body */}
-              <div className="news-content-box mt-3">
+              {/* Main HTML Article Content */}
+              <div className="minimal-content-body">
                 <SafeHTML htmlString={blog?.description} />
               </div>
-            </div>
+            </article>
           </div>
 
-          {/* Right Sidebar */}
-          <div className="col-lg-4 col-md-12">
+          {/* Right Sidebar: 3 Columns */}
+          <div className="col-lg-3 col-md-12">
             <div className="position-sticky" style={{ top: "90px" }}>
-              {/* Categories Card */}
-              <div className="news-sidebar-card p-4 mb-4">
-                <h4 className="sidebar-title mb-3">Categories</h4>
-                <div className="d-flex flex-column gap-1">
-                  {categories.map((cat) => (
-                    <div
-                      key={cat._id}
-                      onClick={() =>
-                        navigate(
-                          news
-                            ? `/newsactivitycategory/${cat._id}`
-                            : `/category/${cat._id}`
-                        )
-                      }
-                      className={`category-item d-flex align-items-center justify-content-between ${
-                        cat._id === categoryId ? "active-cat" : ""
-                      }`}
-                    >
-                      <span className="d-flex align-items-center gap-2">
-                        <i className="fas fa-chevron-right"></i>
-                        {cat.title}
-                      </span>
-                    </div>
-                  ))}
+              {/* Simple Categories List */}
+              {categories.length > 0 && (
+                <div className="minimal-sidebar-card p-3 mb-4">
+                  <h6 className="sidebar-subtitle mb-3">
+                    <i className="fas fa-tags me-2 text-danger"></i> Categories
+                  </h6>
+                  <div className="d-flex flex-column gap-1">
+                    {categories.map((cat) => (
+                      <div
+                        key={cat._id}
+                        onClick={() =>
+                          navigate(
+                            news
+                              ? `/newsactivitycategory/${cat._id}`
+                              : `/category/${cat._id}`
+                          )
+                        }
+                        className={`sidebar-cat-item ${
+                          cat._id === categoryId ? "active-sidebar-cat" : ""
+                        }`}
+                        role="button"
+                      >
+                        <span>{cat.title}</span>
+                        <i className="fas fa-chevron-right icon-sm"></i>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
+              )}
 
-              {/* Related Posts Card */}
-              <div className="news-sidebar-card p-4">
-                <h4 className="sidebar-title mb-3">Related Posts</h4>
+              {/* Simple Related Posts List */}
+              <div className="minimal-sidebar-card p-3">
+                <h6 className="sidebar-subtitle mb-3">
+                  <i className="fas fa-bookmark me-2 text-danger"></i> Related {news ? "Activities" : "Posts"}
+                </h6>
                 {relatedPosts.length < 1 ? (
-                  <p className="text-muted small m-0 py-2">No related posts in this category.</p>
+                  <p className="text-muted small m-0 py-1">No related items found.</p>
                 ) : (
-                  <div className="d-flex flex-column gap-3">
+                  <div className="d-flex flex-column gap-2">
                     {relatedPosts.map((post) => (
                       <Link
                         key={post._id}
-                        to={
-                          news
-                            ? `/newsactivity/${post._id}`
-                            : `/blog/${post._id}`
-                        }
-                        className="text-decoration-none"
+                        to={news ? `/newsactivity/${post._id}` : `/blog/${post._id}`}
+                        className="sidebar-related-item d-flex align-items-center gap-2 text-decoration-none"
                       >
-                        <div className="related-post-card d-flex align-items-center gap-3">
-                          {post.image && (
-                            <img
-                              src={getFileUrl(post.image)}
-                              alt={post.title}
-                              className="related-post-thumb"
-                              loading="lazy"
-                            />
-                          )}
-                          <div className="flex-grow-1 overflow-hidden">
-                            <h6 className="related-post-title mb-1">{post.title}</h6>
-                            <span className="related-post-date">
-                              <i className="far fa-calendar-alt me-1 text-danger"></i>
-                              {post.createdAt ? new Date(post.createdAt).toLocaleDateString() : ""}
-                            </span>
-                          </div>
+                        {post.image && (
+                          <img
+                            src={getFileUrl(post.image)}
+                            alt={post.title}
+                            className="sidebar-related-thumb flex-shrink-0"
+                            loading="lazy"
+                          />
+                        )}
+                        <div className="overflow-hidden min-w-0 flex-grow-1">
+                          <h6 className="sidebar-related-title mb-1" title={post.title}>
+                            {post.title}
+                          </h6>
+                          <span className="sidebar-related-date">
+                            {post.createdAt
+                              ? new Date(post.createdAt).toLocaleDateString("en-US", {
+                                  month: "short",
+                                  day: "numeric",
+                                  year: "numeric",
+                                })
+                              : ""}
+                          </span>
                         </div>
                       </Link>
                     ))}

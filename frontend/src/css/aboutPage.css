@@ -17,6 +17,7 @@
   font-size: 1.02rem;
   color: #334155;
   line-height: 1.75;
+  text-align: justify;
 }
 
 /* Why Choose Aksharaa Grid Cards */
@@ -61,6 +62,7 @@
   color: #64748b;
   line-height: 1.6;
   margin: 0;
+  text-align: justify;
 }
 
 /* LRPA Callout Banner */
@@ -82,6 +84,7 @@
   color: #f1f5f9;
   line-height: 1.65;
   margin: 0;
+  text-align: justify;
 }
 
 .about-lrpa-btn {
@@ -94,13 +97,56 @@
   text-decoration: none;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   box-shadow: 0 4px 14px rgba(192, 40, 80, 0.35);
   transition: all 0.3s ease;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .about-lrpa-btn:hover {
   background: #a81d42;
   transform: translateY(-2px);
+}
+
+/* Responsive Mobile Adjustments */
+@media (max-width: 768px) {
+  .about-page-wrapper {
+    padding: 2rem 0;
+  }
+
+  .about-intro-box {
+    padding: 1.25rem 1rem;
+    border-radius: 14px;
+    margin-bottom: 1.5rem;
+  }
+
+  .why-choose-grid-card {
+    padding: 1.25rem 1rem;
+    border-radius: 14px;
+  }
+
+  .about-lrpa-banner {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1.35rem 1.1rem;
+    border-radius: 16px;
+    gap: 16px;
+    margin-top: 2rem;
+  }
+
+  .about-lrpa-btn {
+    width: 100%;
+    white-space: normal;
+    text-align: center;
+    padding: 12px 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
 }

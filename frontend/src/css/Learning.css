@@ -249,6 +249,17 @@
   }
 }
 
+.lrpamid-p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #334155;
+  text-align: justify;
+}
+
+.lrpa-intro-card p {
+  text-align: justify;
+}
+
 /* lrpa second change */
 .lrpacont {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;

@@ -402,10 +402,63 @@ const InfrastructurePage = () => {
                 ></textarea>
               </div>
 
+              {/* Existing Saved Photos Preview when editing */}
+              {editingItem && (
+                <div className="mb-4">
+                  <div className="d-flex align-items-center justify-content-between mb-2">
+                    <label className="form-label fw-bold mb-0 text-dark">Current Saved Photos</label>
+                    <small className="text-muted">
+                      {Array.isArray(editingItem.images) ? editingItem.images.length : editingItem.images ? 1 : 0} saved photo(s)
+                    </small>
+                  </div>
+                  {(() => {
+                    const existingList = Array.isArray(editingItem.images)
+                      ? editingItem.images
+                      : editingItem.images
+                      ? [editingItem.images]
+                      : [];
+
+                    if (existingList.length === 0) {
+                      return <small className="text-muted italic d-block">No saved photos found.</small>;
+                    }
+
+                    return (
+                      <div
+                        className="d-grid gap-3"
+                        style={{ gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))" }}
+                      >
+                        {existingList.map((img, idx) => (
+                          <div
+                            key={idx}
+                            className="position-relative rounded-3 overflow-hidden border bg-light shadow-sm"
+                            style={{ aspectRatio: "4 / 3" }}
+                          >
+                            <img
+                              src={getImageUrl(img)}
+                              alt={`Current saved photo ${idx + 1}`}
+                              className="w-100 h-100 object-fit-cover"
+                              onError={(e) => {
+                                e.currentTarget.src = "/fallbackimage.avif";
+                              }}
+                            />
+                            <span
+                              className="position-absolute bottom-0 start-0 w-100 bg-dark bg-opacity-75 text-white text-center py-1 font-monospace"
+                              style={{ fontSize: "0.65rem" }}
+                            >
+                              Current Photo {idx + 1}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    );
+                  })()}
+                </div>
+              )}
+
               {selectedFilePreviews.length > 0 && (
                 <div className="mb-4">
                   <div className="d-flex align-items-center justify-content-between mb-2">
-                    <label className="form-label fw-bold mb-0">Selected Photo Preview</label>
+                    <label className="form-label fw-bold mb-0 text-dark">New Selected Uploads Preview</label>
                     <small className="text-muted">{selectedFilePreviews.length} selected</small>
                   </div>
                   <div className="d-grid gap-3" style={{ gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))" }}>

@@ -271,13 +271,11 @@ const OnlineForm = () => {
   };
 
   return (
-    <div className="container mx-auto mt-2 inq-form p-3">
-      <h4 className="text-center bg-success text-white py-2">
-        Apply Online
-      </h4>
-
-      <div className="row">
-        <div className="d-flex justify-content-center align-content-center flex-wrap gap-3">
+    <div className="form-page-wrapper py-4 py-md-5">
+      <div className="container mx-auto px-2 px-sm-3">
+        <div className="inq-form inq-form-card shadow-sm rounded-4 bg-white border">
+          <div className="row mb-4">
+            <div className="d-flex justify-content-center align-content-center flex-wrap gap-3">
           <img src="/akasharalogo.png" alt="logo" className="img-fluid" />
           <div className="mb-md-0 p-0 d-flex flex-column inquiry-text">
             <span>
@@ -370,10 +368,10 @@ const OnlineForm = () => {
         </div>
       )}
 
-      <form className="px-4 border" onSubmit={handleSubmit}>
+      <form className="px-0 border-0" onSubmit={handleSubmit}>
         {/* Student Details */}
         <div className="mb-1">
-          <h6 className="form-head position-relative mt-4">
+          <h6 className="form-head position-relative mt-4 text-white">
             Student Details : <span className="paralleogram"></span>
           </h6>
 
@@ -644,12 +642,12 @@ const OnlineForm = () => {
 
         {/* Parent Details */}
         <div className="mb-3">
-          <h6 className="form-head position-relative mt-4">
+          <h6 className="form-head position-relative mt-4 text-white">
             PARTICULARS OF PARENTS/GUARDIAN <span className="paralleogram"></span>
           </h6>
 
           {/* Father details */}
-          <h6 className="form-head position-relative mt-4">
+          <h6 className="form-head position-relative mt-4 text-white">
             Father Details : <span className="paralleogram"></span>
           </h6>
           <div className="row">
@@ -721,7 +719,7 @@ const OnlineForm = () => {
           </div>
 
           {/* Mother details */}
-          <h6 className="form-head position-relative mt-4">
+          <h6 className="form-head position-relative mt-4 text-white">
             Mother Details : <span className="paralleogram"></span>
           </h6>
           <div className="row">
@@ -793,7 +791,7 @@ const OnlineForm = () => {
 
         {/* Grade selection */}
         <div className="mb-3">
-          <h6 className="form-head position-relative mt-4">
+          <h6 className="form-head position-relative mt-4 text-white">
             Academic Information : <span className="paralleogram"></span>
           </h6>
           <div className="row">
@@ -847,7 +845,7 @@ const OnlineForm = () => {
 
         {/* Document Uploads (Label & Upload on Left, Image Preview Box on Right with Clean Red Cross) */}
         <div className="mb-4">
-          <h6 className="form-head position-relative mt-4">
+          <h6 className="form-head position-relative mt-4 text-white">
             Document Uploads : <span className="paralleogram"></span>
           </h6>
 
@@ -928,6 +926,8 @@ const OnlineForm = () => {
         </div>
       </form>
     </div>
+  </div>
+</div>
   );
 };
 

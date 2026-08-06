@@ -42,70 +42,65 @@ const Blog = ({ showSEO = true }) => {
   const isHomePage = pathname === "/" || pathname === "";
   const displayedActivities = showAllActivities ? activities : activities.slice(0, 3);
 
-
-
-
   const responsive = {
     0: { items: 1 },
     568: { items: 2 },
     1024: { items: 3 },
   };
 
-  const displayEvents = events.length ? events : blogData;
-  const displayCalendar = calendar.length ? calendar : scheduleData;
+  const displayEvents = events.length ? events : [];
+  const displayCalendar = calendar.length ? calendar : [];
   const displayProjects = projects;
 
-  const items = activities.map((item, index) => (
-    <div
-      className="item p-2"
-      key={index}
-      onClick={() => navigate(`/newsactivity/${item._id}`)}
-    >
-      <article className="blog-card">
-        <div className="blog-card__background">
-          <div className="card__background--wrapper">
-            <div
-              className="card__background--main"
-              style={{
-                backgroundImage: `url(${getFileUrl(item.image)})`,
+  const items = activities.map((item, index) => {
+    const date = new Date(item.createdAt);
+    const day = date.getDate();
+    const month = date.toLocaleString("en-US", { month: "short" }).toUpperCase();
+
+    return (
+      <div
+        className="item p-2"
+        key={item._id || index}
+        onClick={() => navigate(`/newsactivity/${item._id}`)}
+      >
+        <div className="mini-activity-card w-100 h-100 cursor-pointer">
+          <div className="mini-card-img-wrapper">
+            <img
+              src={getFileUrl(item.image)}
+              alt={item.title}
+              loading="lazy"
+              onError={(e) => {
+                e.currentTarget.src = "/fallbackimage.avif";
               }}
-            >
-              <div className="card__background--layer" />
+            />
+            <span className="mini-card-date-badge">
+              <span>{day}</span> <span>{month}</span>
+            </span>
+          </div>
+
+          <div className="mini-card-body">
+            <div>
+              <h5 className="mini-card-title">{item.title}</h5>
+              <div className="mini-card-snippet">
+                <SafeHTML
+                  htmlString={
+                    item.excerpt || `${stripHtml(item.description).slice(0, 110)}...`
+                  }
+                />
+              </div>
+            </div>
+
+            <div className="mini-card-footer">
+              <Link to={`/newsactivity/${item._id}`} className="mini-card-readmore">
+                <span>READ MORE</span>
+                <i className="fas fa-arrow-right"></i>
+              </Link>
             </div>
           </div>
         </div>
-        <div className="blog-card__head">
-          <span className="date__box">
-            {(() => {
-              const date = new Date(item.createdAt);
-              const day = date.getDate();
-              const month = date
-                .toLocaleString("en-US", { month: "short" })
-                .toUpperCase();
-
-              return (
-                <>
-                  <span className="date__day">{day}</span>
-                  <span className="date__month">{month}</span>
-                </>
-              );
-            })()}
-          </span>
-        </div>
-
-        <div className="blog-card__info">
-          <h6>{item.title}</h6>
-          <p className="card-text">
-            <SafeHTML htmlString={item.excerpt || `${stripHtml(item.description).slice(0, 110)}...`} />
-          </p>
-          <Link to={`/newsactivity/${item._id}`} className="btn btn--with-icon">
-            <i className="btn-icon fa fa-long-arrow-right" />
-            READ MORE
-          </Link>
-        </div>
-      </article>
-    </div>
-  ));
+      </div>
+    );
+  });
 
   return (
     <>
@@ -280,8 +275,6 @@ const Blog = ({ showSEO = true }) => {
             </div>
           )}
 
-
-
           {/* Tab 2: Upcoming Events */}
           {filter === "Upcoming Events" && (
             <div className="mt-4">
@@ -336,7 +329,6 @@ const Blog = ({ showSEO = true }) => {
             </div>
           )}
 
-
           {/* Tab 3: Calendar */}
           {filter === "Calendar" && (
             <div className="mt-4">
@@ -378,7 +370,6 @@ const Blog = ({ showSEO = true }) => {
               </div>
             </div>
           )}
-
 
           {/* Tab 4: LongTerm Projects */}
           {filter === "longtermProject" && (
@@ -422,9 +413,7 @@ const Blog = ({ showSEO = true }) => {
                                 <i className="fas fa-arrow-right"></i>
                               </button>
                             </div>
-
                           </div>
-
                         </div>
                       </div>
                     );

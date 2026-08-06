@@ -423,18 +423,15 @@ const EnquiryModel = () => {
           </div>
         </div>
       </div> */}
-      <div className="bg-light">
+      <div className="form-page-wrapper py-4 py-md-5">
         <SEO
           title="Inquiry Form | Admission Inquiry & Fee Information"
           description="Submit an admission enquiry to Aksharaa School Kathmandu. Learn more about our LRPA curriculum, facilities, transportation, and school fee structure."
           keywords="Aksharaa School Inquiry, School Admission Inquiry Kathmandu, Aksharaa Fee Structure"
         />
-        <div className="container mx-auto py-5">
-          <div className="inq-form shadow-lg p-4 rounded">
-            <h4 className="text-center bg-success text-white py-2">
-              Enquiry Form
-            </h4>
-            <div className="row">
+        <div className="container mx-auto px-2 px-sm-3">
+          <div className="inq-form inq-form-card shadow-sm rounded-4 bg-white border">
+            <div className="row mb-4">
               <div className="d-flex justify-content-center align-content-center flex-wrap gap-3">
                 <img src="/akasharalogo.png" alt="logo" className="img-fluid" />
                 <div className="mb-md-0 p-0 d-flex flex-column inquiry-text">
@@ -458,7 +455,7 @@ const EnquiryModel = () => {
               </div>
             </div>
 
-            <form className="px-4" onSubmit={handleSubmit}>
+            <form className="px-0 px-md-1" onSubmit={handleSubmit}>
               {/* Student Details */}
               <div className="mb-1">
                 <h6 className="form-head position-relative mt-4">

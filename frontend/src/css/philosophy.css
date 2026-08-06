@@ -11,6 +11,7 @@
   color: #334155 !important;
   font-weight: 400 !important;
   margin-bottom: 1.1rem;
+  text-align: justify;
 }
 
 /* Feature Check Pills */
@@ -128,4 +129,21 @@
   font-size: 0.78rem;
   color: #64748b;
   font-weight: 500;
+}
+
+/* Responsive Mobile Adjustments */
+@media (max-width: 768px) {
+  .philosophy-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 20px;
+  }
+  .philosophy-section {
+    padding: 1.5rem 0 !important;
+  }
+  .philosophy-image-wrapper img,
+  .philosophy-image-wrapper video,
+  .philosophy-image-wrapper iframe {
+    height: 250px;
+  }
 }

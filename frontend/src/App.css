@@ -5,7 +5,34 @@
   box-sizing: border-box;
   scroll-behavior: smooth;
   font-family: "Roboto", sans-serif;
+}
 
+/* Consistent Form Page Wrapper for /getinquiry and /apply-online */
+.form-page-wrapper {
+  background: #f8fafc;
+  min-height: 80vh;
+  padding-top: 1.5rem !important;
+  padding-bottom: 3rem !important;
+}
+
+.inq-form-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+  padding: 1.25rem 1rem !important;
+}
+
+@media (min-width: 576px) {
+  .inq-form-card {
+    padding: 1.5rem 1.75rem !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .inq-form-card {
+    padding: 2rem 2.25rem !important;
+  }
 }
 
 a {
