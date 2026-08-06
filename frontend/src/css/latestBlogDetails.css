@@ -104,9 +104,27 @@
   text-align: justify;
 }
 
+.minimal-content-body span[style],
+.minimal-content-body mark,
+.minimal-content-body font {
+  display: inline;
+}
+
 .minimal-content-body p {
   margin-bottom: 1.35rem;
   text-align: justify;
+}
+
+.minimal-content-body table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+}
+
+.minimal-content-body th,
+.minimal-content-body td {
+  padding: 10px 14px;
+  border: 1px solid #cbd5e1;
 }
 
 .minimal-content-body img {
