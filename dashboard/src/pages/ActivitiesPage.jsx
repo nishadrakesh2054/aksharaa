@@ -15,6 +15,8 @@ import {
   Paragraph,
   Table,
   Undo,
+  FontColor,
+  FontBackgroundColor,
 } from "ckeditor5";
 import "ckeditor5/ckeditor5.css";
 import DOMPurify from "dompurify";
@@ -31,6 +33,8 @@ const editorConfig = {
     Link,
     Table,
     Undo,
+    FontColor,
+    FontBackgroundColor,
   ],
   toolbar: [
     "undo",
@@ -40,6 +44,8 @@ const editorConfig = {
     "|",
     "bold",
     "italic",
+    "fontColor",
+    "fontBackgroundColor",
     "|",
     "link",
     "bulletedList",

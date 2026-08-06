@@ -55,6 +55,12 @@
   line-height: 1.7;
 }
 
+.academic-rich-description span[style],
+.academic-rich-description mark,
+.academic-rich-description font {
+  display: inline;
+}
+
 .academic-rich-description p {
   margin-bottom: 1rem;
 }

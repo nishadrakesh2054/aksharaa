@@ -47,65 +47,96 @@ const App = () => {
   const { resolved, user } = useSelector((state) => state.login.loggedInUser);
 
   useEffect(() => {
-    async function getServerStatus() {
-      setStatLoading(true);
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_SERVERAPI}/api/v1/stat`
-        );
-        if (response.data.success && response.data.data) {
-          setStat(Boolean(response.data.data.stat));
-        } else if (response.data.stat) {
-          setStat(true);
-        }
-      } catch (err) {
-        console.error("Server stat fetch error:", err);
-      } finally {
-        setStatLoading(false);
-      }
-    }
-    getServerStatus();
-  }, []);
+    let isMounted = true;
 
-  useEffect(() => {
-    async function getUserByToken() {
+    // Safety fallback: ensure loading screen resolves within 3 seconds max
+    const fallbackTimer = setTimeout(() => {
+      if (isMounted) {
+        setStatLoading(false);
+        dispatch(loginActions.setResolved(true));
+      }
+    }, 3000);
+
+    async function initDashboard() {
       const token = localStorage.getItem("token");
       if (token) {
         axios.defaults.headers.common.Authorization = token;
-        try {
-          const response = await axios.get(
-            `${import.meta.env.VITE_SERVERAPI}/api/v1/userTokenValidation`,
-            {
-              headers: {
-                Authorization: token,
-              },
-            }
-          );
-          if (response.data.success) {
-            const loggedUser = response.data.data?.user || response.data.user || {
-              name: response.data.data?.name || response.data.name,
-              email: response.data.data?.email || response.data.email,
-              role: response.data.data?.role || response.data.role || "admin",
-            };
-            dispatch(loginActions.setLoggedInUser(loggedUser));
-          }
-        } catch (error) {
-          toast.error(error.message);
-          localStorage.removeItem("token");
-          delete axios.defaults.headers.common.Authorization;
-        }
       } else {
         delete axios.defaults.headers.common.Authorization;
-        dispatch(loginActions.setResolved(true));
       }
+
+      // Execute status check and token validation concurrently
+      const statPromise = axios
+        .get(`${import.meta.env.VITE_SERVERAPI}/api/v1/stat`)
+        .then((res) => {
+          if (isMounted) {
+            if (res.data.success && res.data.data) {
+              setStat(Boolean(res.data.data.stat));
+            } else if (res.data.stat) {
+              setStat(true);
+            }
+          }
+        })
+        .catch((err) => {
+          console.error("Server stat fetch error:", err);
+          if (isMounted) setStat(true); // Default fallback to active stat on network error
+        })
+        .finally(() => {
+          if (isMounted) setStatLoading(false);
+        });
+
+      const userPromise = (async () => {
+        if (token) {
+          try {
+            const res = await axios.get(
+              `${import.meta.env.VITE_SERVERAPI}/api/v1/userTokenValidation`,
+              { headers: { Authorization: token } }
+            );
+            if (isMounted && res.data.success) {
+              const loggedUser = res.data.data?.user || res.data.user || {
+                name: res.data.data?.name || res.data.name,
+                email: res.data.data?.email || res.data.email,
+                role: res.data.data?.role || res.data.role || "admin",
+              };
+              dispatch(loginActions.setLoggedInUser(loggedUser));
+            }
+          } catch (error) {
+            console.error("Token validation error:", error);
+            localStorage.removeItem("token");
+            delete axios.defaults.headers.common.Authorization;
+          } finally {
+            if (isMounted) dispatch(loginActions.setResolved(true));
+          }
+        } else {
+          if (isMounted) dispatch(loginActions.setResolved(true));
+        }
+      })();
+
+      await Promise.allSettled([statPromise, userPromise]);
+      clearTimeout(fallbackTimer);
     }
-    getUserByToken();
+
+    initDashboard();
+
+    return () => {
+      isMounted = false;
+      clearTimeout(fallbackTimer);
+    };
   }, [dispatch]);
 
   if (statLoading || !resolved) {
     return (
-      <div className="min-vh-100 w-100 d-flex justify-content-center align-items-center fw-bold text-primary">
-        LOADING PORTAL...
+      <div
+        className="min-vh-100 w-100 d-flex flex-column justify-content-center align-items-center bg-light"
+        style={{ transition: "all 0.3s ease" }}
+      >
+        <div className="spinner-border text-success mb-3" style={{ width: "3rem", height: "3rem" }} role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+        <h6 className="fw-bold text-dark mb-1" style={{ letterSpacing: "0.5px" }}>
+          Aksharaa Portal Loading...
+        </h6>
+        <small className="text-muted">Please wait a moment</small>
       </div>
     );
   }

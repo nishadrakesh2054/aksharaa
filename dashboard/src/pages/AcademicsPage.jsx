@@ -23,6 +23,8 @@ import {
   Paragraph,
   Table,
   Undo,
+  FontColor,
+  FontBackgroundColor,
 } from "ckeditor5";
 import "ckeditor5/ckeditor5.css";
 import { itemFromResponse } from "../utils/apiResponse";
@@ -297,6 +299,8 @@ const AcademicsPage = () => {
                         Link,
                         Table,
                         Undo,
+                        FontColor,
+                        FontBackgroundColor,
                       ],
                       toolbar: [
                         "undo",
@@ -306,6 +310,8 @@ const AcademicsPage = () => {
                         "|",
                         "bold",
                         "italic",
+                        "fontColor",
+                        "fontBackgroundColor",
                         "|",
                         "link",
                         "bulletedList",
@@ -322,199 +328,118 @@ const AcademicsPage = () => {
               </div>
             </div>
 
-            {/* Learning Centers & Activities */}
-            <div className="card border p-3 mb-4">
-              <h6 className="fw-semibold text-dark border-bottom pb-2 mb-3" style={{ fontSize: "0.95rem" }}>
+            {/* Learning Centers & Key Pillars */}
+            <div className="card border-0 shadow-sm p-3 mb-4 rounded-3">
+              <h6 className="fw-semibold text-dark border-bottom pb-2 mb-3 d-flex align-items-center gap-2" style={{ fontSize: "0.95rem" }}>
                 Learning Centers & Key Pillars
               </h6>
 
-              <div className="mb-3">
-                <label className="form-label fw-semibold small">Section Title</label>
+              <div className="d-flex gap-2 mb-3">
                 <input
                   type="text"
-                  name="learningCentersTitle"
-                  className="form-control"
-                  value={formData.learningCentersTitle}
-                  onChange={handleInputChange}
+                  className="form-control form-control-sm border rounded-1 py-1.5 px-3"
+                  placeholder="Type Learning Center item & press Enter..."
+                  value={newLearningCenter.title}
+                  onChange={(e) =>
+                    setNewLearningCenter({ title: e.target.value, details: "" })
+                  }
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      e.preventDefault();
+                      addListItem("learningCenters", newLearningCenter, setNewLearningCenter);
+                    }
+                  }}
                 />
-              </div>
-
-              <div className="border rounded-2 p-2 bg-white mb-3">
-                <div className="row g-2 align-items-stretch">
-                  <div className="col-md-6">
-                    <input
-                      type="text"
-                      className="form-control h-100"
-                      style={{ minHeight: "58px" }}
-                      placeholder="Item title..."
-                      value={newLearningCenter.title}
-                      onChange={(e) =>
-                        setNewLearningCenter((prev) => ({ ...prev, title: e.target.value }))
-                      }
-                    />
-                  </div>
-                  <div className="col-md-6">
-                    <textarea
-                      className="form-control"
-                      rows={2}
-                      placeholder="Description"
-                      value={newLearningCenter.details}
-                      onChange={(e) =>
-                        setNewLearningCenter((prev) => ({ ...prev, details: e.target.value }))
-                      }
-                    />
-                  </div>
-                </div>
                 <button
                   type="button"
-                  className="btn btn-success btn-sm mt-2 px-3 d-inline-flex align-items-center gap-1"
+                  className="btn btn-success btn-sm px-3 d-inline-flex align-items-center gap-1 flex-shrink-0 rounded-1"
                   onClick={() =>
                     addListItem("learningCenters", newLearningCenter, setNewLearningCenter)
                   }
                 >
-                  <Plus size={16} /> Add Item
+                  <Plus size={15} /> Add
                 </button>
               </div>
 
-              <div className="d-flex flex-column gap-2">
+              <div className="d-flex flex-column">
                 {formData.learningCenters.map((item, idx) => (
-                  <div key={idx} className="border rounded-2 p-2 bg-white">
-                    <div className="d-flex gap-2 align-items-start">
-                      <div className="flex-grow-1">
-                        <input
-                          type="text"
-                          className="form-control form-control-sm fw-semibold mb-2"
-                          value={item.title}
-                          onChange={(e) =>
-                            updateListItem("learningCenters", idx, "title", e.target.value)
-                          }
-                        />
-                        {item.details || item.showDetails ? (
-                          <textarea
-                            className="form-control form-control-sm"
-                            rows={2}
-                            placeholder="Description"
-                            value={item.details}
-                            onChange={(e) =>
-                              updateListItem("learningCenters", idx, "details", e.target.value)
-                            }
-                          />
-                        ) : (
-                          <button
-                            type="button"
-                            className="btn btn-link btn-sm text-success p-0 text-decoration-none"
-                            onClick={() => showListItemDescription("learningCenters", idx)}
-                          >
-                            <Plus size={13} /> Add description
-                          </button>
-                        )}
-                      </div>
-                      <button
-                        type="button"
-                        className="btn btn-sm btn-outline-danger border-0 p-1"
-                        onClick={() => removeListItem("learningCenters", idx)}
-                      >
-                        <Trash2 size={15} />
-                      </button>
-                    </div>
+                  <div key={idx} className="d-flex gap-2 align-items-center border-bottom py-1 px-1">
+                    <span className="text-success fw-bold me-1">•</span>
+                    <input
+                      type="text"
+                      className="form-control form-control-sm fw-semibold border-0 bg-transparent text-dark px-1"
+                      value={item.title}
+                      onChange={(e) =>
+                        updateListItem("learningCenters", idx, "title", e.target.value)
+                      }
+                    />
+                    <button
+                      type="button"
+                      className="btn btn-link text-danger p-1 flex-shrink-0 text-decoration-none"
+                      onClick={() => removeListItem("learningCenters", idx)}
+                      title="Delete item"
+                    >
+                      <Trash2 size={16} />
+                    </button>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Co-curricular Activities & Approach */}
-            <div className="card border p-3">
-              <h6 className="fw-semibold text-dark border-bottom pb-2 mb-3" style={{ fontSize: "0.95rem" }}>
+            {/* Extra / Co-Curricular & Approach */}
+            <div className="card border-0 shadow-sm p-3 rounded-3">
+              <h6 className="fw-semibold text-dark border-bottom pb-2 mb-3 d-flex align-items-center gap-2" style={{ fontSize: "0.95rem" }}>
                 Extra / Co-Curricular & Approach
               </h6>
 
               {/* Extra Activities */}
               <div className="mb-4">
-                <label className="form-label fw-semibold small">Extra Activities Title</label>
-                <input
-                  type="text"
-                  name="extraActivitiesTitle"
-                  className="form-control mb-2"
-                  value={formData.extraActivitiesTitle}
-                  onChange={handleInputChange}
-                />
-                <div className="border rounded-2 p-2 bg-white mb-3">
-                  <div className="row g-2 align-items-stretch">
-                    <div className="col-md-6">
-                      <input
-                        type="text"
-                        className="form-control h-100"
-                        style={{ minHeight: "58px" }}
-                        placeholder="Activity title..."
-                        value={newExtraActivity.title}
-                        onChange={(e) =>
-                          setNewExtraActivity((prev) => ({ ...prev, title: e.target.value }))
-                        }
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <textarea
-                        className="form-control"
-                        rows={2}
-                        placeholder="Description"
-                        value={newExtraActivity.details}
-                        onChange={(e) =>
-                          setNewExtraActivity((prev) => ({ ...prev, details: e.target.value }))
-                        }
-                      />
-                    </div>
-                  </div>
+                <div className="d-flex gap-2 mb-3">
+                  <input
+                    type="text"
+                    className="form-control form-control-sm border rounded-1 py-1.5 px-3"
+                    placeholder="Type Activity item & press Enter..."
+                    value={newExtraActivity.title}
+                    onChange={(e) =>
+                      setNewExtraActivity({ title: e.target.value, details: "" })
+                    }
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        addListItem("extraActivities", newExtraActivity, setNewExtraActivity);
+                      }
+                    }}
+                  />
                   <button
                     type="button"
-                    className="btn btn-success btn-sm mt-2 px-3 d-inline-flex align-items-center gap-1"
+                    className="btn btn-success btn-sm px-3 d-inline-flex align-items-center gap-1 flex-shrink-0 rounded-1"
                     onClick={() =>
                       addListItem("extraActivities", newExtraActivity, setNewExtraActivity)
                     }
                   >
-                    <Plus size={16} /> Add
+                    <Plus size={15} /> Add
                   </button>
                 </div>
-                <div className="d-flex flex-column gap-2">
+                <div className="d-flex flex-column">
                   {formData.extraActivities.map((act, idx) => (
-                    <div key={idx} className="border rounded-2 p-2 bg-white">
-                      <div className="d-flex gap-2 align-items-start">
-                        <div className="flex-grow-1">
-                          <input
-                            type="text"
-                            className="form-control form-control-sm fw-semibold mb-2"
-                            value={act.title}
-                            onChange={(e) =>
-                              updateListItem("extraActivities", idx, "title", e.target.value)
-                            }
-                          />
-                          {act.details || act.showDetails ? (
-                            <textarea
-                              className="form-control form-control-sm"
-                              rows={2}
-                              placeholder="Description"
-                              value={act.details}
-                              onChange={(e) =>
-                                updateListItem("extraActivities", idx, "details", e.target.value)
-                              }
-                            />
-                          ) : (
-                            <button
-                              type="button"
-                              className="btn btn-link btn-sm text-success p-0 text-decoration-none"
-                              onClick={() => showListItemDescription("extraActivities", idx)}
-                            >
-                              <Plus size={13} /> Add description
-                            </button>
-                          )}
-                        </div>
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-outline-danger border-0 p-1"
-                          onClick={() => removeListItem("extraActivities", idx)}
-                        >
-                          <Trash2 size={15} />
-                        </button>
-                      </div>
+                    <div key={idx} className="d-flex gap-2 align-items-center border-bottom py-1 px-1">
+                      <span className="text-success fw-bold me-1">•</span>
+                      <input
+                        type="text"
+                        className="form-control form-control-sm fw-semibold border-0 bg-transparent text-dark px-1"
+                        value={act.title}
+                        onChange={(e) =>
+                          updateListItem("extraActivities", idx, "title", e.target.value)
+                        }
+                      />
+                      <button
+                        type="button"
+                        className="btn btn-link text-danger p-1 flex-shrink-0 text-decoration-none"
+                        onClick={() => removeListItem("extraActivities", idx)}
+                        title="Delete activity"
+                      >
+                        <Trash2 size={16} />
+                      </button>
                     </div>
                   ))}
                 </div>
@@ -522,91 +447,52 @@ const AcademicsPage = () => {
 
               {/* Aksharaa Approach Items */}
               <div>
-                <label className="form-label fw-semibold small">Educational Approach Title</label>
-                <input
-                  type="text"
-                  name="approachTitle"
-                  className="form-control mb-2"
-                  value={formData.approachTitle}
-                  onChange={handleInputChange}
-                />
-                <div className="border rounded-2 p-2 bg-white mb-3">
-                  <div className="row g-2 align-items-stretch">
-                    <div className="col-md-6">
-                      <input
-                        type="text"
-                        className="form-control h-100"
-                        style={{ minHeight: "58px" }}
-                        placeholder="Approach title..."
-                        value={newApproachItem.title}
-                        onChange={(e) =>
-                          setNewApproachItem((prev) => ({ ...prev, title: e.target.value }))
-                        }
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <textarea
-                        className="form-control"
-                        rows={2}
-                        placeholder="Description"
-                        value={newApproachItem.details}
-                        onChange={(e) =>
-                          setNewApproachItem((prev) => ({ ...prev, details: e.target.value }))
-                        }
-                      />
-                    </div>
-                  </div>
+                <div className="d-flex gap-2 mb-3">
+                  <input
+                    type="text"
+                    className="form-control form-control-sm border rounded-1 py-1.5 px-3"
+                    placeholder="Type Approach item & press Enter..."
+                    value={newApproachItem.title}
+                    onChange={(e) =>
+                      setNewApproachItem({ title: e.target.value, details: "" })
+                    }
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        addListItem("approachItems", newApproachItem, setNewApproachItem);
+                      }
+                    }}
+                  />
                   <button
                     type="button"
-                    className="btn btn-success btn-sm mt-2 px-3 d-inline-flex align-items-center gap-1"
+                    className="btn btn-success btn-sm px-3 d-inline-flex align-items-center gap-1 flex-shrink-0 rounded-1"
                     onClick={() =>
                       addListItem("approachItems", newApproachItem, setNewApproachItem)
                     }
                   >
-                    <Plus size={16} /> Add
+                    <Plus size={15} /> Add
                   </button>
                 </div>
-                <div className="d-flex flex-column gap-2">
+                <div className="d-flex flex-column">
                   {formData.approachItems.map((item, idx) => (
-                    <div key={idx} className="border rounded-2 p-2 bg-white">
-                      <div className="d-flex gap-2 align-items-start">
-                        <div className="flex-grow-1">
-                          <input
-                            type="text"
-                            className="form-control form-control-sm fw-semibold mb-2"
-                            value={item.title}
-                            onChange={(e) =>
-                              updateListItem("approachItems", idx, "title", e.target.value)
-                            }
-                          />
-                          {item.details || item.showDetails ? (
-                            <textarea
-                              className="form-control form-control-sm"
-                              rows={2}
-                              placeholder="Description"
-                              value={item.details}
-                              onChange={(e) =>
-                                updateListItem("approachItems", idx, "details", e.target.value)
-                              }
-                            />
-                          ) : (
-                            <button
-                              type="button"
-                              className="btn btn-link btn-sm text-success p-0 text-decoration-none"
-                              onClick={() => showListItemDescription("approachItems", idx)}
-                            >
-                              <Plus size={13} /> Add description
-                            </button>
-                          )}
-                        </div>
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-outline-danger border-0 p-1"
-                          onClick={() => removeListItem("approachItems", idx)}
-                        >
-                          <Trash2 size={15} />
-                        </button>
-                      </div>
+                    <div key={idx} className="d-flex gap-2 align-items-center border-bottom py-1 px-1">
+                      <span className="text-success fw-bold me-1">•</span>
+                      <input
+                        type="text"
+                        className="form-control form-control-sm fw-semibold border-0 bg-transparent text-dark px-1"
+                        value={item.title}
+                        onChange={(e) =>
+                          updateListItem("approachItems", idx, "title", e.target.value)
+                        }
+                      />
+                      <button
+                        type="button"
+                        className="btn btn-link text-danger p-1 flex-shrink-0 text-decoration-none"
+                        onClick={() => removeListItem("approachItems", idx)}
+                        title="Delete approach item"
+                      >
+                        <Trash2 size={16} />
+                      </button>
                     </div>
                   ))}
                 </div>

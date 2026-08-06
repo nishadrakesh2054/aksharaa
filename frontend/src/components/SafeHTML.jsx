@@ -15,7 +15,9 @@ import DOMPurify from "https://cdn.jsdelivr.net/npm/dompurify@3.0.3/dist/purify.
 
 
 const SafeHTML = ({ htmlString }) => {
-  const cleanHtmlString = DOMPurify.sanitize(htmlString);
+  const cleanHtmlString = DOMPurify.sanitize(htmlString, {
+    ADD_ATTR: ["style", "target", "class"],
+  });
 
   return (
     <>
