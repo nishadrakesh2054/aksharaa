@@ -27,6 +27,7 @@ export const queryKeys = {
   academic: (category) => ["academic", category],
   mun: ["mun"],
   teamBanners: (params = {}) => ["team-banners", params],
+  staffProfiles: (params = {}) => ["staff-profiles", params],
 };
 
 export const useNotices = () =>
@@ -150,5 +151,12 @@ export const useTeamBanners = (params = {}, options = {}) =>
   useQuery({
     queryKey: queryKeys.teamBanners(params),
     queryFn: () => publicContentService.getTeamBanners(params),
+    ...options,
+  });
+
+export const useStaffProfiles = (params = {}, options = {}) =>
+  useQuery({
+    queryKey: queryKeys.staffProfiles(params),
+    queryFn: () => publicContentService.getStaffProfiles(params),
     ...options,
   });

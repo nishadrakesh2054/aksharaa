@@ -143,4 +143,9 @@ export const publicContentService = {
     const response = await apiClient.get("/teambanners", { params });
     return listFrom(response, ["banners"]);
   },
+
+  getStaffProfiles: async (params = {}) => {
+    const response = await apiClient.get("/getallprofile", { params });
+    return listFrom(response, ["profiles"]);
+  },
 };

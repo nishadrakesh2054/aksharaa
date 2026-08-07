@@ -4,13 +4,13 @@ import { Helmet } from "react-helmet";
 import { useLocation } from "react-router-dom";
 
 import sabinamam from "/sabinamam2.jpg";
-import { useTeamBanners } from "../api/hooks/usePublicContent";
+import { useTeamBanners, useStaffProfiles } from "../api/hooks/usePublicContent";
 import { getFileUrl } from "../api/media";
 import LoadingState from "../components/states/LoadingState";
 import ErrorState from "../components/states/ErrorState";
 
 const TeamMember = ({ imgSrc, name, position, socialLinks }) => (
-  <div className="col-md-3 col-sm-6  ">
+  <div className="col-md-3 col-sm-6">
     <div className="our-team">
       <div className="img-container">
         <img
@@ -29,7 +29,7 @@ const TeamMember = ({ imgSrc, name, position, socialLinks }) => (
         <ul className="social-links">
           {(socialLinks || []).map((link, index) => (
             <li key={index}>
-              <a href={link.href}>
+              <a href={link.href || "#"}>
                 <i className={`fab fa-${link.icon}`} />
               </a>
             </li>
@@ -40,40 +40,30 @@ const TeamMember = ({ imgSrc, name, position, socialLinks }) => (
   </div>
 );
 
-const TeamSection = ({ title, imgSrc, members }) => (
-  <div className=" mb-2">
-    
-    {imgSrc && (
-      <div className="row align-items-center">
-        <div className="col-md-12 ">
-          <img
-            src={imgSrc || "/fallbackimage.avif"}
-            alt={title}
-            className="img-fluid"
-            loading="lazy"
-            onError={(event) => {
-              event.currentTarget.src = "/fallbackimage.avif";
-            }}
-          />
-        </div>
-      </div>
-    )}
-    <h3 className="team-head text-center  border-bottom-title w-100"  style={{ marginTop: "1rem" }}>
-      {title}
-    </h3>
-
-
-    {members && (
-      <div className="row">
-        {members.map((member, index) => (
-          <TeamMember key={index} {...member} />
-        ))}
+const GroupBannerShowcase = ({ title, imgSrc }) => (
+  <div className="col-12 group-banner-wrapper">
+    <div className="group-banner-frame">
+      <img
+        src={imgSrc || "/fallbackimage.avif"}
+        alt={title}
+        className="group-banner-full-img"
+        loading="lazy"
+        onError={(event) => {
+          event.currentTarget.src = "/fallbackimage.avif";
+        }}
+      />
+    </div>
+    {title && (
+      <div className="group-banner-header">
+        <h3 className="group-banner-title-text">{title}</h3>
+        <div className="group-banner-subtitle-bar"></div>
       </div>
     )}
   </div>
 );
+
 const staffSections = [
-   {
+  {
     title: "Administration & Operations",
     members: [
       {
@@ -154,17 +144,55 @@ const staffSections = [
 
 const Team = () => {
   const location = useLocation();
-  const { data: teamBanners = [], isLoading, error } = useTeamBanners();
+  const { data: teamBanners = [], isLoading: bannersLoading, error: bannersError } = useTeamBanners();
+  const { data: staffProfiles = [], isLoading: profilesLoading, error: profilesError } = useStaffProfiles();
+
+  const isLoading = bannersLoading || profilesLoading;
+  const error = bannersError || profilesError;
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
 
-  const bannerSections = teamBanners.map((banner) => ({
+  // Map dynamic group section banners
+  const bannerSections = (teamBanners || []).map((banner) => ({
     title: banner.title,
     imgSrc: getFileUrl(banner.image),
   }));
-  const teamSections = [...bannerSections, ...staffSections];
+
+  // Group dynamic staff profiles by category
+  const groupedProfiles = (staffProfiles || []).reduce((acc, profile) => {
+    const cat = profile.category?.trim() || "Administration & Operations";
+    if (!acc[cat]) acc[cat] = [];
+
+    const socialLinks = [];
+    if (profile.facebook) socialLinks.push({ href: profile.facebook, icon: "facebook" });
+    if (profile.instagram) socialLinks.push({ href: profile.instagram, icon: "instagram" });
+    if (profile.viber) socialLinks.push({ href: profile.viber, icon: "viber" });
+    if (profile.linkedin) socialLinks.push({ href: profile.linkedin, icon: "linkedin" });
+    if (profile.whatsapp) socialLinks.push({ href: profile.whatsapp, icon: "whatsapp" });
+
+    acc[cat].push({
+      imgSrc: getFileUrl(profile.image),
+      name: profile.title,
+      position: profile.position,
+      socialLinks: socialLinks.length > 0 ? socialLinks : [
+        { href: "#", icon: "facebook" },
+        { href: "#", icon: "instagram" },
+        { href: "#", icon: "viber" },
+        { href: "#", icon: "linkedin" },
+        { href: "#", icon: "whatsapp" },
+      ],
+    });
+    return acc;
+  }, {});
+
+  const dynamicStaffSections = Object.keys(groupedProfiles).map((catTitle) => ({
+    title: catTitle,
+    members: groupedProfiles[catTitle],
+  }));
+
+  const staffToDisplay = dynamicStaffSections.length > 0 ? dynamicStaffSections : staffSections;
 
   return (
     <>
@@ -180,13 +208,30 @@ const Team = () => {
         />
       </Helmet>
 
-      <div className="container ">
+      <div className="container">
         {isLoading && <LoadingState label="Loading team sections..." />}
         {error && <ErrorState message={error.message} />}
-        {teamSections.map((section, index) => (
-          <TeamSection key={index} {...section} />
+
+        {/* Group Section Photo Banners (Full Image Display) */}
+        {bannerSections.map((banner, idx) => (
+          <GroupBannerShowcase key={idx} title={banner.title} imgSrc={banner.imgSrc} />
         ))}
-        {!isLoading && !error && teamSections.length === 0 && (
+
+        {/* Staff & Member Sections */}
+        {staffToDisplay.map((section, sIdx) => (
+          <div key={sIdx} className="mb-4">
+            <h3 className="team-head text-center border-bottom-title w-100" style={{ marginTop: "1rem" }}>
+              {section.title}
+            </h3>
+            <div className="row">
+              {section.members.map((member, mIdx) => (
+                <TeamMember key={mIdx} {...member} />
+              ))}
+            </div>
+          </div>
+        ))}
+
+        {!isLoading && !error && bannerSections.length === 0 && staffToDisplay.length === 0 && (
           <p className="text-center py-5">No team data found.</p>
         )}
       </div>
