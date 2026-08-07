@@ -6,8 +6,12 @@ const attachUserFromToken = async (req) => {
   let token = null;
   const authHeader = req.headers.authorization || req.headers.Authorization;
 
-  if (authHeader && authHeader.startsWith("Bearer ")) {
-    token = authHeader.split(" ")[1];
+  if (authHeader) {
+    if (authHeader.startsWith("Bearer ")) {
+      token = authHeader.split(" ")[1];
+    } else {
+      token = authHeader;
+    }
   } else if (req.cookies && req.cookies.token) {
     token = req.cookies.token;
   }

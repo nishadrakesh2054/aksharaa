@@ -6,7 +6,7 @@ const fs = require("fs");
 const { paginatedFind } = require("../utils/queryFeatures");
 
 const safeUnlink = (relativePath) => {
-  if (!relativePath) return;
+  if (!relativePath || relativePath.startsWith("http://") || relativePath.startsWith("https://")) return;
   const filePath = path.normalize(path.join(__dirname, "..", relativePath));
   if (fs.existsSync(filePath)) {
     try {

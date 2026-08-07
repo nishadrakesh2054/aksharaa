@@ -12,6 +12,7 @@ import {
 
 } from "lucide-react";
 import { listFromResponse } from "../utils/apiResponse";
+import getImageUrl from "../utils/imageUrl";
 
 const TeachersPage = () => {
   const [activeTab, setActiveTab] = useState("banners"); // "banners" or "members"
@@ -45,7 +46,11 @@ const TeachersPage = () => {
   const [selectedTeacherFile, setSelectedTeacherFile] = useState(null);
   const [submittingTeacher, setSubmittingTeacher] = useState(false);
 
-  const token = localStorage.getItem("token");
+  const getAuthHeader = () => {
+    const rawToken = localStorage.getItem("token");
+    if (!rawToken) return {};
+    return { Authorization: rawToken.startsWith("Bearer ") ? rawToken : `Bearer ${rawToken}` };
+  };
 
   // Fetch Team Banners
   const fetchBanners = async () => {
@@ -102,7 +107,7 @@ const TeachersPage = () => {
     try {
       const res = await axios.delete(
         `${import.meta.env.VITE_SERVERAPI}/api/v1/teambanners/${id}`,
-        { headers: { Authorization: token } }
+        { headers: getAuthHeader() }
       );
       if (res.data.success) {
         toast.success("Team banner section deleted successfully");
@@ -142,13 +147,13 @@ const TeachersPage = () => {
         res = await axios.put(
           `${import.meta.env.VITE_SERVERAPI}/api/v1/teambanners/${editingBanner._id}`,
           formData,
-          { headers: { Authorization: token } }
+          { headers: getAuthHeader() }
         );
       } else {
         res = await axios.post(
           `${import.meta.env.VITE_SERVERAPI}/api/v1/teambanners`,
           formData,
-          { headers: { Authorization: token } }
+          { headers: getAuthHeader() }
         );
       }
 
@@ -200,7 +205,7 @@ const TeachersPage = () => {
     try {
       const response = await axios.delete(
         `${import.meta.env.VITE_SERVERAPI}/api/v1/deleteprofile/${id}`,
-        { headers: { Authorization: token } }
+        { headers: getAuthHeader() }
       );
       if (response.data.success) {
         toast.success(response.data.message);
@@ -248,13 +253,13 @@ const TeachersPage = () => {
         response = await axios.put(
           `${import.meta.env.VITE_SERVERAPI}/api/v1/updateprofile/${editingTeacher._id}`,
           formData,
-          { headers: { Authorization: token } }
+          { headers: getAuthHeader() }
         );
       } else {
         response = await axios.post(
           `${import.meta.env.VITE_SERVERAPI}/api/v1/createprofile`,
           formData,
-          { headers: { Authorization: token } }
+          { headers: getAuthHeader() }
         );
       }
 
@@ -338,9 +343,7 @@ const TeachersPage = () => {
           ) : (
             <div className="row g-4">
               {banners.map((item) => {
-                const imgUrl = item.image.startsWith("http")
-                  ? item.image
-                  : `${import.meta.env.VITE_SERVERAPI}/${item.image.replace(/\\/g, "/")}`;
+                const imgUrl = getImageUrl(item?.image);
 
                 return (
                   <div key={item._id} className="col-md-6 col-lg-4">
@@ -439,9 +442,7 @@ const TeachersPage = () => {
           ) : (
             <div className="row g-3">
               {filteredTeachers.map((teacher) => {
-                const imgUrl = teacher.image.startsWith("http")
-                  ? teacher.image
-                  : `${import.meta.env.VITE_SERVERAPI}/${teacher.image.replace(/\\/g, "/")}`;
+                const imgUrl = getImageUrl(teacher?.image);
 
                 return (
                   <div key={teacher._id} className="col-md-6 col-lg-3">
