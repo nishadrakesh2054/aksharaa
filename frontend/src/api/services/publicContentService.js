@@ -34,6 +34,11 @@ export const publicContentService = {
     return listFrom(response, ["testimonial", "testimonials"]);
   },
 
+  getFaqs: async (params = {}) => {
+    const response = await apiClient.get("/faqs", { params });
+    return listFrom(response, ["faqs"]);
+  },
+
   getBlogs: async (params = {}) => {
     const response = await apiClient.get("/blog/", { params });
     return listFrom(response, ["blogs"]);

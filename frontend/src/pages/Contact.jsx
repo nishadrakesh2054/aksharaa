@@ -8,6 +8,7 @@ const Contact = ({ showSEO = true }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
   const formRef = useRef();
 
@@ -18,13 +19,14 @@ const Contact = ({ showSEO = true }) => {
     e.preventDefault();
     setRes(null);
     try {
-      const response = await contactMutation.mutateAsync({ name, email, phone, message });
+      const response = await contactMutation.mutateAsync({ name, email, phone, subject, message });
       setRes(response);
       if (response?.success) {
         if (formRef.current) formRef.current.reset();
         setName("");
         setEmail("");
         setPhone("");
+        setSubject("");
         setMessage("");
       }
     } catch (err) {
@@ -141,6 +143,20 @@ const Contact = ({ showSEO = true }) => {
                       placeholder="Enter your phone number"
                       onChange={(e) => setPhone(e.target.value)}
                       value={phone}
+                    />
+                  </div>
+
+                  <div className="form-group mb-3">
+                    <label htmlFor="subject" className="contact-form-label">
+                      Subject
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control contact-input-field"
+                      id="subject"
+                      placeholder="What is your message about?"
+                      onChange={(e) => setSubject(e.target.value)}
+                      value={subject}
                     />
                   </div>
 

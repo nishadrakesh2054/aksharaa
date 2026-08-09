@@ -10,7 +10,11 @@ const apiClient = axios.create({
 apiClient.interceptors.response.use(
   (response) => response.data,
   (error) => {
+    const validationErrors = error.response?.data?.errors;
     const message =
+      (Array.isArray(validationErrors) && validationErrors.length > 0
+        ? validationErrors.map((err) => err.message).join(" ")
+        : "") ||
       error.response?.data?.message ||
       error.message ||
       "Something went wrong while loading data.";

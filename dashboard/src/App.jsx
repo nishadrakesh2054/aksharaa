@@ -15,6 +15,7 @@ import ActivitiesPage from "./pages/ActivitiesPage";
 import HeroSlidersPage from "./pages/HeroSlidersPage";
 import ThreeDGalleryPage from "./pages/ThreeDGalleryPage";
 import TestimonialsPage from "./pages/TestimonialsPage";
+import FaqsPage from "./pages/FaqsPage";
 import GalleriesPage from "./pages/GalleriesPage";
 import DownloadsPage from "./pages/DownloadsPage";
 import TeachersPage from "./pages/TeachersPage";
@@ -34,7 +35,7 @@ import CreativeWeek from "./pages/CreativeWeek";
 import GetBlog from "./components/getBlog";
 import GetActivity from "./components/getActivity";
 
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { loginActions } from "./redux/slices/loginSlice";
@@ -172,6 +173,7 @@ const App = () => {
         <Route path="/hero-sliders" element={restrictedElement(<HeroSlidersPage />)} />
         <Route path="/3d-gallery" element={restrictedElement(<ThreeDGalleryPage />)} />
         <Route path="/testimonials" element={restrictedElement(<TestimonialsPage />)} />
+        <Route path="/faqs" element={restrictedElement(<FaqsPage />)} />
         <Route path="/galleries" element={restrictedElement(<GalleriesPage />)} />
         <Route path="/downloads" element={restrictedElement(<DownloadsPage />)} />
         <Route path="/teachers" element={restrictedElement(<TeachersPage />)} />
@@ -202,6 +204,8 @@ const App = () => {
         <Route path="/threeD" element={<Navigate to="/3d-gallery" replace />} />
         <Route path="/getalltestimonial" element={<Navigate to="/testimonials" replace />} />
         <Route path="/testimonial" element={<Navigate to="/testimonials" replace />} />
+        <Route path="/faq" element={<Navigate to="/faqs" replace />} />
+        <Route path="/faqs-management" element={<Navigate to="/faqs" replace />} />
         <Route path="/getallphotos" element={<Navigate to="/galleries" replace />} />
         <Route path="/getpdf" element={<Navigate to="/downloads" replace />} />
         <Route path="/getallteacherprofile" element={<Navigate to="/teachers" replace />} />

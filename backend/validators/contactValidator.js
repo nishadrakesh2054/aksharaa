@@ -16,9 +16,10 @@ const validateContact = [
     .withMessage("Invalid email address format")
     .normalizeEmail(),
   body("phone")
+    .optional({ checkFalsy: true })
     .trim()
-    .notEmpty()
-    .withMessage("Phone number is required"),
+    .isLength({ max: 30 })
+    .withMessage("Phone number must be 30 characters or less"),
   body("subject")
     .optional()
     .trim(),

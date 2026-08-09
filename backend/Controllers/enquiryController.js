@@ -1,6 +1,15 @@
 const asyncHandler = require("express-async-handler");
 const Enquiry = require("../Models/enquirySchema");
 const ApiResponse = require("../utils/apiResponse");
+const ApiError = require("../utils/apiError");
+const {
+  createTransporter,
+  escapeHtml,
+  getSubmittedAt,
+  renderEmailLayout,
+  renderInfoRows,
+  sendMailWithLog,
+} = require("../utils/mailService");
 const { paginatedFind } = require("../utils/queryFeatures");
 
 // POST /api/v1/enquiry - Public Online Admission & Enquiry Submission
@@ -138,7 +147,88 @@ const postEnquiry = asyncHandler(async (req, res) => {
   });
 
   await enquiry.save();
-  return ApiResponse.success(res, 201, "Online admission application submitted successfully", enquiry);
+
+  try {
+    const { transporter, senderEmail, adminEmail } = createTransporter();
+    const submittedAt = getSubmittedAt();
+    const safeStudentName = escapeHtml(studentName);
+    const safeParentName = escapeHtml(parentName || "N/A");
+    const safeParentEmail = escapeHtml(parentEmail);
+    const safePhone = escapeHtml(phoneNum);
+    const safeGrade = escapeHtml(studentGrade || "N/A");
+    const safeSource = escapeHtml(src);
+    const safeTransportation = isTransport ? "Yes" : "No";
+    const safeSubmittedAt = escapeHtml(submittedAt);
+    const documentsText = docsList.length > 0 ? `${docsList.length} document(s) uploaded` : "No documents uploaded";
+    const safeDocumentsText = escapeHtml(documentsText);
+
+    const parentMailOptions = {
+      from: `"Aksharaa School" <${senderEmail}>`,
+      to: parentEmail,
+      replyTo: adminEmail,
+      subject: "We received your admission enquiry - Aksharaa School",
+      text: `Dear ${parentName || "Parent"},\n\nThank you for submitting an admission enquiry for ${studentName}. Our admissions team will review the details and contact you shortly.\n\nStudent: ${studentName}\nGrade: ${studentGrade || "N/A"}\nPhone: ${phoneNum}\nSubmitted: ${submittedAt}\n\nWarm regards,\nAksharaa School`,
+      html: renderEmailLayout({
+        eyebrow: "Aksharaa Admissions",
+        title: "Admission enquiry received",
+        intro: `Dear ${safeParentName},<br />Thank you for submitting an admission enquiry for <strong>${safeStudentName}</strong>. Our admissions team will review the details and contact you shortly.`,
+        content: `
+          ${renderInfoRows([
+    ["Student", safeStudentName],
+    ["Grade", safeGrade],
+    ["Parent Email", safeParentEmail],
+    ["Phone", safePhone],
+    ["Transportation", safeTransportation],
+    ["Submitted", safeSubmittedAt],
+  ])}
+          <p style="margin:0;color:#374151;font-size:14px;line-height:1.7;">Warm regards,<br /><strong>Aksharaa School Admissions</strong></p>
+        `,
+        footer: "This is an automatic confirmation from the Aksharaa School admission form.",
+      }),
+    };
+
+    const adminMailOptions = {
+      from: `"Aksharaa School Website" <${senderEmail}>`,
+      to: adminEmail,
+      replyTo: parentEmail,
+      subject: `New admission enquiry: ${studentName}`,
+      text: `New admission enquiry\n\nStudent: ${studentName}\nParent: ${parentName || "N/A"}\nEmail: ${parentEmail}\nPhone: ${phoneNum}\nGrade: ${studentGrade || "N/A"}\nAddress: ${studentAddress || "N/A"}\nTransportation: ${safeTransportation}\nSource: ${src}\nDocuments: ${documentsText}\nSubmitted: ${submittedAt}`,
+      html: renderEmailLayout({
+        eyebrow: "New Admission Enquiry",
+        title: "New admission enquiry submitted",
+        intro: "A new admission enquiry/application was submitted from the Aksharaa School website.",
+        content: `
+          ${renderInfoRows([
+    ["Student", safeStudentName],
+    ["Parent", safeParentName],
+    ["Email", `<a href="mailto:${safeParentEmail}" style="color:#0f6b3d;text-decoration:none;font-weight:700;">${safeParentEmail}</a>`],
+    ["Phone", safePhone],
+    ["Grade", safeGrade],
+    ["Address", escapeHtml(studentAddress || "N/A")],
+    ["Transportation", safeTransportation],
+    ["Source", safeSource],
+    ["Documents", safeDocumentsText],
+    ["Submitted", safeSubmittedAt],
+  ])}
+          <a href="mailto:${safeParentEmail}?subject=Re:%20Admission%20Enquiry%20-%20${encodeURIComponent(studentName)}" style="display:inline-block;padding:12px 18px;background:#0f6b3d;color:#ffffff;text-decoration:none;border-radius:8px;font-weight:700;font-size:14px;">Reply to ${safeParentName}</a>
+        `,
+        footer: "This message was sent from the Aksharaa School admission/enquiry form.",
+      }),
+    };
+
+    await sendMailWithLog(transporter, adminMailOptions, "Admin admission enquiry");
+    await sendMailWithLog(transporter, parentMailOptions, "Parent admission confirmation");
+  } catch (emailErr) {
+    console.error("Admission enquiry email dispatch error:", emailErr.message);
+    throw new ApiError(502, "Your application was saved, but the email could not be sent. Please try again later.");
+  }
+
+  return ApiResponse.success(
+    res,
+    201,
+    "Online admission application submitted successfully. A confirmation email has been sent.",
+    enquiry
+  );
 });
 
 // GET /api/v1/enquiry - Admin Directory Fetch

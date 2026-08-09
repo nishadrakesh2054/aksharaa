@@ -5,6 +5,7 @@ export const queryKeys = {
   notices: ["notices"],
   heroSlides: ["hero-slides"],
   testimonials: ["testimonials"],
+  faqs: (params = {}) => ["faqs", params],
   blogs: (params = {}) => ["blogs", params],
   blog: (id) => ["blog", id],
   blogCategories: ["blog-categories"],
@@ -38,6 +39,13 @@ export const useHeroSlides = () =>
 
 export const useTestimonials = () =>
   useQuery({ queryKey: queryKeys.testimonials, queryFn: publicContentService.getTestimonials });
+
+export const useFaqs = (params = {}, options = {}) =>
+  useQuery({
+    queryKey: queryKeys.faqs(params),
+    queryFn: () => publicContentService.getFaqs(params),
+    ...options,
+  });
 
 export const useBlogs = (params = {}, options = {}) =>
   useQuery({

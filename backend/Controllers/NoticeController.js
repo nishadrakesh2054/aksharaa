@@ -1,9 +1,17 @@
 const Notice = require("../Models/NoticeSchema");
 const asyncHandler = require("express-async-handler");
-const nodemailer = require("nodemailer");
 const path = require("path");
 const fs = require("fs");
 const ApiResponse = require("../utils/apiResponse");
+const {
+  createTransporter,
+  escapeHtml,
+  getSubmittedAt,
+  renderEmailLayout,
+  renderInfoRows,
+  renderMessage,
+  sendMailWithLog,
+} = require("../utils/mailService");
 const { paginatedFind } = require("../utils/queryFeatures");
 
 const safeUnlink = (relativePath) => {
@@ -102,41 +110,73 @@ const deleteNotice = asyncHandler(async (req, res) => {
 
 // contact handler
 const contactHandler = asyncHandler(async (req, res) => {
-  const { name, email, phone, message } = req.body;
+  const { name, email, phone, subject, message } = req.body;
+  const { transporter, senderEmail, adminEmail } = createTransporter();
+  const submittedAt = getSubmittedAt();
+  const mailSubject = subject || "General Inquiry";
+  const safeName = escapeHtml(name);
+  const safeEmail = escapeHtml(email);
+  const safePhone = escapeHtml(phone || "N/A");
+  const safeSubject = escapeHtml(mailSubject);
+  const safeSubmittedAt = escapeHtml(submittedAt);
+  const safeMessage = renderMessage(message);
 
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.EMAIL_USER || "sahanirakesh877@gmail.com",
-      pass: process.env.EMAIL_PASS || "pnvh gmbs hzrd wdzc",
-    },
-  });
+  const messageBox = `
+    <div style="margin:0 0 24px;padding:18px 20px;background:#f8fbf9;border:1px solid #dfeae3;border-radius:10px;">
+      <div style="margin:0 0 8px;color:#0f6b3d;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;">Message</div>
+      <div style="font-size:15px;line-height:1.75;color:#25312b;">${safeMessage}</div>
+    </div>
+  `;
 
-  const smailOptions = {
-    to: process.env.ADMIN_EMAIL || "sahaniranzeth877@gmail.com",
-    subject: "Message from website",
-    html: `
-      <h1>Message Details</h1>
-      <p><strong>Name:</strong> ${name}</p>
-      <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Phone:</strong> ${phone}</p>
-      <p><strong>Message:</strong> ${message}</p>
-    `,
+  const adminMailOptions = {
+    from: `"Aksharaa School Website" <${senderEmail}>`,
+    to: adminEmail,
+    replyTo: email,
+    subject: `New contact form message: ${mailSubject}`,
+    text: `New contact form submission\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone || "N/A"}\nSubject: ${mailSubject}\nSubmitted: ${submittedAt}\n\nMessage:\n${message}`,
+    html: renderEmailLayout({
+      eyebrow: "New Website Inquiry",
+      title: "New contact form submission",
+      intro: "A new message was submitted from the Aksharaa School contact page.",
+      content: `
+        ${renderInfoRows([
+    ["Name", safeName],
+    ["Email", `<a href="mailto:${safeEmail}" style="color:#0f6b3d;text-decoration:none;font-weight:700;">${safeEmail}</a>`],
+    ["Phone", safePhone],
+    ["Subject", safeSubject],
+    ["Submitted", safeSubmittedAt],
+  ])}
+        ${messageBox}
+      `,
+      footer: "This message was sent from the Aksharaa School contact form.",
+    }),
   };
 
-  const rmailOptions = {
-    from: process.env.EMAIL_USER || "sahanirakesh877@gmail.com",
+  const userMailOptions = {
+    from: `"Aksharaa School" <${senderEmail}>`,
     to: email,
-    subject: "Thank You for Contacting Us!",
-    html: `
-      <h1>We’ve Received Your Message</h1>
-      <p>Hello ${name},</p>
-      <p>We have received your message and will get back to you shortly.</p>
-    `,
+    replyTo: adminEmail,
+    subject: "We received your message - Aksharaa School",
+    text: `Dear ${name},\n\nThank you for contacting Aksharaa School. We received your message and will get back to you shortly.\n\nSubject: ${mailSubject}\n\nWarm regards,\nAksharaa School`,
+    html: renderEmailLayout({
+      eyebrow: "Aksharaa School",
+      title: "Thank you for contacting us",
+      intro: `Dear ${safeName},<br />We have received your message and our team will get back to you as soon as possible.`,
+      content: `
+        ${renderInfoRows([
+    ["Subject", safeSubject],
+    ["Phone", safePhone],
+    ["Email", safeEmail],
+    ["Submitted", safeSubmittedAt],
+  ])}
+        ${messageBox}
+      `,
+      footer: "This is an automatic confirmation from the Aksharaa School contact form.",
+    }),
   };
 
-  await transporter.sendMail(smailOptions);
-  await transporter.sendMail(rmailOptions);
+  await sendMailWithLog(transporter, adminMailOptions, "Legacy admin contact");
+  await sendMailWithLog(transporter, userMailOptions, "Legacy user contact confirmation");
 
   return ApiResponse.success(res, 200, "Contact message sent successfully");
 });
@@ -144,39 +184,58 @@ const contactHandler = asyncHandler(async (req, res) => {
 // Newsletter handler
 const NewsLetter = asyncHandler(async (req, res) => {
   const { email, name, message } = req.body;
+  const { transporter, senderEmail, adminEmail } = createTransporter();
+  const submittedAt = getSubmittedAt();
+  const safeName = escapeHtml(name || "Subscriber");
+  const safeEmail = escapeHtml(email);
+  const safeMessage = renderMessage(message || "No message provided");
+  const safeSubmittedAt = escapeHtml(submittedAt);
 
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.EMAIL_USER || "sahanirakesh877@gmail.com",
-      pass: process.env.EMAIL_PASS || "pnvh gmbs hzrd wdzc",
-    },
-  });
-
-  const smailOptions = {
-    to: process.env.ADMIN_EMAIL || "sahaniranzeth877@gmail.com",
-    subject: "New Newsletter Subscription",
-    html: `
-      <h1>New Newsletter Subscription</h1>
-      <p><strong>Name:</strong> ${name || "Subscriber"}</p>
-      <p><strong>Email:</strong> ${email}</p>
-      <p><strong>Message:</strong> ${message || "No message provided"}</p>
-    `,
+  const adminMailOptions = {
+    from: `"Aksharaa School Website" <${senderEmail}>`,
+    to: adminEmail,
+    replyTo: email,
+    subject: "Newsletter subscription submitted",
+    text: `Newsletter subscription submission\n\nName: ${name || "Subscriber"}\nEmail: ${email}\nSubmitted: ${submittedAt}\nMessage: ${message || "No message provided"}`,
+    html: renderEmailLayout({
+      eyebrow: "Newsletter Subscription",
+      title: "Newsletter form submitted",
+      intro: "A visitor submitted the Aksharaa School newsletter form.",
+      content: `
+        ${renderInfoRows([
+    ["Name", safeName],
+    ["Email", `<a href="mailto:${safeEmail}" style="color:#0f6b3d;text-decoration:none;font-weight:700;">${safeEmail}</a>`],
+    ["Submitted", safeSubmittedAt],
+  ])}
+        <div style="margin:0 0 24px;padding:18px 20px;background:#f8fbf9;border:1px solid #dfeae3;border-radius:10px;">
+          <div style="margin:0 0 8px;color:#0f6b3d;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;">Message</div>
+          <div style="font-size:15px;line-height:1.75;color:#25312b;">${safeMessage}</div>
+        </div>
+      `,
+      footer: "This message was sent from the Aksharaa School newsletter form.",
+    }),
   };
 
-  const rmailOptions = {
-    from: process.env.EMAIL_USER || "sahanirakesh877@gmail.com",
+  const userMailOptions = {
+    from: `"Aksharaa School" <${senderEmail}>`,
     to: email,
-    subject: "Thank You for Subscribing!",
-    html: `
-      <h1>Subscription Confirmed</h1>
-      <p>Hello ${name || "Subscriber"},</p>
-      <p>Thank you for subscribing to our newsletter! We'll keep you updated.</p>
-    `,
+    replyTo: adminEmail,
+    subject: "Thank you for subscribing - Aksharaa School",
+    text: `Dear ${name || "Subscriber"},\n\nThank you for subscribing to Aksharaa School updates.\n\nWarm regards,\nAksharaa School`,
+    html: renderEmailLayout({
+      eyebrow: "Aksharaa School",
+      title: "Thank you for subscribing",
+      intro: `Dear ${safeName},<br />Thank you for subscribing to Aksharaa School updates.`,
+      content: renderInfoRows([
+        ["Email", safeEmail],
+        ["Submitted", safeSubmittedAt],
+      ]),
+      footer: "This is an automatic confirmation from the Aksharaa School newsletter form.",
+    }),
   };
 
-  await transporter.sendMail(smailOptions);
-  await transporter.sendMail(rmailOptions);
+  await sendMailWithLog(transporter, adminMailOptions, "Legacy admin newsletter");
+  await sendMailWithLog(transporter, userMailOptions, "Legacy user newsletter confirmation");
 
   return ApiResponse.success(res, 200, "Newsletter subscription successful");
 });
@@ -191,4 +250,3 @@ module.exports = {
   contactHandler,
   NewsLetter,
 };
-

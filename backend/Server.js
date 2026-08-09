@@ -75,6 +75,10 @@ app.use("/api/v1/blog", blogrouter);
 const noticerouter = require("./Routes/NoticeRoute");
 app.use("/api/v1/notice", noticerouter);
 
+// FAQ routes
+const faqRouter = require("./Routes/faqRoute");
+app.use("/api/v1/faqs", faqRouter);
+
 // HeroPhotos routes
 const herorouter = require("./Routes/heroRoute");
 app.use("/api/v1/hero", herorouter);

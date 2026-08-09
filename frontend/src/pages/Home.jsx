@@ -15,6 +15,7 @@ import Mission from "./../components/Mission";
 import Infochek from "../components/Infochek";
 import Pic from "../components/HomePicRotate";
 import Mobilecheck from "../components/Mobilecheck";
+import FAQSection from "../components/FAQSection";
 
 const Home = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -50,6 +51,7 @@ const Home = () => {
       {/* <CreativeWeek /> */}
       <Pic />
       <Contact showSEO={false} />
+      <FAQSection />
       <Brand />
     </>
   );
