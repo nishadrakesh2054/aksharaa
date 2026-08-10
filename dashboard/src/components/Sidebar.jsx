@@ -13,6 +13,8 @@ import {
   Layers,
   FileUp,
   Users,
+  UserRoundCog,
+  HeartHandshake,
   Tag,
   Mail,
   Send,
@@ -47,6 +49,8 @@ const Sidebar = () => {
       items: [
         { label: "Notices", path: "/notices", icon: Bell },
         { label: "Blogs", path: "/blogs", icon: FileText },
+        { label: "Chairman Messages", path: "/chairman-messages", icon: UserRoundCog },
+        { label: "Vision & Mission", path: "/vision-mission", icon: HeartHandshake },
         { label: "Activities", path: "/activities", icon: Activity },
         { label: "Testimonials", path: "/testimonials", icon: MessageSquareQuote },
         { label: "FAQs", path: "/faqs", icon: HelpCircle },

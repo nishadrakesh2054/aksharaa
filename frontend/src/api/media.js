@@ -12,7 +12,7 @@ export const getFileUrl = (path, fallback = "/fallbackimage.avif") => {
   ) {
     return path;
   }
-  if (path.startsWith("/fallback") || path.startsWith("/static") || path.startsWith("/assets")) {
+  if (path.startsWith("/fallback") || path.startsWith("/static") || path.startsWith("/assets") || path.startsWith("/chairman")) {
     return path;
   }
   const cleanPath = path.replace(/\\/g, "/").replace(/^\/+/, "");
@@ -23,4 +23,3 @@ export const firstImage = (value, fallback = "/fallbackimage.avif") => {
   if (Array.isArray(value)) return getFileUrl(value[0], fallback);
   return getFileUrl(value, fallback);
 };
-

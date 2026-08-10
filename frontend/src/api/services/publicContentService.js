@@ -54,6 +54,16 @@ export const publicContentService = {
     return listFrom(response, ["categories"]);
   },
 
+  getChairmanMessages: async () => {
+    const response = await apiClient.get("/chairman-messages");
+    return listFrom(response, ["messages"]);
+  },
+
+  getVisionMission: async () => {
+    const response = await apiClient.get("/vision-mission");
+    return listFrom(response, ["items", "visionMission"]);
+  },
+
   getActivities: async (params = {}) => {
     const response = await apiClient.get("/activity/", { params });
     return listFrom(response, ["activities"]);

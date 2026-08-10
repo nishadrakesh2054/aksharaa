@@ -1,44 +1,61 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import "./App.css";
 import Sidebar from "./components/Sidebar";
-import Register from "./pages/Register";
-import Login from "./pages/Login";
-import Error from "./pages/Error";
-import Profile from "./pages/Profile";
-import ResetPassword from "./pages/ResetPassword";
-
-import DashboardOverview from "./pages/DashboardOverview";
-import NoticesPage from "./pages/NoticesPage";
-import BlogsPage from "./pages/BlogsPage";
-import ActivitiesPage from "./pages/ActivitiesPage";
-import HeroSlidersPage from "./pages/HeroSlidersPage";
-import ThreeDGalleryPage from "./pages/ThreeDGalleryPage";
-import TestimonialsPage from "./pages/TestimonialsPage";
-import FaqsPage from "./pages/FaqsPage";
-import GalleriesPage from "./pages/GalleriesPage";
-import DownloadsPage from "./pages/DownloadsPage";
-import TeachersPage from "./pages/TeachersPage";
-import CategoriesPage from "./pages/CategoriesPage";
-import ContactMessagesPage from "./pages/ContactMessagesPage";
-import SubscribersPage from "./pages/SubscribersPage";
-import EnquiriesPage from "./pages/EnquiriesPage";
-import EventsCalendarPage from "./pages/EventsCalendarPage";
-import LongTermProjectsPage from "./pages/LongTermProjectsPage";
-import OnlineApplicationsPage from "./pages/OnlineApplicationsPage";
-import AcademicsPage from "./pages/AcademicsPage";
-import MunPage from "./pages/MunPage";
-import InfrastructurePage from "./pages/InfrastructurePage";
-import PartnersPage from "./pages/PartnersPage";
-import CreativeWeek from "./pages/CreativeWeek";
-
-import GetBlog from "./components/getBlog";
-import GetActivity from "./components/getActivity";
 
 import { Toaster } from "react-hot-toast";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { loginActions } from "./redux/slices/loginSlice";
+
+const Register = lazy(() => import("./pages/Register"));
+const Login = lazy(() => import("./pages/Login"));
+const Error = lazy(() => import("./pages/Error"));
+const Profile = lazy(() => import("./pages/Profile"));
+const ResetPassword = lazy(() => import("./pages/ResetPassword"));
+const DashboardOverview = lazy(() => import("./pages/DashboardOverview"));
+const NoticesPage = lazy(() => import("./pages/NoticesPage"));
+const BlogsPage = lazy(() => import("./pages/BlogsPage"));
+const ActivitiesPage = lazy(() => import("./pages/ActivitiesPage"));
+const HeroSlidersPage = lazy(() => import("./pages/HeroSlidersPage"));
+const ThreeDGalleryPage = lazy(() => import("./pages/ThreeDGalleryPage"));
+const TestimonialsPage = lazy(() => import("./pages/TestimonialsPage"));
+const FaqsPage = lazy(() => import("./pages/FaqsPage"));
+const GalleriesPage = lazy(() => import("./pages/GalleriesPage"));
+const DownloadsPage = lazy(() => import("./pages/DownloadsPage"));
+const TeachersPage = lazy(() => import("./pages/TeachersPage"));
+const CategoriesPage = lazy(() => import("./pages/CategoriesPage"));
+const ContactMessagesPage = lazy(() => import("./pages/ContactMessagesPage"));
+const SubscribersPage = lazy(() => import("./pages/SubscribersPage"));
+const EnquiriesPage = lazy(() => import("./pages/EnquiriesPage"));
+const EventsCalendarPage = lazy(() => import("./pages/EventsCalendarPage"));
+const LongTermProjectsPage = lazy(() => import("./pages/LongTermProjectsPage"));
+const OnlineApplicationsPage = lazy(() => import("./pages/OnlineApplicationsPage"));
+const AcademicsPage = lazy(() => import("./pages/AcademicsPage"));
+const MunPage = lazy(() => import("./pages/MunPage"));
+const InfrastructurePage = lazy(() => import("./pages/InfrastructurePage"));
+const PartnersPage = lazy(() => import("./pages/PartnersPage"));
+const CreativeWeek = lazy(() => import("./pages/CreativeWeek"));
+const ChairmanMessagesPage = lazy(() => import("./pages/ChairmanMessagesPage"));
+const VisionMissionPage = lazy(() => import("./pages/VisionMissionPage"));
+const GetBlog = lazy(() => import("./components/getBlog"));
+const GetActivity = lazy(() => import("./components/getActivity"));
+
+const PageLoader = () => (
+  <div id="main" className="d-flex justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
+    <div className="spinner-border text-success" role="status">
+      <span className="visually-hidden">Loading...</span>
+    </div>
+  </div>
+);
+
+const AuthLoader = () => (
+  <div className="min-vh-100 d-flex justify-content-center align-items-center bg-light">
+    <div className="spinner-border text-success" role="status">
+      <span className="visually-hidden">Loading...</span>
+    </div>
+  </div>
+);
 
 const App = () => {
   const [statLoading, setStatLoading] = useState(true);
@@ -143,11 +160,19 @@ const App = () => {
   }
 
   if (stat && !statLoading && !user) {
-    return <Login />;
+    return (
+      <Suspense fallback={<AuthLoader />}>
+        <Login />
+      </Suspense>
+    );
   }
 
   if (!stat && !statLoading) {
-    return <Register />;
+    return (
+      <Suspense fallback={<AuthLoader />}>
+        <Register />
+      </Suspense>
+    );
   }
 
   const role = typeof user === "object" && user ? user.role : "admin";
@@ -159,66 +184,74 @@ const App = () => {
     <>
       <Sidebar />
 
-      <Routes>
-        {/* Landing redirects to main Dashboard Analytics Page */}
-        <Route path="/" element={<Navigate to={role === "frontdesk" ? "/online-applications" : "/dashboard"} replace />} />
-        <Route path="/dashboard" element={restrictedElement(<DashboardOverview />)} />
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
+          {/* Landing redirects to main Dashboard Analytics Page */}
+          <Route path="/" element={<Navigate to={role === "frontdesk" ? "/online-applications" : "/dashboard"} replace />} />
+          <Route path="/dashboard" element={restrictedElement(<DashboardOverview />)} />
 
-        {/* Unified CRUD Section Routes */}
-        <Route path="/notices" element={restrictedElement(<NoticesPage />)} />
-        <Route path="/blogs" element={restrictedElement(<BlogsPage />)} />
-        <Route path="/blogs/:id" element={restrictedElement(<GetBlog />)} />
-        <Route path="/activities" element={restrictedElement(<ActivitiesPage />)} />
-        <Route path="/activities/:id" element={restrictedElement(<GetActivity />)} />
-        <Route path="/hero-sliders" element={restrictedElement(<HeroSlidersPage />)} />
-        <Route path="/3d-gallery" element={restrictedElement(<ThreeDGalleryPage />)} />
-        <Route path="/testimonials" element={restrictedElement(<TestimonialsPage />)} />
-        <Route path="/faqs" element={restrictedElement(<FaqsPage />)} />
-        <Route path="/galleries" element={restrictedElement(<GalleriesPage />)} />
-        <Route path="/downloads" element={restrictedElement(<DownloadsPage />)} />
-        <Route path="/teachers" element={restrictedElement(<TeachersPage />)} />
-        <Route path="/categories" element={restrictedElement(<CategoriesPage />)} />
-        <Route path="/contact-messages" element={<ContactMessagesPage />} />
-        <Route path="/subscribers" element={<SubscribersPage />} />
-        <Route path="/enquiries" element={<EnquiriesPage />} />
-        <Route path="/online-applications" element={<OnlineApplicationsPage />} />
-        <Route path="/events-calendar" element={<EventsCalendarPage />} />
-        <Route path="/longterm-projects" element={restrictedElement(<LongTermProjectsPage />)} />
-        <Route path="/infrastructure-management" element={restrictedElement(<InfrastructurePage />)} />
-        <Route path="/partners-management" element={restrictedElement(<PartnersPage />)} />
-        <Route path="/creative-week-management" element={restrictedElement(<CreativeWeek />)} />
-        <Route path="/academics-management" element={restrictedElement(<AcademicsPage />)} />
-        <Route path="/akshara-mun-management" element={restrictedElement(<MunPage />)} />
+          {/* Unified CRUD Section Routes */}
+          <Route path="/notices" element={restrictedElement(<NoticesPage />)} />
+          <Route path="/blogs" element={restrictedElement(<BlogsPage />)} />
+          <Route path="/chairman-messages" element={restrictedElement(<ChairmanMessagesPage />)} />
+          <Route path="/vision-mission" element={restrictedElement(<VisionMissionPage />)} />
+          <Route path="/blogs/:id" element={restrictedElement(<GetBlog />)} />
+          <Route path="/activities" element={restrictedElement(<ActivitiesPage />)} />
+          <Route path="/activities/:id" element={restrictedElement(<GetActivity />)} />
+          <Route path="/hero-sliders" element={restrictedElement(<HeroSlidersPage />)} />
+          <Route path="/3d-gallery" element={restrictedElement(<ThreeDGalleryPage />)} />
+          <Route path="/testimonials" element={restrictedElement(<TestimonialsPage />)} />
+          <Route path="/faqs" element={restrictedElement(<FaqsPage />)} />
+          <Route path="/galleries" element={restrictedElement(<GalleriesPage />)} />
+          <Route path="/downloads" element={restrictedElement(<DownloadsPage />)} />
+          <Route path="/teachers" element={restrictedElement(<TeachersPage />)} />
+          <Route path="/categories" element={restrictedElement(<CategoriesPage />)} />
+          <Route path="/contact-messages" element={<ContactMessagesPage />} />
+          <Route path="/subscribers" element={<SubscribersPage />} />
+          <Route path="/enquiries" element={<EnquiriesPage />} />
+          <Route path="/online-applications" element={<OnlineApplicationsPage />} />
+          <Route path="/events-calendar" element={<EventsCalendarPage />} />
+          <Route path="/longterm-projects" element={restrictedElement(<LongTermProjectsPage />)} />
+          <Route path="/infrastructure-management" element={restrictedElement(<InfrastructurePage />)} />
+          <Route path="/partners-management" element={restrictedElement(<PartnersPage />)} />
+          <Route path="/creative-week-management" element={restrictedElement(<CreativeWeek />)} />
+          <Route path="/academics-management" element={restrictedElement(<AcademicsPage />)} />
+          <Route path="/akshara-mun-management" element={restrictedElement(<MunPage />)} />
 
-        {/* Backward Compatibility Route Aliases */}
-        <Route path="/getinquiry" element={<Navigate to="/enquiries" replace />} />
-        <Route path="/get-notice" element={<Navigate to="/notices" replace />} />
-        <Route path="/important-notice" element={<Navigate to="/notices" replace />} />
-        <Route path="/get-blogs" element={<Navigate to="/blogs" replace />} />
-        <Route path="/latest-blog" element={<Navigate to="/blogs" replace />} />
-        <Route path="/get-activities" element={<Navigate to="/activities" replace />} />
-        <Route path="/activity-blog" element={<Navigate to="/activities" replace />} />
-        <Route path="/banner-img" element={<Navigate to="/hero-sliders" replace />} />
-        <Route path="/banner-photo" element={<Navigate to="/hero-sliders" replace />} />
-        <Route path="/get3d-photos" element={<Navigate to="/3d-gallery" replace />} />
-        <Route path="/threeD" element={<Navigate to="/3d-gallery" replace />} />
-        <Route path="/getalltestimonial" element={<Navigate to="/testimonials" replace />} />
-        <Route path="/testimonial" element={<Navigate to="/testimonials" replace />} />
-        <Route path="/faq" element={<Navigate to="/faqs" replace />} />
-        <Route path="/faqs-management" element={<Navigate to="/faqs" replace />} />
-        <Route path="/getallphotos" element={<Navigate to="/galleries" replace />} />
-        <Route path="/getpdf" element={<Navigate to="/downloads" replace />} />
-        <Route path="/getallteacherprofile" element={<Navigate to="/teachers" replace />} />
-        <Route path="/blogcategory" element={<Navigate to="/categories" replace />} />
-        <Route path="/activitycategory" element={<Navigate to="/categories" replace />} />
+          {/* Backward Compatibility Route Aliases */}
+          <Route path="/getinquiry" element={<Navigate to="/enquiries" replace />} />
+          <Route path="/get-notice" element={<Navigate to="/notices" replace />} />
+          <Route path="/important-notice" element={<Navigate to="/notices" replace />} />
+          <Route path="/get-blogs" element={<Navigate to="/blogs" replace />} />
+          <Route path="/about-chairman" element={<Navigate to="/chairman-messages" replace />} />
+          <Route path="/chairman-management" element={<Navigate to="/chairman-messages" replace />} />
+          <Route path="/vision&mission" element={<Navigate to="/vision-mission" replace />} />
+          <Route path="/vision-mission-management" element={<Navigate to="/vision-mission" replace />} />
+          <Route path="/latest-blog" element={<Navigate to="/blogs" replace />} />
+          <Route path="/get-activities" element={<Navigate to="/activities" replace />} />
+          <Route path="/activity-blog" element={<Navigate to="/activities" replace />} />
+          <Route path="/banner-img" element={<Navigate to="/hero-sliders" replace />} />
+          <Route path="/banner-photo" element={<Navigate to="/hero-sliders" replace />} />
+          <Route path="/get3d-photos" element={<Navigate to="/3d-gallery" replace />} />
+          <Route path="/threeD" element={<Navigate to="/3d-gallery" replace />} />
+          <Route path="/getalltestimonial" element={<Navigate to="/testimonials" replace />} />
+          <Route path="/testimonial" element={<Navigate to="/testimonials" replace />} />
+          <Route path="/faq" element={<Navigate to="/faqs" replace />} />
+          <Route path="/faqs-management" element={<Navigate to="/faqs" replace />} />
+          <Route path="/getallphotos" element={<Navigate to="/galleries" replace />} />
+          <Route path="/getpdf" element={<Navigate to="/downloads" replace />} />
+          <Route path="/getallteacherprofile" element={<Navigate to="/teachers" replace />} />
+          <Route path="/blogcategory" element={<Navigate to="/categories" replace />} />
+          <Route path="/activitycategory" element={<Navigate to="/categories" replace />} />
 
-        {/* Profile & Auth */}
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/resetpassword/:id/:token" element={<ResetPassword />} />
+          {/* Profile & Auth */}
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/resetpassword/:id/:token" element={<ResetPassword />} />
 
-        {/* Fallback */}
-        <Route path="*" element={<Error />} />
-      </Routes>
+          {/* Fallback */}
+          <Route path="*" element={<Error />} />
+        </Routes>
+      </Suspense>
 
       <Toaster position="top-right" />
     </>

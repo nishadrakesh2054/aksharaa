@@ -162,6 +162,14 @@ app.use("/api/v1/teambanners", TeamBannerRoute);
 const profileRoute = require("./Routes/profileRoute");
 app.use("/api/v1", profileRoute);
 
+// Chairman / leadership messages routes
+const chairmanMessageRoute = require("./Routes/chairmanMessageRoute");
+app.use("/api/v1/chairman-messages", chairmanMessageRoute);
+
+// Vision & Mission routes
+const visionMissionRoute = require("./Routes/visionMissionRoute");
+app.use("/api/v1/vision-mission", visionMissionRoute);
+
 // Catch-all 404 handler for undefined API routes
 app.use("*", (req, res, next) => {
   next(new ApiError(404, `API route '${req.originalUrl}' not found`));

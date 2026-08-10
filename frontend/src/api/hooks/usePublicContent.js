@@ -9,6 +9,8 @@ export const queryKeys = {
   blogs: (params = {}) => ["blogs", params],
   blog: (id) => ["blog", id],
   blogCategories: ["blog-categories"],
+  chairmanMessages: ["chairman-messages"],
+  visionMission: ["vision-mission"],
   activities: (params = {}) => ["activities", params],
   activity: (id) => ["activity", id],
   activityCategories: ["activity-categories"],
@@ -64,6 +66,12 @@ export const useBlog = (id, options = {}) =>
 
 export const useBlogCategories = (options = {}) =>
   useQuery({ queryKey: queryKeys.blogCategories, queryFn: publicContentService.getBlogCategories, ...options });
+
+export const useChairmanMessages = (options = {}) =>
+  useQuery({ queryKey: queryKeys.chairmanMessages, queryFn: publicContentService.getChairmanMessages, ...options });
+
+export const useVisionMission = (options = {}) =>
+  useQuery({ queryKey: queryKeys.visionMission, queryFn: publicContentService.getVisionMission, ...options });
 
 export const useActivities = (params = {}, options = {}) =>
   useQuery({
