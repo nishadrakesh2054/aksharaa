@@ -11,6 +11,7 @@ export const queryKeys = {
   blogCategories: ["blog-categories"],
   chairmanMessages: ["chairman-messages"],
   visionMission: ["vision-mission"],
+  coreValuesFramework: ["core-values-framework"],
   activities: (params = {}) => ["activities", params],
   activity: (id) => ["activity", id],
   activityCategories: ["activity-categories"],
@@ -72,6 +73,13 @@ export const useChairmanMessages = (options = {}) =>
 
 export const useVisionMission = (options = {}) =>
   useQuery({ queryKey: queryKeys.visionMission, queryFn: publicContentService.getVisionMission, ...options });
+
+export const useCoreValuesFramework = (options = {}) =>
+  useQuery({
+    queryKey: queryKeys.coreValuesFramework,
+    queryFn: publicContentService.getCoreValuesFramework,
+    ...options,
+  });
 
 export const useActivities = (params = {}, options = {}) =>
   useQuery({

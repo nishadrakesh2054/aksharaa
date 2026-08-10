@@ -24,6 +24,7 @@ const uploadDirs = [
   "./uploads/testimonial",
   "./uploads/profile",
   "./uploads/chairman",
+  "./uploads/core-values",
   "./uploads/creativeweek",
   "./uploads/galleries",
   "./uploads/pdf",
@@ -162,6 +163,12 @@ const chairmanUpload = multer({
   limits: { fileSize: FIVE_MB },
 });
 
+const coreValuesUpload = multer({
+  storage: createCloudinaryStorage("core-values"),
+  fileFilter: imageFileFilter,
+  limits: { fileSize: FIVE_MB },
+});
+
 const galleriesUpload = multer({
   storage: createCloudinaryStorage("galleries"),
   fileFilter: imageFileFilter,
@@ -216,6 +223,7 @@ module.exports = {
   pdfUpload,
   ProfileUpload,
   chairmanUpload,
+  coreValuesUpload,
   projectsUpload,
   enquiryUpload,
   academicsUpload,

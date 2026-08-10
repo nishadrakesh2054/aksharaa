@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node Server.js",
     "dev": "nodemon Server.js",
+    "seed:core-values": "node scripts/seedCoreValuesFramework.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },

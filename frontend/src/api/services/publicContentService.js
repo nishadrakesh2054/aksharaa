@@ -64,6 +64,11 @@ export const publicContentService = {
     return listFrom(response, ["items", "visionMission"]);
   },
 
+  getCoreValuesFramework: async () => {
+    const response = await apiClient.get("/core-values-framework");
+    return itemFrom(response, ["item", "coreValuesFramework"]);
+  },
+
   getActivities: async (params = {}) => {
     const response = await apiClient.get("/activity/", { params });
     return listFrom(response, ["activities"]);

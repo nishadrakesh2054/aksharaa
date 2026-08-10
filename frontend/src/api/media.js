@@ -12,7 +12,13 @@ export const getFileUrl = (path, fallback = "/fallbackimage.avif") => {
   ) {
     return path;
   }
-  if (path.startsWith("/fallback") || path.startsWith("/static") || path.startsWith("/assets") || path.startsWith("/chairman")) {
+  if (
+    path.startsWith("/fallback") ||
+    path.startsWith("/static") ||
+    path.startsWith("/assets") ||
+    path.startsWith("/chairman") ||
+    path.startsWith("/round")
+  ) {
     return path;
   }
   const cleanPath = path.replace(/\\/g, "/").replace(/^\/+/, "");

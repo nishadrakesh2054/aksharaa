@@ -38,6 +38,7 @@ const PartnersPage = lazy(() => import("./pages/PartnersPage"));
 const CreativeWeek = lazy(() => import("./pages/CreativeWeek"));
 const ChairmanMessagesPage = lazy(() => import("./pages/ChairmanMessagesPage"));
 const VisionMissionPage = lazy(() => import("./pages/VisionMissionPage"));
+const CoreValuesFrameworkPage = lazy(() => import("./pages/CoreValuesFrameworkPage"));
 const GetBlog = lazy(() => import("./components/getBlog"));
 const GetActivity = lazy(() => import("./components/getActivity"));
 
@@ -195,6 +196,7 @@ const App = () => {
           <Route path="/blogs" element={restrictedElement(<BlogsPage />)} />
           <Route path="/chairman-messages" element={restrictedElement(<ChairmanMessagesPage />)} />
           <Route path="/vision-mission" element={restrictedElement(<VisionMissionPage />)} />
+          <Route path="/core-values-framework" element={restrictedElement(<CoreValuesFrameworkPage />)} />
           <Route path="/blogs/:id" element={restrictedElement(<GetBlog />)} />
           <Route path="/activities" element={restrictedElement(<ActivitiesPage />)} />
           <Route path="/activities/:id" element={restrictedElement(<GetActivity />)} />
@@ -227,6 +229,7 @@ const App = () => {
           <Route path="/chairman-management" element={<Navigate to="/chairman-messages" replace />} />
           <Route path="/vision&mission" element={<Navigate to="/vision-mission" replace />} />
           <Route path="/vision-mission-management" element={<Navigate to="/vision-mission" replace />} />
+          <Route path="/core-values" element={<Navigate to="/core-values-framework" replace />} />
           <Route path="/latest-blog" element={<Navigate to="/blogs" replace />} />
           <Route path="/get-activities" element={<Navigate to="/activities" replace />} />
           <Route path="/activity-blog" element={<Navigate to="/activities" replace />} />

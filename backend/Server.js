@@ -170,6 +170,10 @@ app.use("/api/v1/chairman-messages", chairmanMessageRoute);
 const visionMissionRoute = require("./Routes/visionMissionRoute");
 app.use("/api/v1/vision-mission", visionMissionRoute);
 
+// Core Values Framework route
+const coreValuesFrameworkRoute = require("./Routes/coreValuesFrameworkRoute");
+app.use("/api/v1/core-values-framework", coreValuesFrameworkRoute);
+
 // Catch-all 404 handler for undefined API routes
 app.use("*", (req, res, next) => {
   next(new ApiError(404, `API route '${req.originalUrl}' not found`));
