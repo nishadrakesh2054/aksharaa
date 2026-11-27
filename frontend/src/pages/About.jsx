@@ -93,13 +93,13 @@ const PhilosophySection = memo(({ navigate }) => (
               allowFullScreen
               loading="lazy"
             ></iframe>
-            <div className="philosophy-floating-badge">
+            {/* <div className="philosophy-floating-badge">
               <i className="fas fa-award"></i>
               <div>
                 <div className="badge-number">15+ Years</div>
                 <div className="badge-label">Educational Excellence</div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

@@ -62,6 +62,12 @@ app.get(["/health", "/api/v1/health"], (req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Aksharaa School API is running"
+  });
+});
 
 // User routes
 const userrouter = require("./Routes/UserRoutes");

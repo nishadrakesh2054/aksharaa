@@ -18,7 +18,7 @@ const attachUserFromToken = async (req) => {
 
   if (!token) return null;
 
-  const secretKey = process.env.JWT_SECRETE_KEY || "rolexbhai123";
+  const secretKey = process.env.JWT_SECRETE_KEY ;
   const authData = jwt.verify(token, secretKey);
   const userId = authData.userId || authData.id;
   const userFound = await User.findById(userId);

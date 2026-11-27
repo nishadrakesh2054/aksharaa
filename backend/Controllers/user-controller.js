@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const ApiResponse = require("../utils/apiResponse");
 
-const JWT_SECRETE_KEY = process.env.JWT_SECRETE_KEY || "rolexbhai123";
+const JWT_SECRETE_KEY = process.env.JWT_SECRETE_KEY;
 const ALLOWED_ROLES = ["admin", "editor", "frontdesk"];
 
 const envAdminEmail = () => String(process.env.Admin_Email || process.env.ADMIN_EMAIL || "").toLowerCase().trim();
@@ -175,15 +175,15 @@ const forgetpassword = asyncHandler(async (req, res) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: process.env.EMAIL_USER || "sahanirakesh877@gmail.com",
-      pass: process.env.EMAIL_PASS || "pnvh gmbs hzrd wdzc",
+      user: process.env.MAIL_USERNAME || "info@aksharaaschool.edu.np",
+      pass: process.env.MAIL_PASSWORD || "3ajiny-a8Imex-t9kkyo",
     },
   });
 
   const resetUrl = `${getDashboardUrl(req)}/resetpassword/${existingUser._id}/${resetToken}`;
 
   const mailOptions = {
-    from: process.env.EMAIL_USER || "sahanirakesh877@gmail.com",
+    from: process.env.MAIL_USERNAME || "info@aksharaaschool.edu.np",
     to: email,
     subject: "Password Reset Request",
     text: resetUrl,

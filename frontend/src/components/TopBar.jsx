@@ -10,7 +10,7 @@ const TopBar = () => {
             <div className="col-lg-3">
               <a href="/" className="d-inline-block text-decoration-none">
                 <img
-                  src="/logo1.png"
+                  src="/logo2.png"
                   alt="Aksharaa School"
                   className="topbar-logo"
                   width="250"

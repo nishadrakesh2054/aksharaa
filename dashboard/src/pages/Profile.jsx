@@ -207,7 +207,7 @@ const Profile = () => {
               </div>
               <div className="d-flex align-items-center gap-2 text-muted">
                 <Phone size={16} className="text-primary" />
-                <span className="fw-medium text-dark">+977 9845892346</span>
+                <span className="fw-medium text-dark">+977 9849611852</span>
               </div>
             </div>
           </div>
@@ -287,7 +287,7 @@ const Profile = () => {
                       <input
                         type="text"
                         className="form-control bg-light"
-                        value="9845892346"
+                        value="9849611852"
                         readOnly
                       />
                     </div>

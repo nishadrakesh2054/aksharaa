@@ -55,7 +55,7 @@ const SideIcon = () => {
         {/* Item 2: WhatsApp (120 deg - top-left arc) */}
         <div className="spiral-item item-2">
           <a
-            href="https://wa.me/9779845892346"
+            href="https://wa.me/9779849611852"
             target="_blank"
             rel="noopener noreferrer"
             className="spiral-btn whatsapp-btn"
